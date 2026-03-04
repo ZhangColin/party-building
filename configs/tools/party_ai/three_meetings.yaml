@@ -1,0 +1,30 @@
+# configs/tools/party_ai/three_meetings.yaml
+tool_id: "three_meetings"
+name: "三会一课一键生成"
+description: "输入会议基本信息，AI自动生成符合规范的党务会议文档，包括支部书记讲话稿、会议记录摘要等"
+category: "智能文稿生成"
+system_prompt_file: "prompts/three_meetings.md"
+welcome_message: |
+  # 三会一课一键生成
+
+  请选择或输入以下信息：
+
+  1. **会议类型**：支部党员大会 / 支部委员会 / 党小组会 / 党课
+  2. **会议主题**：本次会议的主要议题
+  3. **会议时间**：会议日期和时长
+  4. **会议地点**：会议召开地点
+  5. **参会人员**：预计参会党员名单
+  6. **主持人**：会议主持人
+  7. **主要议题**：本次会议讨论的议题（可多个）
+
+  我将为您生成：
+  - 支部书记讲话稿
+  - 会议记录摘要
+  - 决议事项和下一步计划
+icon: "calendar"
+order: 1
+visible: true
+type: "normal"
+toolset_id: "party_ai"
+content_type: "text"
+model: "deepseek:deepseek-chat"
