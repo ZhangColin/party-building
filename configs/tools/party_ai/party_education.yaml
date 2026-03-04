@@ -1,0 +1,28 @@
+# configs/tools/party_ai/party_education.yaml
+tool_id: "party_education"
+name: "党员教育学习材料生成"
+description: "生成党员教育学习心得、宣讲提纲、学习笔记等材料"
+category: "智能文稿生成"
+system_prompt_file: "prompts/party_education.md"
+welcome_message: |
+  # 党员教育学习材料生成
+
+  请提供以下信息：
+
+  1. **学习主题**：如学习二十大报告精神、学习党章、学习习近平总书记重要讲话精神等
+  2. **材料类型**：学习心得 / 宣讲提纲 / 学习笔记 / 研讨发言材料
+  3. **字数要求**：预期的字数范围
+  4. **特殊要求**（可选）：如重点突出某方面内容、结合实际工作等
+
+  我将为您生成：
+  - 结构完整的学习材料
+  - 政治准确的表述
+  - 规范的党建术语
+  - 实用的内容框架
+icon: "academic-cap"
+order: 2
+visible: true
+type: "normal"
+toolset_id: "party_ai"
+content_type: "text"
+model: "deepseek:deepseek-chat"
