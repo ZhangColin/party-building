@@ -19,9 +19,3 @@ categories:
     tools:
       - smart_qa
 
-  - name: "合规检查"
-    description: "文稿合规性检查"
-    order: 3
-    icon: "shield-check"
-    tools:
-      - compliance_check
