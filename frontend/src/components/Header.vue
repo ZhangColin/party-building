@@ -31,13 +31,16 @@ import MobileMenu from './MobileMenu.vue'
 
 <style scoped>
 .header {
-  @apply flex items-center justify-between px-6 border-b border-gray-200 bg-white sticky top-0 z-[100];
-  /* 层级2：内容层 - 白色背景，明显底部阴影，更柔和的边框 */
+  @apply flex items-center justify-between px-6 border-b sticky top-0 z-[100];
+  /* 党建主题：红色渐变背景 */
   height: 72px;
   backdrop-filter: blur(12px);
-  background-color: rgba(255, 255, 255, 0.98);
-  border-bottom-color: theme('colors.gray.200');
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  /* 使用党建红色渐变背景 */
+  background: linear-gradient(135deg, #C8102E 0%, #E84D56 50%, #8B0000 100%);
+  border-bottom-color: rgba(139, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+  /* 确保文字颜色为白色 */
+  color: #FFFFFF;
 }
 
 .header-left,

@@ -1,7 +1,7 @@
 <template>
   <div class="logo" @click="handleClick">
-    <img :src="logoImage" alt="海创元AI教育智研云平台" class="logo-image" />
-    <span class="logo-text">海创元AI教育智研云平台</span>
+    <img :src="logoImage" alt="党建AI智能平台" class="logo-image" />
+    <span class="logo-text">党建AI智能平台</span>
   </div>
 </template>
 
@@ -31,8 +31,10 @@ function handleClick() {
 }
 
 .logo-text {
-  @apply text-lg font-semibold text-gray-900;
+  @apply text-lg font-semibold;
   letter-spacing: -0.5px;
+  /* 党建主题：白色文字以适配红色背景 */
+  color: #FFFFFF;
 }
 
 /* 平板端响应式（768px - 1023px） */
