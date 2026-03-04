@@ -5,14 +5,14 @@
       <div class="intro-content">
         <!-- Logo和平台名称 -->
         <div class="intro-header">
-          <img src="@/assets/logo/logo.png" alt="海创元AI教育智研云平台" class="intro-logo" />
-          <h1 class="intro-title">海创元AI教育智研云平台</h1>
+          <img src="@/assets/logo/logo.png" alt="党建AI智能平台" class="intro-logo" />
+          <h1 class="intro-title">党建AI智能平台</h1>
         </div>
 
         <!-- 平台介绍 -->
         <div class="intro-modules">
           <div class="modules-grid">
-            <!-- 模块1: AI模型能力 - 横跨两列 -->
+            <!-- 模块1: AI党建助手 - 横跨两列 -->
             <div class="module-card module-card-featured">
               <div class="module-header">
                 <div class="module-icon">
@@ -20,12 +20,12 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
                 </div>
-                <h3 class="module-title">AI模型能力</h3>
+                <h3 class="module-title">AI党建助手</h3>
               </div>
-              <p class="module-desc">多模态AI创作平台，涵盖文案、图像、音视频及编程，智能匹配最优模型</p>
+              <p class="module-desc">智能党建服务平台，提供党员教育、组织管理、党费缴纳等全方位服务</p>
             </div>
 
-            <!-- 模块2: AI教研员智能体 -->
+            <!-- 模块2: 党员教育学习 -->
             <div class="module-card">
               <div class="module-header">
                 <div class="module-icon">
@@ -35,48 +35,48 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
                   </svg>
                 </div>
-                <h3 class="module-title">AI教研员智能体</h3>
+                <h3 class="module-title">党员教育学习</h3>
               </div>
-              <p class="module-desc">全学科教学助手，定制专属授课风格</p>
+              <p class="module-desc">在线学习党史党章，提升党员理论素养</p>
             </div>
 
-            <!-- 模块3: 扩展工具箱 -->
+            <!-- 模块3: 组织生活管理 -->
             <div class="module-card">
               <div class="module-header">
                 <div class="module-icon">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h3 class="module-title">扩展工具箱</h3>
+                <h3 class="module-title">组织生活管理</h3>
               </div>
-              <p class="module-desc">智能化教学场景，提升课堂效率与质量</p>
+              <p class="module-desc">三会一课智能化，主题党日活动管理</p>
             </div>
 
-            <!-- 模块4: 教案学案区 -->
+            <!-- 模块4: 党费管理 -->
             <div class="module-card">
               <div class="module-header">
                 <div class="module-icon">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 class="module-title">教案学案区</h3>
+                <h3 class="module-title">党费管理</h3>
               </div>
-              <p class="module-desc">优质案例素材库，3D动画让知识可视化</p>
+              <p class="module-desc">在线缴纳党费，明细查询透明公开</p>
             </div>
 
-            <!-- 模块5: 全科AI素养提升区 -->
+            <!-- 模块5: 党建知识库 -->
             <div class="module-card">
               <div class="module-header">
                 <div class="module-icon">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
-                <h3 class="module-title">AI素养提升区</h3>
+                <h3 class="module-title">党建知识库</h3>
               </div>
-              <p class="module-desc">学科AI融合资料，系统提升教学能力</p>
+              <p class="module-desc">党的理论文献，政策法规智能检索</p>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@
       <div class="login-container">
         <div class="login-header">
           <h2 class="login-title">欢迎登录</h2>
-          <p class="login-subtitle">探索AI赋能教育的无限可能</p>
+          <p class="login-subtitle">以AI赋能党建工作，推动全面从严治党向纵深发展</p>
         </div>
 
         <!-- 登录表单 -->
@@ -268,7 +268,7 @@ async function handleSubmit() {
 /* ========== 左侧：平台介绍 ========== */
 .intro-section {
   @apply flex-1 flex items-center justify-center px-8 py-12;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #C8102E 0%, #E84D56 50%, #8B0000 100%);
   position: relative;
   overflow: hidden;
 }
@@ -407,7 +407,17 @@ async function handleSubmit() {
 }
 
 .login-button {
-  @apply w-full px-4 py-3.5 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md;
+  @apply w-full px-4 py-3.5 text-white rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md;
+  background-color: var(--el-color-primary);
+}
+
+.login-button:hover {
+  background-color: var(--el-color-primary-dark-2);
+}
+
+.login-button:focus-visible {
+  background-color: var(--el-color-primary-dark-2);
+  box-shadow: 0 0 0 3px var(--el-color-primary-light-7);
 }
 
 /* ========== 响应式设计 ========== */
