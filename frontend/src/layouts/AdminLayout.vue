@@ -119,6 +119,8 @@ const handleLogout = async () => {
   font-weight: 600;
   border-radius: 4px;
   letter-spacing: 0.5px;
+  /* 添加金色边框装饰 */
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .header-right {
@@ -135,6 +137,28 @@ const handleLogout = async () => {
 .user-info {
   font-size: 14px;
   color: #FFFFFF;
+}
+
+/* 党建主题：按钮样式覆盖 */
+.header-right :deep(.el-button--primary.is-link) {
+  /* 默认状态：白色文字 */
+  color: #FFFFFF;
+  background-color: transparent;
+  border: none;
+}
+
+.header-right :deep(.el-button--primary.is-link:hover) {
+  /* hover状态：金色文字 */
+  color: #FFD700;
+  background-color: transparent;
+  border: none;
+}
+
+.header-right :deep(.el-button--primary.is-link:focus) {
+  /* focus状态：金色文字 */
+  color: #FFD700;
+  background-color: transparent;
+  border: none;
 }
 
 /* 主容器 */
