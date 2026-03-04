@@ -214,3 +214,14 @@ class CourseDocumentModel(Base):
         Index("idx_course_document_category_order", "category_id", "order"),
     )
 
+
+# ==================== 党建业务模块 ====================
+# 导入党建业务模块模型（用于Alembic迁移检测）
+from .db_models_party import (
+    PartyMemberModel,
+    OrganizationLifeModel,
+    PartyFeeModel,
+    PartyFeeStandardModel,
+    KnowledgeCategoryModel,
+    KnowledgeDocumentModel,
+)
