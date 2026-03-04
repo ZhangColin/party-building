@@ -1,0 +1,29 @@
+tool_id: "activity_plan"
+name: "党日活动策划方案生成"
+description: "生成完整的主题党日活动方案，包括活动流程、主持词、宣传文案等"
+category: "智能文稿生成"
+system_prompt_file: "prompts/activity_plan.md"
+welcome_message: |
+  # 党日活动策划方案生成
+
+  请提供以下信息：
+
+  1. **活动主题**：如学习贯彻二十大精神、红色教育基地参观、志愿服务等
+  2. **活动时间**：计划开展活动的日期和时长
+  3. **活动地点**：活动举办地点
+  4. **参与人员**：参与活动的人员范围
+  5. **活动类型**：学习研讨 / 参观考察 / 志愿服务 / 纪念庆祝
+  6. **特殊要求**：其他需要说明的事项（可选）
+
+  我将为您生成：
+  - 完整的活动策划方案
+  - 主持词（开场、串联、结尾）
+  - 宣传文案（新闻稿、通知）
+  - 领导讲话稿（可选）
+icon: "calendar"
+order: 4
+visible: true
+type: "normal"
+toolset_id: "party_ai"
+content_type: "text"
+model: "deepseek:deepseek-chat"
