@@ -5,6 +5,7 @@ categories:
   - name: "智能文稿生成"
     description: "自动生成各类党务文稿"
     order: 1
+    icon: "document-text"
     tools:
       - three_meetings
       - party_education
@@ -14,11 +15,13 @@ categories:
   - name: "智能问答"
     description: "党规党纪智能问答"
     order: 2
+    icon: "chat-bubble"
     tools:
       - smart_qa
 
   - name: "合规检查"
     description: "文稿合规性检查"
     order: 3
+    icon: "shield-check"
     tools:
       - compliance_check
