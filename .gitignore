@@ -1,0 +1,115 @@
+# Python 编译文件
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 虚拟环境
+env/
+venv/
+
+# 环境变量 (包含 API Key，绝对不能提交！)
+.env
+.env.*
+
+# IDE 配置
+.vscode/
+.idea/
+
+# Git Worktrees (隔离工作空间)
+.worktrees/
+worktrees/
+
+# Mac 系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# 前端依赖和构建产物
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/package-lock.json
+
+# 后端静态文件
+backend/static/
+
+# Claude 本地配置
+.claude/settings.local.json
+
+# 测试报告和覆盖率
+frontend/test-results/
+frontend/playwright-report/
+backend/.coverage
+backend/.coverage.*
+backend/coverage.json
+backend/htmlcov/
+test-results/
+
+# 临时日志文件
+*.log
+/tmp/*.log
+
+# 临时测试脚本（开发调试用）
+backend/test_*.py
+scripts/verify_test_db.sh
+
+# 根目录临时配置
+package.json
+package-lock.json
+node_modules/
+
+# 项目配置文件（不应该被忽略）
+!pytest.ini
+!backend/pytest.ini
+!frontend/playwright.config.ts
+!frontend/vite.config.ts
+
+
+# 归档目录（保留历史但不需要版本控制）
+docs/archive/
+frontend/tests/e2e/.archive/
+.coverage
+
+# ==================== 测试相关 ====================
+
+# Python测试缓存
+*.pyc
+*.pyo
+*.pyd
+.Pytest_cache/
+.pytest_cache/
+
+# 数据库文件（测试不应提交）
+*.db
+*.sqlite
+*.sqlite3
+
+# 备份文件（不应提交）
+*.bak
+*.backup
+*.old
+*~
+*.swp
+*.swo
+
+# 前端测试缓存
+frontend/.vitest/
+frontend/node_modules/.cache/
+
+# 后端测试报告
+backend/.pytest_cache/
+# 测试工具配置（自动生成，不需要提交）
+backend/configs/tools/test_tools/
+
+# 前端覆盖率报告
+frontend/coverage/
+
+# Windows系统文件
+Thumbs.db
+Thumbs.db:encryptable
+
+# 异常目录模式（测试错误创建的）
+ov=*/

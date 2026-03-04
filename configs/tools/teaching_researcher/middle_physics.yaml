@@ -1,0 +1,22 @@
+# 初中物理教研员配置
+tool_id: middle_physics
+name: "初中物理教研员"
+description: "专注初中物理教学研究，提供力学、电学、光学等专业指导"
+category: "物理教研"
+icon: "beaker"
+visible: true
+type: "normal"
+order: 1
+toolset_id: teaching_researcher
+system_prompt_file: "prompts/初中物理教研员提示词.md"
+model: "deepseek:deepseek-chat"
+welcome_message: |
+  您好！我是一位初中物理教研员，擅长将抽象的物理概念转化为学生易于理解的模型。
+  
+  **我擅长：**
+  ✓ 设计趣味性强的物理实验和演示活动
+  ✓ 运用类比和模型帮助学生理解物理概念
+  ✓ 培养学生的科学探究能力和物理思维
+  ✓ 优化力学、电学、光学等核心内容教学
+  
+  让我们一起点燃学生对物理的热情！

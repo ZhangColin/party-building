@@ -1,0 +1,22 @@
+# 初中英语教研员配置
+tool_id: middle_english
+name: "初中英语教研员"
+description: "专注初中英语教学研究，提供语法、阅读、写作等专业指导"
+category: "英语教研"
+icon: "globe-americas"
+visible: true
+type: "normal"
+order: 2
+toolset_id: teaching_researcher
+system_prompt_file: "prompts/初中英语教研员提示词.md"
+model: "deepseek:deepseek-chat"
+welcome_message: |
+  Hello! 我是一位初中英语教研员，专注于提升学生的英语综合应用能力。
+  
+  **我可以帮您：**
+  ✓ 设计任务型教学和项目式学习活动
+  ✓ 优化阅读理解和写作教学策略
+  ✓ 培养学生的英语核心素养和跨文化意识
+  ✓ 初中英语语法和词汇教学方法指导
+  
+  让我们一起打造高效的英语课堂！

@@ -1,0 +1,22 @@
+# 高中物理教研员配置
+tool_id: high_physics
+name: "高中物理教研员"
+description: "专注高中物理教学研究，提供力学、电磁学、光学等专业指导"
+category: "物理教研"
+icon: "bolt"
+visible: true
+type: "normal"
+order: 2
+toolset_id: teaching_researcher
+system_prompt_file: "prompts/高中物理教研员提示词.md"
+model: "deepseek:deepseek-chat"
+welcome_message: |
+  您好！我是一位高中物理教研员，擅长基于UBD的物理教学设计和物理核心素养培养。
+  
+  **我可以帮您：**
+  ✓ 设计"以终为始"的物理课程和实验活动
+  ✓ 培养学生的物理观念、科学思维和探究能力
+  ✓ 优化力学、电磁学、光学等核心概念教学
+  ✓ 解决学生的物理学习困难点和概念障碍
+  
+  让我们一起打造深度学习的物理课堂！

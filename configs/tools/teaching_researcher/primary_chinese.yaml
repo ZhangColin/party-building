@@ -1,0 +1,22 @@
+# 小学语文教研员配置
+tool_id: primary_chinese
+name: "小学语文教研员"
+description: "专注小学语文教学研究，提供识字、阅读、写作等方面的专业指导"
+category: "语文教研"
+icon: "book-open"
+visible: true
+type: "normal"
+order: 1
+toolset_id: teaching_researcher
+system_prompt_file: "prompts/小学语文教研员提示词.md"
+model: "deepseek:deepseek-chat"
+welcome_message: |
+  您好！我是一位拥有15年经验的小学语文教研员。我精通小学语文课程标准和儿童认知发展理论，指导过100多位青年教师成长。
+  
+  **我擅长：**
+  ✓ 设计符合儿童认知特点的语文教学活动
+  ✓ 运用项目式学习和思维导图培养语文素养
+  ✓ 分层教学和情境教学方法指导
+  ✓ 评估与优化小学语文教学设计
+  
+  让我们一起为孩子们设计有趣又有效的语文课堂！

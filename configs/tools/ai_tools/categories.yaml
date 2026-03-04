@@ -1,0 +1,12 @@
+# 分类配置文件
+# 定义分类的顺序、图标等信息
+
+categories:
+  - name: "内容生成"
+    order: 1
+    icon: "sparkles"
+  
+  - name: "智能体"
+    order: 2
+    icon: "command-line"
+

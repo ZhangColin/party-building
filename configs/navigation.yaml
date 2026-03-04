@@ -1,0 +1,38 @@
+# 顶部导航模块配置
+# 说明：定义系统顶部导航栏的模块结构
+
+modules:
+  # AI工具模块（工具集类型）
+  - name: "AI模型能力"
+    type: "toolset"
+    config_source: "tools/ai_tools"  # 工具配置目录路径
+    icon: "sparkles"                 # 图标标识（可选）
+    order: 1                         # 排序顺序（数字越小越靠前）
+
+  # 教研员模块（工具集类型）
+  - name: "AI教研员智能体"
+    type: "toolset"
+    config_source: "tools/teaching_researcher"  # 工具配置目录路径
+    icon: "academic-cap"                        # 图标标识（可选）
+    order: 2                                    # 排序顺序
+
+  # 常用工具模块（独立页面类型）
+  - name: "扩展工具箱"
+    type: "page"
+    page_path: "/common-tools"     # 前端路由路径
+    icon: "cog-6-tooth"
+    order: 3
+
+  # 作品展示模块（独立页面类型）
+  - name: "教案学案区"
+    type: "page"
+    page_path: "/works"
+    icon: "photo"
+    order: 4
+
+  # AI素养课模块（独立页面类型）
+  - name: "全科AI素养提升区"
+    type: "page"
+    page_path: "/documents"
+    icon: "document-text"
+    order: 5

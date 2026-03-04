@@ -1,0 +1,23 @@
+# 教研员工具集 - 分类配置
+# 说明：按科目组织教研员工具，每个科目下包含不同学段的教研员
+
+categories:
+  - name: "备课评课"
+    icon: "academic-cap"
+    order: 1
+  
+  - name: "语文教研"
+    icon: "book-open"
+    order: 2
+  
+  - name: "数学教研"
+    icon: "calculator"
+    order: 3
+  
+  - name: "英语教研"
+    icon: "language"
+    order: 4
+  
+  - name: "物理教研"
+    icon: "beaker"
+    order: 5

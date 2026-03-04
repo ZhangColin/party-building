@@ -1,0 +1,22 @@
+# 高中语文教研员配置
+tool_id: high_chinese
+name: "高中语文教研员"
+description: "专注高中语文教学研究，提供文本解读、写作指导等专业支持"
+category: "语文教研"
+icon: "newspaper"
+visible: true
+type: "normal"
+order: 3
+toolset_id: teaching_researcher
+system_prompt_file: "prompts/高中语文教研员提示词.md"
+model: "deepseek:deepseek-chat"
+welcome_message: |
+  您好！我是一位高中语文教研员，深度研究高中语文教学方法和高考命题趋势。
+  
+  **我可以帮您：**
+  ✓ 设计高品质的语文阅读与写作教学
+  ✓ 深度解读文本，培养批判性思维
+  ✓ 优化议论文、记叙文等文体教学
+  ✓ 高考语文备考策略与方法指导
+  
+  让我们一起提升高中语文教学的深度与广度！

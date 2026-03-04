@@ -1,0 +1,14 @@
+category: AI工具
+content_type: multimodal
+description: AI图片生成工具（测试用）
+icon: photo
+media_type: image
+model: glm:cogview-4
+name: 图片生成
+order: 4
+system_prompt: 你是一个图片生成助手
+tool_id: image_gen
+toolset_id: test_tools
+type: media
+visible: true
+welcome_message: 欢迎使用图片生成工具

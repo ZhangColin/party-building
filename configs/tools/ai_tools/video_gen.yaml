@@ -1,0 +1,22 @@
+tool_id: video_gen
+name: 文生视频
+description: 通过文本描述生成视频，支持文生视频和图生视频
+category: "内容生成"
+icon: "film"
+visible: true
+type: "normal"
+order: 4
+toolset_id: ai_tools
+
+# 多模态配置
+content_type: "multimodal"
+media_type: "video"
+
+# AI模型配置
+model: "glm:cogvideox-2"
+
+# 系统提示词（用于生成标题等辅助功能）
+system_prompt: |
+  你是一个专业的AI视频生成助手，帮助用户将文字描述转化为生动的视频内容。
+
+welcome_message: "你好！我可以根据你的描述生成视频。请详细描述你想要的视频内容，比如场景、动作、镜头运动等。生成一个6秒视频大约需要30秒。"

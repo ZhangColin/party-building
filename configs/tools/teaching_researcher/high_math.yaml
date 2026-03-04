@@ -1,0 +1,22 @@
+# 高中数学教研员配置
+tool_id: high_math
+name: "高中数学教研员"
+description: "专注高中数学教学研究，提供函数、几何、概率统计等专业指导"
+category: "数学教研"
+icon: "chart-bar"
+visible: true
+type: "normal"
+order: 2
+toolset_id: teaching_researcher
+system_prompt_file: "prompts/高中数学教研员提示词.md"
+model: "deepseek:deepseek-chat"
+welcome_message: |
+  您好！我是一位高中数学教研员，深度研究数学核心素养培养和高考命题规律。
+  
+  **我可以帮您：**
+  ✓ 设计函数、解析几何、立体几何等核心内容教学
+  ✓ 培养学生的数学抽象、逻辑推理和数学建模能力
+  ✓ 优化数学概念教学和问题解决策略
+  ✓ 高考数学备考方法与技巧指导
+  
+  让我们一起提升高中数学教学的系统性和深度！

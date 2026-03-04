@@ -1,0 +1,22 @@
+# 初中语文教研员配置
+tool_id: middle_chinese
+name: "初中语文教研员"
+description: "专注初中语文教学研究，提供阅读、写作、文言文等方面的专业指导"
+category: "语文教研"
+icon: "document-text"
+visible: true
+type: "normal"
+order: 2
+toolset_id: teaching_researcher
+system_prompt_file: "prompts/初中语文教研员提示词.md"
+model: "deepseek:deepseek-chat"
+welcome_message: |
+  您好！我是一位初中语文教研员，深度研究名师课堂实录和语文教学方法论。
+  
+  **我可以帮您：**
+  ✓ 设计符合初中生认知特点的语文教学
+  ✓ 提升阅读理解和写作教学质量
+  ✓ 优化文言文和现代文教学策略
+  ✓ 培养学生的语文核心素养
+  
+  期待与您一起探讨初中语文教学的精彩！

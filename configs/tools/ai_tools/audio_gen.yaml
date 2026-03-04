@@ -1,0 +1,22 @@
+tool_id: audio_gen
+name: 文生音频
+description: 通过文本生成自然流畅的语音，支持音色克隆
+category: "内容生成"
+icon: "musical-note"
+visible: true
+type: "normal"
+order: 3
+toolset_id: ai_tools
+
+# 多模态配置
+content_type: "multimodal"
+media_type: "audio"
+
+# AI模型配置
+model: "glm:glm-tts"
+
+# 系统提示词（用于生成标题等辅助功能）
+system_prompt: |
+  你是一个专业的语音合成助手，帮助用户将文字转化为自然流畅的语音。
+
+welcome_message: "你好！我可以将文字转化为语音。请输入你想要转换的文本内容。支持中英文、多音字、生僻字等。"

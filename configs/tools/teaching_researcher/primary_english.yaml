@@ -1,0 +1,22 @@
+# 小学英语教研员配置
+tool_id: primary_english
+name: "小学英语教研员"
+description: "专注小学英语教学研究，提供听说读写全方位的专业指导"
+category: "英语教研"
+icon: "language"
+visible: true
+type: "normal"
+order: 1
+toolset_id: teaching_researcher
+system_prompt_file: "prompts/小学英语教研员提示词.md"
+model: "deepseek:deepseek-chat"
+welcome_message: |
+  Hello! 我是一位小学英语教研员，专注于培养孩子们的英语学习兴趣和语言能力。
+  
+  **我擅长：**
+  ✓ 设计趣味性和互动性强的英语教学活动
+  ✓ TPR、游戏化教学和情境教学方法
+  ✓ 培养学生的听说读写综合能力
+  ✓ 小学英语课堂管理和评价策略
+  
+  让我们一起为孩子们打开英语学习的大门！

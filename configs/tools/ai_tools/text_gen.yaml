@@ -1,0 +1,19 @@
+tool_id: text_gen
+name: 文字对话
+description: 与AI进行自然对话，没有特定角色设定
+category: "内容生成"
+icon: "chat-bubble-left-right"
+visible: true
+type: "normal"
+order: 1
+toolset_id: ai_tools
+
+# 内容类型配置
+content_type: "text"
+
+# AI模型配置
+model: "deepseek:deepseek-chat"
+system_prompt: |
+  你是一个友好、乐于助人的AI助手。请根据用户的问题和需求，提供有价值的回答和帮助。
+welcome_message: "你好！我是你的AI助手，有什么可以帮你的吗？"
+

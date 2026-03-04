@@ -1,0 +1,14 @@
+category: AI工具
+content_type: multimodal
+description: AI音频生成工具（测试用）
+icon: speaker-wave
+media_type: audio
+model: glm:glm-tts
+name: 音频生成
+order: 2
+system_prompt: 你是一个音频生成助手
+tool_id: audio_gen
+toolset_id: test_tools
+type: media
+visible: true
+welcome_message: 欢迎使用音频生成工具

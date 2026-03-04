@@ -1,0 +1,23 @@
+tool_id: image_gen
+name: 文生图
+description: 通过文本描述生成图片
+category: "内容生成"
+icon: "photo"
+visible: true
+type: "normal"
+order: 2
+toolset_id: ai_tools
+
+# 多模态配置
+content_type: "multimodal"
+media_type: "image"
+
+# AI模型配置
+model: "glm:cogview-4"
+
+# 系统提示词（用于生成标题等辅助功能）
+system_prompt: |
+  你是一个专业的AI绘画助手，帮助用户将文字描述转化为精美的图片。
+
+welcome_message: "你好！我可以根据你的描述生成图片。请详细描述你想要的画面，比如场景、风格、色彩等。"
+

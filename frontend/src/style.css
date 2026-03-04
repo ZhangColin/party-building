@@ -1,0 +1,21 @@
+/* KaTeX CSS 必须在最前面 */
+@import 'katex/dist/katex.min.css';
+
+/* 全局样式 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 强制隐藏 KaTeX MathML（防止被 Tailwind reset 覆盖） */
+.katex .katex-mathml {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}

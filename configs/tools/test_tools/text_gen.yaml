@@ -1,0 +1,13 @@
+tool_id: text_gen
+name: 文本生成
+description: AI文本生成工具（测试用）
+category: AI工具
+visible: true
+toolset_id: test_tools
+icon: chat-bubble-left
+type: normal
+order: 1
+system_prompt: 你是一个AI助手
+welcome_message: |
+  欢迎使用文本生成工具
+model: deepseek:deepseek-chat
