@@ -1,0 +1,24 @@
+# configs/tools/party_ai/categories.yaml
+# 党建AI工具分类
+
+categories:
+  - name: "智能文稿生成"
+    description: "自动生成各类党务文稿"
+    order: 1
+    tools:
+      - three_meetings
+      - party_education
+      - work_summary
+      - activity_plan
+
+  - name: "智能问答"
+    description: "党规党纪智能问答"
+    order: 2
+    tools:
+      - smart_qa
+
+  - name: "合规检查"
+    description: "文稿合规性检查"
+    order: 3
+    tools:
+      - compliance_check
