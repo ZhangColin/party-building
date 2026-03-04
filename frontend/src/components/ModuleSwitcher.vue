@@ -22,6 +22,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useNavigationStore } from '../stores/navigationStore'
+import type { NavigationModule } from '../types/navigation'
 
 const route = useRoute()
 const router = useRouter()
@@ -50,7 +51,7 @@ const currentModule = computed(() => {
   return 'ai-tools'
 })
 
-function getModuleId(module: any) {
+function getModuleId(module: NavigationModule) {
   return navigationStore.getModuleId(module)
 }
 

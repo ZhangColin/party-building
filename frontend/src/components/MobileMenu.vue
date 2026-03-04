@@ -17,9 +17,9 @@
         <div class="menu-items">
           <button
             v-for="module in modules"
-            :key="module.id"
-            :class="['menu-item', { active: currentModule === module.id }]"
-            @click="handleModuleClick(module.id)"
+            :key="getModuleId(module)"
+            :class="['menu-item', { active: currentModule === getModuleId(module) }]"
+            @click="handleModuleClick(getModuleId(module))"
           >
             {{ module.name }}
           </button>
@@ -32,32 +32,32 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useNavigationStore } from '../stores/navigationStore'
+import type { NavigationModule } from '../types/navigation'
 
 const route = useRoute()
 const router = useRouter()
+const navigationStore = useNavigationStore()
 
-// 写死的模块数据
-const modules = [
-  { id: 'ai-tools', name: 'AI工具', type: 'toolset' },
-  { id: 'teaching-researcher', name: '教研员', type: 'toolset' },
-  { id: 'common-tools', name: '常用工具', type: 'page', path: '/common-tools' },
-  { id: 'works', name: '作品展示', type: 'page', path: '/works' },
-]
+// 从导航配置获取模块列表（与桌面端保持一致）
+const modules = computed(() => navigationStore.modules)
 
 const currentModule = computed(() => {
   // 如果是 /modules/:moduleId 路由
   if (route.params.moduleId) {
     return route.params.moduleId as string
   }
-  
-  // 如果是独立页面路由，根据 path 匹配模块
+
+  // 如果是独立页面路由，根据 path 匹配模块（包括子路径）
   const currentPath = route.path
-  const module = modules.find(m => m.type === 'page' && m.path === currentPath)
-  
+  const module = modules.value.find(m =>
+    m.type === 'page' && m.page_path && currentPath.startsWith(m.page_path)
+  )
+
   if (module) {
-    return module.id
+    return getModuleId(module)
   }
-  
+
   // 默认返回 ai-tools
   return 'ai-tools'
 })
@@ -72,14 +72,20 @@ function closeMenu() {
   isOpen.value = false
 }
 
+// 辅助函数：从模块配置生成模块ID
+function getModuleId(module: NavigationModule): string {
+  return navigationStore.getModuleId(module)
+}
+
 function handleModuleClick(moduleId: string) {
-  const module = modules.find(m => m.id === moduleId)
-  
-  if (module && module.type === 'page' && module.path) {
-    // page 类型模块：使用独立路径
-    router.push(module.path)
+  // 查找对应的模块配置
+  const module = modules.value.find(m => getModuleId(m) === moduleId)
+
+  if (module && module.type === 'page' && module.page_path) {
+    // page 类型模块：使用 page_path 直接路由
+    router.push(module.page_path)
   } else {
-    // toolset 类型模块：使用 /modules/:moduleId
+    // toolset 类型模块：使用 /modules/:moduleId 路由
     router.push(`/modules/${moduleId}`)
   }
   closeMenu()
