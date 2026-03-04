@@ -1,0 +1,29 @@
+# configs/tools/party_ai/work_summary.yaml
+tool_id: "work_summary"
+name: "工作总结与汇报材料生成"
+description: "生成季度/年度工作总结、专项工作汇报、述职报告等汇报材料"
+category: "智能文稿生成"
+system_prompt_file: "prompts/work_summary.md"
+welcome_message: |
+  # 工作总结与汇报材料生成
+
+  请提供以下信息：
+
+  1. **汇报类型**：季度总结 / 年度总结 / 专项工作汇报 / 述职报告
+  2. **时间范围**：如 2026年第一季度 / 2026年度
+  3. **主要工作内容**：简要描述本阶段的主要工作
+  4. **字数要求**：预期的字数范围
+  5. **特殊要求**（可选）：如重点突出某方面工作、特定格式要求等
+
+  我将为您生成：
+  - 结构完整的汇报材料
+  - 政治准确的表述
+  - 规范的党建术语
+  - 突出工作亮点和成效
+icon: "document-text"
+order: 3
+visible: true
+type: "normal"
+toolset_id: "party_ai"
+content_type: "text"
+model: "deepseek:deepseek-chat"
