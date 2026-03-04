@@ -1,0 +1,55 @@
+/* frontend/src/styles/party-theme.css */
+:root {
+  /* 主色调 - 中国红 */
+  --el-color-primary: #C8102E;
+  --el-color-primary-light-3: #E84D56;
+  --el-color-primary-light-5: #F07A7F;
+  --el-color-primary-light-7: #F8A8AB;
+  --el-color-primary-light-8: #FCC8CA;
+  --el-color-primary-light-9: #FDE8E9;
+  --el-color-primary-dark-2: #A80D27;
+
+  /* 辅助色 - 金色 */
+  --party-color-gold: #FFD700;
+  --party-color-gold-light: #FFE55C;
+  --party-color-gold-dark: #CCB800;
+
+  /* 深红色 */
+  --party-color-deep-red: #8B0000;
+
+  /* 背景色 */
+  --party-bg-color: #FAFAFA;
+  --party-bg-color-page: #F5F5F5;
+
+  /* 文字色 */
+  --party-text-color-primary: #1A1A1A;
+  --party-text-color-regular: #4A4A4A;
+  --party-text-color-secondary: #7A7A7A;
+
+  /* 边框色 */
+  --party-border-color: #E5E5E5;
+  --party-border-color-light: #EEEEEE;
+
+  /* 功能色 */
+  --party-color-success: #22C55E;
+  --party-color-warning: #F59E0B;
+  --party-color-danger: #EF4444;
+  --party-color-info: #3B82F6;
+}
+
+/* 党建主题全局样式 */
+body {
+  background-color: var(--party-bg-color);
+  color: var(--party-text-color-primary);
+}
+
+/* 顶部导航栏渐变背景 */
+.party-header-gradient {
+  background: linear-gradient(135deg, #C8102E 0%, #E84D56 50%, #8B0000 100%);
+}
+
+/* 党徽图标样式 */
+.party-emblem-icon {
+  color: var(--party-color-gold);
+  font-size: 24px;
+}
