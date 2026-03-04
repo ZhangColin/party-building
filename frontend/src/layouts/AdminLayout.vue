@@ -26,33 +26,6 @@
             <el-icon><User /></el-icon>
             <span>用户管理</span>
           </el-menu-item>
-          
-          <el-sub-menu index="tools">
-            <template #title>
-              <el-icon><Tools /></el-icon>
-              <span>工具管理</span>
-            </template>
-            <el-menu-item index="/admin/tool-categories">分类管理</el-menu-item>
-            <el-menu-item index="/admin/common-tools">工具管理</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="works">
-            <template #title>
-              <el-icon><Picture /></el-icon>
-              <span>作品管理</span>
-            </template>
-            <el-menu-item index="/admin/work-categories">分类管理</el-menu-item>
-            <el-menu-item index="/admin/works">作品管理</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="courses">
-            <template #title>
-              <el-icon><Document /></el-icon>
-              <span>课程管理</span>
-            </template>
-            <el-menu-item index="/admin/course-categories">目录管理</el-menu-item>
-            <el-menu-item index="/admin/course-documents">文档管理</el-menu-item>
-          </el-sub-menu>
         </el-menu>
       </el-aside>
 
@@ -69,7 +42,7 @@ import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { User, Tools, Picture, Document } from '@element-plus/icons-vue'
+import { User } from '@element-plus/icons-vue'
 import Logo from '../components/Logo.vue'
 
 const router = useRouter()
@@ -124,9 +97,10 @@ const handleLogout = async () => {
   justify-content: space-between;
   align-items: center;
   padding: 0 24px;
-  background-color: rgba(255, 255, 255, 0.98);
-  border-bottom: 1px solid #e8e8e8;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  /* 党建主题：红色渐变背景 */
+  background: linear-gradient(135deg, #C8102E 0%, #E84D56 50%, #8B0000 100%);
+  border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(12px);
 }
 
@@ -138,7 +112,8 @@ const handleLogout = async () => {
 
 .admin-badge {
   padding: 4px 12px;
-  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  /* 党建主题：红色渐变背景 */
+  background: linear-gradient(135deg, #8B0000 0%, #C8102E 100%);
   color: white;
   font-size: 13px;
   font-weight: 600;
@@ -159,7 +134,7 @@ const handleLogout = async () => {
 
 .user-info {
   font-size: 14px;
-  color: #666;
+  color: #FFFFFF;
 }
 
 /* 主容器 */
