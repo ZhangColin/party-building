@@ -1,38 +1,38 @@
-# 顶部导航模块配置
-# 说明：定义系统顶部导航栏的模块结构
+# configs/navigation.yaml
+# 顶部导航模块配置 - 党建AI智能平台
 
 modules:
-  # AI工具模块（工具集类型）
-  - name: "AI模型能力"
+  # AI党建助手模块
+  - name: "AI党建助手"
     type: "toolset"
-    config_source: "tools/ai_tools"  # 工具配置目录路径
-    icon: "sparkles"                 # 图标标识（可选）
-    order: 1                         # 排序顺序（数字越小越靠前）
+    config_source: "tools/party_ai"
+    icon: "sparkles"
+    order: 1
 
-  # 教研员模块（工具集类型）
-  - name: "AI教研员智能体"
-    type: "toolset"
-    config_source: "tools/teaching_researcher"  # 工具配置目录路径
-    icon: "academic-cap"                        # 图标标识（可选）
-    order: 2                                    # 排序顺序
-
-  # 常用工具模块（独立页面类型）
-  - name: "扩展工具箱"
+  # 党员管理模块
+  - name: "党员管理"
     type: "page"
-    page_path: "/common-tools"     # 前端路由路径
-    icon: "cog-6-tooth"
+    page_path: "/admin/party-members"
+    icon: "user-group"
+    order: 2
+
+  # 组织生活管理模块
+  - name: "组织生活"
+    type: "page"
+    page_path: "/admin/organization-life"
+    icon: "calendar"
     order: 3
 
-  # 作品展示模块（独立页面类型）
-  - name: "教案学案区"
+  # 党费管理模块
+  - name: "党费管理"
     type: "page"
-    page_path: "/works"
-    icon: "photo"
+    page_path: "/admin/party-fees"
+    icon: "currency-yen"
     order: 4
 
-  # AI素养课模块（独立页面类型）
-  - name: "全科AI素养提升区"
+  # 知识库模块
+  - name: "知识库"
     type: "page"
-    page_path: "/documents"
-    icon: "document-text"
+    page_path: "/knowledge-base"
+    icon: "book-open"
     order: 5
