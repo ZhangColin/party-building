@@ -1,9 +1,23 @@
-/* frontend/src/styles/party-theme.css */
+/**
+ * 党建主题样式变量
+ *
+ * 用途: 定义党建AI智能平台的主题色彩系统
+ * 创建日期: 2026-03-05
+ *
+ * 使用方式:
+ * - 在组件中使用 var(--party-color-gold) 引用变量
+ * - 使用 .party-header-gradient 类名应用渐变背景
+ * - 使用 .party-emblem-icon 类名应用党徽样式
+ */
 :root {
   /* 主色调 - 中国红 */
   --el-color-primary: #C8102E;
+  --el-color-primary-light-1: #D81030;
+  --el-color-primary-light-2: #E03648;
   --el-color-primary-light-3: #E84D56;
+  --el-color-primary-light-4: #EC6068;
   --el-color-primary-light-5: #F07A7F;
+  --el-color-primary-light-6: #F4949C;
   --el-color-primary-light-7: #F8A8AB;
   --el-color-primary-light-8: #FCC8CA;
   --el-color-primary-light-9: #FDE8E9;
@@ -30,8 +44,8 @@
   --party-border-color: #E5E5E5;
   --party-border-color-light: #EEEEEE;
 
-  /* 功能色 */
-  --party-color-success: #22C55E;
+  /* 功能色 - 与Tailwind保持一致 */
+  --party-color-success: #10b981;
   --party-color-warning: #F59E0B;
   --party-color-danger: #EF4444;
   --party-color-info: #3B82F6;
@@ -40,7 +54,7 @@
 /* 党建主题全局样式 */
 body {
   background-color: var(--party-bg-color);
-  color: var(--party-text-color-primary);
+  color: var(--party-text-color-primary, #1A1A1A);
 }
 
 /* 顶部导航栏渐变背景 */
@@ -51,5 +65,9 @@ body {
 /* 党徽图标样式 */
 .party-emblem-icon {
   color: var(--party-color-gold);
-  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
