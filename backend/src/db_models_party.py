@@ -121,7 +121,7 @@ class OrganizationLifeModel(Base):
 class PartyFeeModel(Base):
     """党费记录数据库模型"""
     __tablename__ = "party_fees"
-    
+
     fee_id = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     member_id = Column(CHAR(36), ForeignKey("party_members.member_id", ondelete="SET NULL"), nullable=True, index=True, comment="党员ID")
     member_name = Column(String(50), nullable=False, comment="党员姓名")
@@ -130,18 +130,21 @@ class PartyFeeModel(Base):
     payment_method = Column(String(50), nullable=False, default="现金", comment="缴纳方式（现金/微信/支付宝/银行转账）")
     fee_month = Column(String(7), nullable=False, comment="缴费月份（YYYY-MM）")
     status = Column(String(20), nullable=False, default="已缴", comment="状态（已缴/欠缴）")
+    collector = Column(String(100), nullable=True, comment="收款人")
+    branch_id = Column(CHAR(36), nullable=True, comment="所属支部ID")
     remark = Column(String(500), nullable=True, comment="备注")
     created_at = Column(DateTime, nullable=False, default=datetime.now, comment="创建时间")
     updated_at = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now, comment="更新时间")
-    
+
     # 关系
     member = relationship("PartyMemberModel", back_populates="fees")
-    
+
     # 索引
     __table_args__ = (
         Index("idx_party_fee_month", "fee_month"),
         Index("idx_party_fee_status", "status"),
         Index("idx_party_fee_member", "member_id"),
+        Index("idx_party_fee_branch_id", "branch_id"),
     )
 
 
