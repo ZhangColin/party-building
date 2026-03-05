@@ -20,7 +20,7 @@ const MAX_ATTEMPTS = 1000
 export function extractDefaultFilename(content: string, sessionTitle?: string): string {
   // 1. 尝试提取第一行 # 标题
   const titleMatch = content.match(/^#\s+(.+)$/m)
-  if (titleMatch) {
+  if (titleMatch && titleMatch[1]) {
     return sanitizeFilename(titleMatch[1].trim())
   }
 

@@ -53,30 +53,93 @@
           >
             <DocumentDuplicateIcon />
           </button>
+
+          <!-- 只在 AI 消息时显示保存按钮 -->
+          <template v-if="message.role === 'assistant'">
+            <button
+              class="save-button"
+              @click="handleSaveToKnowledge"
+              title="保存到知识库"
+            >
+              <FolderIcon />
+            </button>
+            <button
+              class="save-button"
+              @click="handleSaveToParty"
+              title="保存到党建活动"
+            >
+              <FlagIcon />
+            </button>
+          </template>
         </div>
         <div class="message-time" data-testid="message-time">
           {{ formattedTime }}
         </div>
       </div>
     </div>
+
+    <!-- 保存对话框 -->
+    <SaveToDialog
+      v-model="showSaveToKnowledge"
+      target="knowledge"
+      :content="message.content"
+      :categories="knowledgeCategories"
+      :session-title="sessionTitle"
+      :force-refresh="forceRefreshCategories"
+      @saved="handleSaved"
+    />
+    <SaveToDialog
+      v-model="showSaveToParty"
+      target="party"
+      :content="message.content"
+      :categories="partyCategories"
+      :session-title="sessionTitle"
+      :force-refresh="forceRefreshCategories"
+      @saved="handleSaved"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { DocumentDuplicateIcon, DocumentIcon } from '@heroicons/vue/24/outline';
+import {
+  DocumentDuplicateIcon,
+  DocumentIcon,
+  FolderIcon,
+  FlagIcon
+} from '@heroicons/vue/24/outline';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 import { useClipboard } from '@/composables/useClipboard';
 import type { Message, MessageAttachment } from '@/types';
+import SaveToDialog from './SaveToDialog.vue';
+import * as knowledgeApi from '@/services/knowledgeApi';
+import * as partyActivityApi from '@/services/partyActivityApi';
+import type { Category } from '@/types/file-manager';
 
 interface Props {
   message: Message;
+  sessionTitle?: string;
 }
 
 const props = defineProps<Props>();
 
 const showToolbar = ref(false);
 const { copy } = useClipboard();
+
+// 保存对话框状态
+const showSaveToKnowledge = ref(false);
+const showSaveToParty = ref(false);
+const knowledgeCategories = ref<Category[]>([]);
+const partyCategories = ref<Category[]>([]);
+
+// 强制刷新目录缓存的函数
+async function forceRefreshCategories(target: 'knowledge' | 'party') {
+  if (target === 'knowledge') {
+    knowledgeCategories.value = await knowledgeApi.getCategoryTree();
+  } else {
+    partyCategories.value = await partyActivityApi.getCategoryTree();
+  }
+}
 
 const messageClass = computed(() => {
   return `message-${props.message.role}`;
@@ -118,6 +181,43 @@ const getAttachmentTypeLabel = (type: MessageAttachment['type']): string => {
 
 async function handleCopy() {
   await copy(props.message.content);
+}
+
+// 加载知识库目录树
+async function loadKnowledgeCategories() {
+  if (knowledgeCategories.value.length > 0) return;
+  try {
+    knowledgeCategories.value = await knowledgeApi.getCategoryTree();
+  } catch (error) {
+    console.error('加载知识库目录失败:', error);
+  }
+}
+
+// 加载党建活动目录树
+async function loadPartyCategories() {
+  if (partyCategories.value.length > 0) return;
+  try {
+    partyCategories.value = await partyActivityApi.getCategoryTree();
+  } catch (error) {
+    console.error('加载党建活动目录失败:', error);
+  }
+}
+
+// 保存到知识库
+async function handleSaveToKnowledge() {
+  await loadKnowledgeCategories();
+  showSaveToKnowledge.value = true;
+}
+
+// 保存到党建活动
+async function handleSaveToParty() {
+  await loadPartyCategories();
+  showSaveToParty.value = true;
+}
+
+// 保存成功回调
+function handleSaved(path: string) {
+  console.log('已保存到:', path);
 }
 </script>
 
@@ -318,6 +418,31 @@ async function handleCopy() {
 }
 
 .copy-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.save-button {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #999;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.save-button:hover {
+  background: rgba(200, 16, 46, 0.1);
+  color: #C8102E;
+}
+
+.save-button svg {
   width: 16px;
   height: 16px;
 }
