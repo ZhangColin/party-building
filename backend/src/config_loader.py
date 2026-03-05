@@ -4,7 +4,9 @@ import yaml
 import logging
 from pathlib import Path
 from typing import List, Optional, Dict
+
 from .models import NavigationModule
+from .config.temp_files import TempFileConfig  # 导入临时文件配置，确保目录存在
 
 logger = logging.getLogger(__name__)
 
@@ -132,7 +134,3 @@ class ConfigLoader:
         """清除所有缓存"""
         self._navigation_cache = None
         self._prompt_cache.clear()
-
-
-# 导入临时文件配置，确保目录存在
-from src.config.temp_files import TempFileConfig
