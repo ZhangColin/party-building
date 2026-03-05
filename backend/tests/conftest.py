@@ -91,16 +91,17 @@ async def async_db_session() -> AsyncGenerator["AsyncSession", None]:
     - 每个测试函数独立数据库
     - 自动清理
     """
-    from sqlalchemy.ext.asyncio import create_engine as async_create_engine, AsyncSession, async_sessionmaker
+    from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
     # 创建异步测试引擎
-    test_async_engine = async_create_engine(
+    test_async_engine = create_async_engine(
         "sqlite+aiosqlite:///:memory:",
         connect_args={"check_same_thread": False}
     )
 
-    # 创建所有表
-    Base.metadata.create_all(test_async_engine)
+    # 创建所有表（使用run_sync）
+    async with test_async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
     # 创建异步会话工厂
     AsyncTestingSessionLocal = async_sessionmaker(
@@ -187,6 +188,94 @@ async def async_client(_app_with_tools, db_session) -> AsyncGenerator[AsyncClien
     get_user_service.cache_clear()
     get_session_service.cache_clear()
     get_auth_service.cache_clear()
+
+
+@pytest.fixture(scope="function")
+async def async_client_with_async_db(_app_with_tools, async_db_session) -> AsyncGenerator[AsyncClient, None]:
+    """
+    异步HTTP客户端（用于异步服务集成测试）
+
+    重要：覆盖FastAPI的get_async_db依赖，使用测试异步数据库会话
+    """
+    from src.database import get_async_db, get_db
+
+    # 覆盖同步数据库依赖
+    def override_get_db():
+        # 对于同步依赖，我们使用一个简单的mock会话
+        try:
+            yield async_db_session
+        finally:
+            pass
+
+    # 覆盖异步数据库依赖
+    async def override_get_async_db():
+        try:
+            yield async_db_session
+        finally:
+            pass
+
+    _app_with_tools.dependency_overrides[get_db] = override_get_db
+    _app_with_tools.dependency_overrides[get_async_db] = override_get_async_db
+
+    async with AsyncClient(
+        transport=ASGITransport(app=_app_with_tools),
+        base_url="http://test"
+    ) as client:
+        yield client
+
+    # 清理
+    _app_with_tools.dependency_overrides.clear()
+
+
+@pytest.fixture(scope="function")
+async def logged_in_async_client(async_client_with_async_db, async_db_session, db_session):
+    """创建已登录的异步客户端（普通用户），使用异步数据库"""
+    import bcrypt
+    from src.db_models import UserModel
+    from datetime import datetime
+
+    password_hash = bcrypt.hashpw("password123".encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+    # 在sync db中创建用户（用于auth）
+    user_sync = UserModel(
+        username="testuser_async_logged_in",
+        email="test_async_logged_in@example.com",
+        password_hash=password_hash,
+        is_admin=False,
+        created_at=datetime.now()
+    )
+    db_session.add(user_sync)
+    db_session.commit()
+    db_session.refresh(user_sync)
+
+    # 在async db中也创建用户（用于数据一致性）
+    user_async = UserModel(
+        username="testuser_async_logged_in",
+        email="test_async_logged_in@example.com",
+        password_hash=password_hash,
+        is_admin=False,
+        created_at=datetime.now()
+    )
+    async_db_session.add(user_async)
+    await async_db_session.commit()
+    await async_db_session.refresh(user_async)
+
+    # 登录获取token
+    response = await async_client_with_async_db.post("/api/v1/auth/login", json={
+        "account": "testuser_async_logged_in",
+        "password": "password123"
+    })
+
+    assert response.status_code == 200, f"Login failed: {response.text}"
+    token = response.json()["token"]
+
+    # 设置认证头
+    async_client_with_async_db.headers["Authorization"] = f"Bearer {token}"
+
+    # 将用户对象附加到client，方便测试使用
+    async_client_with_async_db.test_user = user_async
+
+    return async_client_with_async_db
 
 
 # ==================== 认证 Fixtures ====================

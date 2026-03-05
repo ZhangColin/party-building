@@ -68,3 +68,13 @@ class DocumentResponse(BaseModel):
 class DocumentUpdateRequest(BaseModel):
     """更新文件内容请求"""
     content: str
+
+
+class BatchDocumentRequest(BaseModel):
+    """批量获取文档请求"""
+    document_ids: List[str]
+
+
+class BatchDocumentResponse(BaseModel):
+    """批量获取文档响应"""
+    documents: List[dict]

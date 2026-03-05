@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.models_knowledge import (
     CategoryCreate, CategoryUpdate, CategoryResponse,
     DocumentCreate, DocumentUploadResponse, DocumentResponse,
-    DocumentUpdateRequest,
+    DocumentUpdateRequest, BatchDocumentRequest, BatchDocumentResponse,
 )
 from src.services.knowledge_service import KnowledgeService
 from src.database import get_async_db
@@ -193,3 +193,18 @@ async def download_document(
         )
     except ValueError:
         raise HTTPException(status_code=404, detail="文件不存在")
+
+
+@router.post("/documents/batch", response_model=BatchDocumentResponse, tags=["知识库"])
+async def batch_get_documents(
+    request: BatchDocumentRequest,
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
+    service: KnowledgeService = Depends(get_knowledge_service),
+):
+    """批量获取文档内容"""
+    try:
+        documents = await service.batch_get_documents(request.document_ids)
+        return BatchDocumentResponse(documents=documents)
+    except Exception as e:
+        logger.error(f"批量获取文档失败: {e}")
+        raise HTTPException(status_code=500, detail="获取文档内容失败")
