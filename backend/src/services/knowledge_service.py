@@ -187,6 +187,7 @@ class KnowledgeService:
         # 保存原文件
         original_filename = f"{uuid.uuid4()}{Path(filename).suffix}"
         original_path = self.original_dir / original_filename
+        original_path.parent.mkdir(parents=True, exist_ok=True)
         original_path.write_bytes(file_content)
 
         # 转换
@@ -201,6 +202,7 @@ class KnowledgeService:
         # 保存 Markdown
         markdown_filename = f"{uuid.uuid4()}.md"
         markdown_path = self.markdown_dir / markdown_filename
+        markdown_path.parent.mkdir(parents=True, exist_ok=True)
         markdown_path.write_text(markdown_content, encoding="utf-8")
 
         document = KnowledgeDocumentModel(
