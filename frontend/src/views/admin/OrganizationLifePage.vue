@@ -255,7 +255,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { Plus, Refresh, Search } from '@element-plus/icons-vue'
-import APIService from '@/services/apiClient'
+import { ApiService } from '@/services/apiClient'
 import type {
   OrganizationLifeListItem,
   OrganizationLifeDetail,
@@ -319,7 +319,7 @@ const formRules: FormRules = {
 const loadData = async () => {
   loading.value = true
   try {
-    const response = await APIService.getOrganizationLives(
+    const response = await ApiService.getOrganizationLives(
       pagination.page,
       pagination.pageSize,
       filters.activityType || undefined,
@@ -360,7 +360,7 @@ const handleAdd = () => {
 const handleEdit = (row: OrganizationLifeListItem) => {
   dialogMode.value = 'edit'
   // 获取完整数据
-  APIService.getOrganizationLife(row.life_id).then((detail) => {
+  ApiService.getOrganizationLife(row.life_id).then((detail) => {
     currentRecord.value = detail
     Object.assign(formData, {
       life_id: detail.life_id,
@@ -383,7 +383,7 @@ const handleEdit = (row: OrganizationLifeListItem) => {
 
 // 查看
 const handleView = (row: OrganizationLifeListItem) => {
-  APIService.getOrganizationLife(row.life_id).then((detail) => {
+  ApiService.getOrganizationLife(row.life_id).then((detail) => {
     currentRecord.value = detail
     viewDialogVisible.value = true
   })
@@ -396,7 +396,7 @@ const handleDelete = (row: OrganizationLifeListItem) => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    APIService.deleteOrganizationLife(row.life_id).then(() => {
+    ApiService.deleteOrganizationLife(row.life_id).then(() => {
       ElMessage.success('删除成功')
       loadData()
     })
@@ -412,12 +412,12 @@ const handleSubmit = async () => {
 
     try {
       if (dialogMode.value === 'create') {
-        await APIService.createOrganizationLife(formData as OrganizationLifeCreateRequest)
+        await ApiService.createOrganizationLife(formData as OrganizationLifeCreateRequest)
         ElMessage.success('创建成功')
       } else {
         const updateData: OrganizationLifeUpdateRequest = { ...formData }
         delete (updateData as any).life_id
-        await APIService.updateOrganizationLife(formData.life_id!, updateData)
+        await ApiService.updateOrganizationLife(formData.life_id!, updateData)
         ElMessage.success('更新成功')
       }
       dialogVisible.value = false

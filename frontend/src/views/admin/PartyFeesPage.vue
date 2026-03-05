@@ -245,7 +245,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { Plus, Refresh, Search } from '@element-plus/icons-vue'
-import APIService from '@/services/apiClient'
+import { ApiService } from '@/services/apiClient'
 import type {
   PartyFeeListItem,
   PartyFeeDetail,
@@ -308,7 +308,7 @@ const formRules: FormRules = {
 const loadData = async () => {
   loading.value = true
   try {
-    const response = await APIService.getPartyFees(
+    const response = await ApiService.getPartyFees(
       pagination.page,
       pagination.pageSize,
       undefined,
@@ -357,7 +357,7 @@ const handleAdd = () => {
 const handleEdit = (row: PartyFeeListItem) => {
   dialogMode.value = 'edit'
   // 获取完整数据
-  APIService.getPartyFee(row.fee_id).then((detail) => {
+  ApiService.getPartyFee(row.fee_id).then((detail) => {
     currentFee.value = detail
     Object.assign(formData, {
       fee_id: detail.fee_id,
@@ -376,7 +376,7 @@ const handleEdit = (row: PartyFeeListItem) => {
 
 // 查看
 const handleView = (row: PartyFeeListItem) => {
-  APIService.getPartyFee(row.fee_id).then((detail) => {
+  ApiService.getPartyFee(row.fee_id).then((detail) => {
     currentFee.value = detail
     viewDialogVisible.value = true
   })
@@ -389,7 +389,7 @@ const handleDelete = (row: PartyFeeListItem) => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    APIService.deletePartyFee(row.fee_id).then(() => {
+    ApiService.deletePartyFee(row.fee_id).then(() => {
       ElMessage.success('删除成功')
       loadData()
     })
@@ -405,12 +405,12 @@ const handleSubmit = async () => {
 
     try {
       if (dialogMode.value === 'create') {
-        await APIService.createPartyFee(formData as PartyFeeCreateRequest)
+        await ApiService.createPartyFee(formData as PartyFeeCreateRequest)
         ElMessage.success('创建成功')
       } else {
         const updateData: PartyFeeUpdateRequest = { ...formData }
         delete (updateData as any).fee_id
-        await APIService.updatePartyFee(formData.fee_id!, updateData)
+        await ApiService.updatePartyFee(formData.fee_id!, updateData)
         ElMessage.success('更新成功')
       }
       dialogVisible.value = false
