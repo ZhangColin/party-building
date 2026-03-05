@@ -36,6 +36,9 @@ frontend/package-lock.json
 # 后端静态文件
 backend/static/
 
+# 后端上传文件（用户上传的内容）
+backend/uploads/
+
 # Claude 本地配置
 .claude/settings.local.json
 
