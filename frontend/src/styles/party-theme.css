@@ -71,3 +71,124 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/* ============================================
+   党建主题全局样式类
+   ============================================ */
+
+/* 容器类 */
+.party-card {
+  background: white;
+  border-left: 3px solid var(--party-color-gold);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.08);
+  padding: 16px;
+}
+
+.party-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #EEEEEE;
+  border-top: 3px solid var(--party-color-gold);
+}
+
+/* 标题装饰类 */
+.party-title-underline {
+  border-bottom: 2px solid var(--party-color-gold);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.party-title-bar {
+  border-left: 4px solid var(--party-color-gold);
+  padding-left: 12px;
+  font-weight: 600;
+}
+
+/* 按钮类 */
+.party-btn-primary {
+  background: linear-gradient(135deg, #C8102E 0%, #8B0000 100%);
+  border: none;
+  color: white;
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.party-btn-primary:hover {
+  background: linear-gradient(135deg, #D81030 0%, #A80D27 100%);
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+}
+
+.party-btn-secondary {
+  background: white;
+  border: 1px solid var(--party-color-gold);
+  color: #8B0000;
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.party-btn-secondary:hover {
+  background: #FFE55C;
+  border-color: #FFD700;
+}
+
+/* 徽章/标签类 */
+.party-badge {
+  background: linear-gradient(135deg, #FFD700, #CCB800);
+  color: #8B0000;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.party-tag {
+  background: linear-gradient(135deg, #C8102E, #E84D56);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* 分割线类 */
+.party-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #FFD700, transparent);
+  margin: 16px 0;
+  border: none;
+}
+
+.party-divider-red {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #C8102E, transparent);
+  margin: 16px 0;
+  border: none;
+}
+
+/* 强调文字类 */
+.party-text-gold {
+  color: #CCB800;
+  font-weight: 600;
+}
+
+.party-text-red {
+  color: #C8102E;
+  font-weight: 600;
+}
+
+/* 列表项激活态（用于菜单） */
+.party-menu-item-active {
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.1), rgba(139, 0, 0, 0.1));
+  border-left: 3px solid #FFD700;
+  color: #C8102E;
+}
