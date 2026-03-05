@@ -3,10 +3,23 @@
     <!-- 顶部工具条 -->
     <div class="toolbar">
       <div class="toolbar-title">
-        <DocumentTextIcon class="w-5 h-5 text-blue-600" />
-        <span>Markdown 编辑器</span>
+        <DocumentTextIcon class="w-5 h-5" :class="isFileMode ? 'text-red-600' : 'text-blue-600'" />
+        <span>{{ editorTitle }}</span>
+        <span v-if="hasUnsavedChanges" class="unsaved-indicator">未保存</span>
       </div>
       <div class="toolbar-actions">
+        <!-- 文件模式显示保存按钮 -->
+        <button
+          v-if="isFileMode"
+          class="toolbar-btn save-btn"
+          :disabled="saving || !hasUnsavedChanges"
+          @click="handleSave"
+          title="保存文件"
+        >
+          <ArrowPathIcon v-if="saving" class="w-4 h-4 animate-spin" />
+          <CheckIcon v-else class="w-4 h-4" />
+          <span>{{ saving ? '保存中...' : '保存' }}</span>
+        </button>
         <button class="toolbar-btn" @click="handleClear" title="清空内容">
           <TrashIcon class="w-4 h-4" />
           <span>清空</span>
@@ -43,20 +56,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { EditorView, keymap, lineNumbers, highlightActiveLineGutter, highlightActiveLine } from '@codemirror/view'
 import { EditorState } from '@codemirror/state'
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import { markdown } from '@codemirror/lang-markdown'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { syntaxHighlighting, defaultHighlightStyle } from '@codemirror/language'
-import { ArrowLeftIcon, DocumentTextIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { ArrowLeftIcon, DocumentTextIcon, TrashIcon, CheckIcon,ArrowPathIcon } from '@heroicons/vue/24/outline'
+import { ElMessage } from 'element-plus'
 import PreviewPanel from '../components/PreviewPanel.vue'
 import type { Artifact } from '../types'
+import { useKnowledgeStore } from '@/stores/knowledgeStore'
+import { usePartyActivityStore } from '@/stores/partyActivityStore'
 
 const router = useRouter()
+const route = useRoute()
 
+// ==================== 模式判断 ====================
+// 文件管理模式参数
+const documentId = ref<string | null>(null)
+const categoryId = ref<string | null>(null)
+const fileMode = ref<'knowledge' | 'party-activity' | null>(null)
+
+// 判断是否为文件管理模式
+const isFileMode = computed(() => !!fileMode.value)
+
+// 获取当前 store
+const knowledgeStore = useKnowledgeStore()
+const partyActivityStore = usePartyActivityStore()
+
+const currentStore = computed(() =>
+  fileMode.value === 'knowledge' ? knowledgeStore :
+  fileMode.value === 'party-activity' ? partyActivityStore :
+  null
+)
+
+// 文件信息
+const documentInfo = ref<{ filename: string; original_filename: string } | null>(null)
+const saving = ref(false)
+const hasUnsavedChanges = ref(false)
+
+// ==================== 编辑器基础 ====================
 // 编辑器引用
 const editorRef = ref<HTMLElement | null>(null)
 let editorView: EditorView | null = null
@@ -66,46 +108,7 @@ const editorWidth = ref(50)
 const isResizing = ref(false)
 
 // 编辑器内容
-const editorContent = ref(`# 欢迎使用 Markdown 编辑器
-
-这是一个功能强大的在线 Markdown 编辑器，支持实时预览。
-
-## 功能特性
-
-- ✅ 实时预览
-- ✅ 语法高亮
-- ✅ 支持数学公式（KaTeX）
-- ✅ 导出为 Markdown、Word、PDF
-
-## 数学公式示例
-
-行内公式：$E = mc^2$
-
-块级公式：
-
-$$
-\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}
-$$
-
-## 代码示例
-
-\`\`\`javascript
-function hello() {
-}
-\`\`\`
-
-## 表格示例
-
-| 功能 | 状态 |
-|------|------|
-| 编辑 | ✅ |
-| 预览 | ✅ |
-| 导出 | ✅ |
-
----
-
-开始编辑你的内容吧！
-`)
+const editorContent = ref('')
 
 // 预览成果物
 const previewArtifact = computed<Artifact>(() => ({
@@ -114,6 +117,14 @@ const previewArtifact = computed<Artifact>(() => ({
   language: 'markdown',
   timestamp: new Date().toISOString(),
 }))
+
+// 标题
+const editorTitle = computed(() => {
+  if (isFileMode.value && documentInfo.value) {
+    return documentInfo.value.original_filename
+  }
+  return 'Markdown 编辑器'
+})
 
 /**
  * 初始化 CodeMirror 编辑器
@@ -148,10 +159,41 @@ const initEditor = () => {
 }
 
 /**
- * 返回工具列表
+ * 返回
  */
 const handleBack = () => {
-  router.push('/common-tools')
+  if (hasUnsavedChanges.value) {
+    if (!confirm('有未保存的更改，确定要离开吗？')) {
+      return
+    }
+  }
+  if (isFileMode.value) {
+    // 文件管理模式返回到对应的文件管理页面
+    const targetPath = fileMode.value === 'knowledge' ? '/knowledge' : '/party-activities'
+    router.push(targetPath)
+  } else {
+    // 独立模式返回工具列表
+    router.push('/common-tools')
+  }
+}
+
+/**
+ * 保存文件内容
+ */
+const handleSave = async () => {
+  if (!isFileMode.value || !documentId.value || !currentStore.value) return
+
+  saving.value = true
+  try {
+    await currentStore.value.updateDocument(documentId.value, editorContent.value)
+    hasUnsavedChanges.value = false
+    ElMessage.success('保存成功')
+  } catch (error) {
+    console.error('保存失败:', error)
+    ElMessage.error('保存失败，请重试')
+  } finally {
+    saving.value = false
+  }
 }
 
 /**
@@ -159,13 +201,44 @@ const handleBack = () => {
  */
 const handleClear = () => {
   if (!editorView) return
-  
+
   if (confirm('确定要清空所有内容吗？此操作不可撤销。')) {
     const transaction = editorView.state.update({
       changes: { from: 0, to: editorView.state.doc.length, insert: '' },
     })
     editorView.dispatch(transaction)
     editorContent.value = ''
+    hasUnsavedChanges.value = true
+  }
+}
+
+/**
+ * 加载文件内容
+ */
+const loadDocumentContent = async () => {
+  if (!documentId.value || !currentStore.value) return
+
+  try {
+    const document = await currentStore.value.loadDocument(documentId.value)
+    documentInfo.value = {
+      filename: document.filename,
+      original_filename: document.original_filename
+    }
+    // 使用文件内容（包括空字符串）
+    const content = document.content || ''
+    editorContent.value = content
+    // 更新编辑器内容
+    if (editorView) {
+      const transaction = editorView.state.update({
+        changes: { from: 0, to: editorView.state.doc.length, insert: content },
+      })
+      editorView.dispatch(transaction)
+    }
+    // 重置未保存状态
+    hasUnsavedChanges.value = false
+  } catch (error) {
+    console.error('加载文件失败:', error)
+    ElMessage.error('加载文件失败')
   }
 }
 
@@ -232,9 +305,57 @@ const stopResize = () => {
 }
 
 // 组件挂载时初始化编辑器
-onMounted(() => {
+onMounted(async () => {
+  // 从路由参数获取文件信息
+  const docId = route.query.documentId as string | undefined
+  const catId = route.query.categoryId as string | undefined
+  const mode = route.query.mode as 'knowledge' | 'party-activity' | undefined
+
+  if (docId && mode) {
+    fileMode.value = mode
+    documentId.value = docId
+    if (catId) {
+      categoryId.value = catId
+    }
+  }
+
   initEditor()
+
+  // 如果是文件模式，加载文件内容
+  if (isFileMode.value) {
+    await loadDocumentContent()
+  }
+
+  // 监听 beforeunload 事件
+  window.addEventListener('beforeunload', handleBeforeUnload)
 })
+
+// 组件卸载时清理
+onBeforeUnmount(() => {
+  if (editorView) {
+    editorView.destroy()
+    editorView = null
+  }
+  window.removeEventListener('beforeunload', handleBeforeUnload)
+})
+
+// 监听内容变化，标记未保存状态
+watch(editorContent, (_newContent, oldContent) => {
+  // 初始化后才开始追踪变化
+  if (oldContent !== undefined) {
+    hasUnsavedChanges.value = true
+  }
+})
+
+/**
+ * 处理页面离开前的确认
+ */
+const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+  if (hasUnsavedChanges.value) {
+    e.preventDefault()
+    e.returnValue = ''
+  }
+}
 
 // 组件卸载时销毁编辑器
 onBeforeUnmount(() => {
@@ -275,6 +396,20 @@ onBeforeUnmount(() => {
 
 .toolbar-actions {
   @apply flex items-center gap-2;
+}
+
+/* 未保存指示器 */
+.unsaved-indicator {
+  @apply text-xs font-normal px-2 py-0.5 bg-orange-100 text-orange-700 rounded;
+}
+
+/* 保存按钮 */
+.save-btn {
+  @apply bg-red-600 text-white border-red-600 hover:bg-red-700 hover:border-red-700;
+}
+
+.save-btn:disabled {
+  @apply bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed hover:bg-gray-300 hover:border-gray-300;
 }
 
 /* 编辑器容器 */

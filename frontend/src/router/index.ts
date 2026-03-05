@@ -115,11 +115,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/CommonToolsView.vue'),
       },
       {
-        path: 'markdown-editor',
-        name: 'markdown-editor',
-        component: () => import('../views/MarkdownEditorView.vue'),
-      },
-      {
         path: 'html/:toolId',
         name: 'html-tool',
         component: () => import('../views/HtmlToolView.vue'),
@@ -156,6 +151,22 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/DocumentsPage.vue'),
       },
     ],
+  },
+  // 文件管理模块
+  {
+    path: '/knowledge',
+    name: 'knowledge',
+    component: () => import('../views/KnowledgeView.vue'),
+  },
+  {
+    path: '/party-activities',
+    name: 'party-activities',
+    component: () => import('../views/PartyActivityView.vue'),
+  },
+  {
+    path: '/markdown-editor',
+    name: 'markdown-editor',
+    component: () => import('../views/MarkdownEditorView.vue'),
   },
   // 保留原有路由（后续处理）
   {
@@ -212,8 +223,8 @@ router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormal
   }
 
   // 预加载导航配置（避免刷新时白屏）
-  // 如果是 /modules/* 路由，确保导航配置已加载
-  if (to.path.startsWith('/modules/') && !navigationStore.isLoaded) {
+  // 所有需要认证的路由都需要加载导航配置
+  if (!navigationStore.isLoaded) {
     try {
       await navigationStore.loadNavigation()
     } catch (error) {

@@ -37,3 +37,5 @@ pandoc              # 文档转换
 python-docx         # Word 文件处理
 openpyxl            # Excel 文件处理
 PyPDF2              # PDF 文件处理
+aiomysql
+greenlet

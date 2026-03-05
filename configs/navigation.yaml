@@ -12,6 +12,13 @@ modules:
   # 知识库模块
   - name: "知识库"
     type: "page"
-    page_path: "/knowledge-base"
+    page_path: "/knowledge"
     icon: "book-open"
     order: 2
+
+  # 党建活动模块
+  - name: "党建活动"
+    type: "page"
+    page_path: "/party-activities"
+    icon: "calendar"
+    order: 3
