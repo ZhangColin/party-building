@@ -150,6 +150,9 @@ class PartyActivityService:
         uploaded_by: str = None
     ) -> dict:
         """新建 Markdown 文件"""
+        # 确保目录存在
+        self.markdown_dir.mkdir(parents=True, exist_ok=True)
+
         # 保存 Markdown 文件
         markdown_filename = f"{uuid.uuid4()}.md"
         markdown_path = self.markdown_dir / markdown_filename
@@ -186,6 +189,10 @@ class PartyActivityService:
         file_type = self.conversion_service._get_file_type(filename)
         if not file_type:
             raise ValueError(f"不支持的文件类型: {filename}")
+
+        # 确保目录存在
+        self.original_dir.mkdir(parents=True, exist_ok=True)
+        self.markdown_dir.mkdir(parents=True, exist_ok=True)
 
         # 保存原文件
         original_filename = f"{uuid.uuid4()}{Path(filename).suffix}"
