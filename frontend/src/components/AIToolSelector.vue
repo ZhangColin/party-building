@@ -228,7 +228,8 @@ onMounted(() => {
 }
 
 .category-name {
-  @apply text-sm font-semibold text-gray-700;
+  @apply text-sm font-semibold;
+  color: #C8102E; /* 党建主题红色 */
 }
 
 .category-tools {
@@ -244,15 +245,16 @@ onMounted(() => {
 }
 
 .tool-card:hover {
-  border-color: theme('colors.primary.300');
+  border-color: rgba(200, 16, 46, 0.3); /* 测红色边框 */
+  background-color: rgba(200, 16, 46, 0.05); /* 浅红色背景 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
 }
 
 .tool-card.active {
-  border-color: theme('colors.primary.500');
-  background-color: theme('colors.primary.50');
-  box-shadow: 0 2px 4px theme('colors.primary.500 / 0.15');
+  border-color: #C8102E; /* 党建主题红色 */
+  background-color: rgba(200, 16, 46, 0.1); /* 浅红色背景 */
+  box-shadow: 0 2px 4px rgba(200, 16, 46, 0.15);
 }
 
 .tool-icon {
@@ -263,13 +265,13 @@ onMounted(() => {
 }
 
 .tool-card:hover .tool-icon {
-  background-color: theme('colors.primary.100');
-  color: theme('colors.primary.600');
+  background-color: rgba(200, 16, 46, 0.1); /* 测红色背景 */
+  color: #C8102E; /* 党建主题红色 */
 }
 
 .tool-card.active .tool-icon {
-  background-color: theme('colors.primary.500');
-  color: theme('colors.white');
+  background-color: #C8102E; /* 党建主题红色 */
+  color: white;
 }
 
 .tool-info {
@@ -285,7 +287,8 @@ onMounted(() => {
 }
 
 .tool-card.active .tool-name {
-  @apply text-primary-700;
+  color: #C8102E; /* 党建主题红色 */
+  font-weight: 600;
 }
 
 /* 平板端响应式（768px - 1023px） */
