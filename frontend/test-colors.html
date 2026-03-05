@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试党建色彩</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            party: {
+              red: {
+                DEFAULT: '#C8102E',
+                light: '#E84D56',
+                dark: '#8B0000',
+                50: '#FEF2F2',
+                100: '#FEE2E2',
+                200: '#FECACA',
+                300: '#FCA5A5',
+                400: '#F87171',
+                500: '#C8102E',
+                600: '#A80D27',
+                700: '#8B0000',
+                800: '#6B0000',
+                900: '#4B0000',
+              },
+              gold: {
+                DEFAULT: '#FFD700',
+                light: '#FFE55C',
+                dark: '#CCB800',
+              },
+              deepRed: '#8B0000',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="p-8">
+  <h1 class="text-2xl font-bold mb-4">党建色彩系统测试</h1>
+  
+  <div class="space-y-4">
+    <div class="p-4 bg-party-red-500 text-white">party-red-500 (中国红)</div>
+    <div class="p-4 bg-party-red text-white">party-red (DEFAULT)</div>
+    <div class="p-4 bg-party-red-light text-white">party-red-light</div>
+    <div class="p-4 bg-party-red-dark text-white">party-red-dark</div>
+    <div class="p-4 bg-party-gold text-black">party-gold (DEFAULT)</div>
+    <div class="p-4 bg-party-gold-light text-black">party-gold-light</div>
+    <div class="p-4 bg-party-deepRed text-white">party-deepRed</div>
+  </div>
+</body>
+</html>
