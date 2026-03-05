@@ -259,10 +259,45 @@ class PartyActivityCategoryModel(Base):
     # 关系
     parent = relationship("PartyActivityCategoryModel", remote_side=[id], back_populates="children")
     children = relationship("PartyActivityCategoryModel", back_populates="parent", cascade="all, delete-orphan")
-    # documents = relationship("PartyActivityDocumentModel", back_populates="category", cascade="all, delete-orphan")  # Task 4: 待党建活动文档模型创建后启用
+    documents = relationship("PartyActivityDocumentModel", back_populates="category", cascade="all, delete-orphan")
 
     # 索引
     __table_args__ = (
         Index("idx_party_activity_category_parent", "parent_id"),
         Index("idx_party_activity_category_order", "order"),
+    )
+
+
+class PartyActivityDocumentModel(Base):
+    """党建活动文档数据库模型"""
+    __tablename__ = "party_activity_documents"
+
+    # 主键
+    id = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+
+    # 所属目录
+    category_id = Column(CHAR(36), ForeignKey("party_activity_categories.id", ondelete="CASCADE"), nullable=False, index=True, comment="所属目录ID")
+
+    # 文件信息
+    filename = Column(String(255), nullable=False, comment="文件名")
+    original_filename = Column(String(255), nullable=False, comment="原始文件名")
+    original_path = Column(String(500), nullable=True, comment="原文件存储路径")
+    markdown_path = Column(String(500), nullable=True, comment="Markdown文件路径")
+    file_type = Column(String(20), nullable=False, comment="文件类型: word/pdf/excel/markdown/text/image")
+    file_size = Column(Integer, nullable=True, comment="文件大小（字节）")
+
+    # 上传者
+    uploaded_by = Column(CHAR(36), nullable=True, comment="上传者ID")
+
+    # 系统字段
+    created_at = Column(DateTime, nullable=False, default=datetime.now, comment="创建时间")
+    updated_at = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now, comment="更新时间")
+
+    # 关系
+    category = relationship("PartyActivityCategoryModel", back_populates="documents")
+
+    # 索引
+    __table_args__ = (
+        Index("idx_party_activity_doc_category", "category_id"),
+        Index("idx_party_activity_doc_type", "file_type"),
     )

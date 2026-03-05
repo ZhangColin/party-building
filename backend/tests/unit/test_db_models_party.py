@@ -69,3 +69,27 @@ def test_party_activity_category_model(db_session):
     assert category.id is not None
     assert category.name == "三会一课"
     assert category.parent_id is None
+
+
+def test_party_activity_document_model(db_session):
+    """测试党建活动文档模型"""
+    from src.db_models_party import PartyActivityCategoryModel, PartyActivityDocumentModel
+
+    category = PartyActivityCategoryModel(name="测试分类")
+    db_session.add(category)
+    db_session.commit()
+
+    document = PartyActivityDocumentModel(
+        category_id=category.id,
+        filename="test.md",
+        original_filename="test.md",
+        file_type="markdown",
+        file_size=1024
+    )
+    db_session.add(document)
+    db_session.commit()
+    db_session.refresh(document)
+
+    assert document.id is not None
+    assert document.filename == "test.md"
+    assert document.category_id == category.id

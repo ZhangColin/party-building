@@ -225,4 +225,5 @@ from .db_models_party import (
     KnowledgeCategoryModel,
     KnowledgeDocumentModel,
     PartyActivityCategoryModel,
+    PartyActivityDocumentModel,
 )
