@@ -166,15 +166,16 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1890ff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
+  @apply party-btn-primary;
+  /* 党建主题：使用全局主按钮样式 */
 }
 
 .send-button:hover:not(:disabled) {
-  background-color: #40a9ff;
+  @apply party-btn-primary-hover;
   transform: scale(1.05);
 }
 

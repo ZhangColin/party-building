@@ -153,8 +153,8 @@ async function handleCopy() {
 }
 
 .message-user .message-text {
-  background-color: #1890ff;
-  color: white;
+  @apply party-message-bubble-user;
+  /* 党建主题：使用全局用户消息气泡样式 */
 }
 
 .message-assistant .message-text {
