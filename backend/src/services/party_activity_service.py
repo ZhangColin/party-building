@@ -186,52 +186,71 @@ class PartyActivityService:
         uploaded_by: str = None
     ) -> dict:
         """上传文件"""
-        file_type = self.conversion_service._get_file_type(filename)
-        if not file_type:
-            raise ValueError(f"不支持的文件类型: {filename}")
+        logger.info(f"[上传文件] 开始: filename={filename}, category_id={category_id}, size={len(file_content)}")
 
-        # 确保目录存在
-        self.original_dir.mkdir(parents=True, exist_ok=True)
-        self.markdown_dir.mkdir(parents=True, exist_ok=True)
-
-        # 保存原文件
-        original_filename = f"{uuid.uuid4()}{Path(filename).suffix}"
-        original_path = self.original_dir / original_filename
-        original_path.write_bytes(file_content)
-
-        # 转换
         try:
-            markdown_content = await self.conversion_service.convert_to_markdown(
-                str(original_path), file_type
+            file_type = self.conversion_service._get_file_type(filename)
+            if not file_type:
+                logger.error(f"[上传文件] 不支持的文件类型: {filename}")
+                raise ValueError(f"不支持的文件类型: {filename}")
+
+            logger.info(f"[上传文件] 文件类型: {file_type}")
+
+            # 确保目录存在
+            self.original_dir.mkdir(parents=True, exist_ok=True)
+            self.markdown_dir.mkdir(parents=True, exist_ok=True)
+
+            # 保存原文件
+            original_filename = f"{uuid.uuid4()}{Path(filename).suffix}"
+            original_path = self.original_dir / original_filename
+            logger.info(f"[上传文件] 保存原文件到: {original_path}")
+            original_path.write_bytes(file_content)
+
+            # 转换
+            try:
+                markdown_content = await self.conversion_service.convert_to_markdown(
+                    str(original_path), file_type
+                )
+                logger.info(f"[上传文件] 转换完成，markdown 长度: {len(markdown_content)}")
+            except Exception as e:
+                logger.error(f"[上传文件] 转换失败: {e}")
+                original_path.unlink(missing_ok=True)
+                raise ValueError(f"文件转换失败: {str(e)}")
+
+            # 保存 Markdown
+            markdown_filename = f"{uuid.uuid4()}.md"
+            markdown_path = self.markdown_dir / markdown_filename
+            logger.info(f"[上传文件] 保存 markdown 到: {markdown_path}")
+            markdown_path.write_text(markdown_content, encoding="utf-8")
+
+            logger.info(f"[上传文件] 创建数据库记录")
+            document = PartyActivityDocumentModel(
+                id=str(uuid.uuid4()),
+                category_id=category_id,
+                filename=markdown_filename,
+                original_filename=filename,
+                original_path=str(original_path),
+                markdown_path=str(markdown_path),
+                file_type=file_type,
+                file_size=len(file_content),
+                uploaded_by=uploaded_by,
+                created_at=datetime.now(),
+                updated_at=datetime.now()
             )
+
+            self.db.add(document)
+            await self.db.commit()
+            await self.db.refresh(document)
+
+            logger.info(f"[上传文件] 完成，document_id={document.id}")
+            return self._document_to_dict(document)
+        except ValueError:
+            # 重新抛出已知的 ValueError
+            raise
         except Exception as e:
-            original_path.unlink(missing_ok=True)
-            raise ValueError(f"文件转换失败: {str(e)}")
-
-        # 保存 Markdown
-        markdown_filename = f"{uuid.uuid4()}.md"
-        markdown_path = self.markdown_dir / markdown_filename
-        markdown_path.write_text(markdown_content, encoding="utf-8")
-
-        document = PartyActivityDocumentModel(
-            id=str(uuid.uuid4()),
-            category_id=category_id,
-            filename=markdown_filename,
-            original_filename=filename,
-            original_path=str(original_path),
-            markdown_path=str(markdown_path),
-            file_type=file_type,
-            file_size=len(file_content),
-            uploaded_by=uploaded_by,
-            created_at=datetime.now(),
-            updated_at=datetime.now()
-        )
-
-        self.db.add(document)
-        await self.db.commit()
-        await self.db.refresh(document)
-
-        return self._document_to_dict(document)
+            # 捕获所有其他异常并记录详细信息
+            logger.exception(f"[上传文件] 未捕获的异常: {type(e).__name__}: {e}")
+            raise ValueError(f"文件上传失败: {str(e)}")
 
     async def get_documents(self, category_id: str = None) -> list:
         """获取文件列表"""

@@ -84,6 +84,16 @@ export interface ApiErrorResponse {
   details?: Record<string, unknown>
 }
 
+// 后端统一错误处理中间件返回的格式
+export interface BackendErrorResponse {
+  error: {
+    code: string
+    message: string
+    details?: Record<string, unknown>
+    path?: string
+  }
+}
+
 /**
  * 创建 axios 实例
  */
@@ -125,21 +135,22 @@ apiClient.interceptors.response.use(
   (response) => {
     return response
   },
-  (error: AxiosError<ApiErrorResponse | { detail?: string }>) => {
+  (error: AxiosError<BackendErrorResponse | ApiErrorResponse | { detail?: string }>) => {
     // 统一错误处理
     if (error.response) {
       const status = error.response.status
       const errorData = error.response.data
-      
+
       // 401 未授权：需要区分登录接口和其他接口
       if (status === 401) {
         // 检查是否是登录接口
         const isLoginRequest = error.config?.url?.includes('/auth/login')
-        
+
         if (isLoginRequest) {
           // 登录接口的 401 错误：用户名或密码错误，显示后端返回的具体错误
-          const errorMessage = 
+          const errorMessage =
             (errorData as { detail?: string })?.detail ||
+            (errorData as BackendErrorResponse)?.error?.message ||
             (errorData as ApiErrorResponse)?.error_message ||
             '账号或密码错误'
           return Promise.reject(new Error(errorMessage))
@@ -149,20 +160,24 @@ apiClient.interceptors.response.use(
           localStorage.removeItem('auth_user')
           sessionStorage.removeItem('auth_token')
           sessionStorage.removeItem('auth_user')
-          
+
           // 如果不在登录页，跳转到登录页
           if (window.location.pathname !== '/login') {
             window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`
           }
-          
+
           return Promise.reject(new Error('登录已过期，请重新登录'))
         }
       }
-      
+
       // 其他错误
-      // FastAPI默认错误格式是 { detail: string }，也支持自定义格式 { error_message: string }
-      const errorMessage = 
+      // 支持多种错误格式：
+      // 1. FastAPI默认: { detail: string }
+      // 2. 后端统一错误处理: { error: { message: string } }
+      // 3. 自定义格式: { error_message: string }
+      const errorMessage =
         (errorData as { detail?: string })?.detail ||
+        (errorData as BackendErrorResponse)?.error?.message ||
         (errorData as ApiErrorResponse)?.error_message ||
         error.message ||
         '请求失败'
