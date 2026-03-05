@@ -9,7 +9,7 @@ class TempFileUploadResponse(BaseModel):
 
     temp_id: str = Field(..., description="临时文件唯一标识")
     filename: str = Field(..., description="原始文件名", min_length=1)
-    size: int = Field(..., description="文件大小（字节）", gt=0)
+    size: int = Field(..., description="文件大小（字节）", ge=0)
     content_preview: str | None = Field(None, description="内容预览（可选）")
 
 

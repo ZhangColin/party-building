@@ -154,7 +154,7 @@ app.include_router(knowledge_router.router)
 app.include_router(party_activities_router.router)
 
 # 临时文件路由
-app.include_router(temp_files_router, prefix="/api/v1/temp-files", tags=["临时文件"])
+app.include_router(temp_files_router, prefix="/api/v1/temp_files", tags=["临时文件"])
 
 # ==================== 已废弃的 Agent API ====================
 # 保留这些接口是为了向后兼容，实际功能已迁移到 Tool API

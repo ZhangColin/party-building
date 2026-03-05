@@ -2,7 +2,7 @@
 """
 临时文件API集成测试
 
-测试 POST /api/v1/temp-files/upload 端点
+测试 POST /api/v1/temp_files/upload 端点
 """
 import pytest
 import io
@@ -18,7 +18,7 @@ class TestTempFilesUploadAPI:
         测试成功上传临时文件
 
         Given: 存在有效的文本文件
-        When: 客户端请求 POST /api/v1/temp-files/upload
+        When: 客户端请求 POST /api/v1/temp_files/upload
         Then: 应该返回 200 状态码和临时文件信息
         """
         # Given: 创建测试文件
@@ -27,7 +27,7 @@ class TestTempFilesUploadAPI:
 
         # When: 上传文件
         response = await async_client.post(
-            "/api/v1/temp-files/upload",
+            "/api/v1/temp_files/upload",
             files={"file": ("test.txt", file_data, "text/plain")}
         )
 
@@ -46,7 +46,7 @@ class TestTempFilesUploadAPI:
         测试上传超大文件
 
         Given: 文件大小超过10MB限制
-        When: 客户端请求 POST /api/v1/temp-files/upload
+        When: 客户端请求 POST /api/v1/temp_files/upload
         Then: 应该返回 400 状态码和错误信息
         """
         # Given: 创建超过限制的文件（11MB）
@@ -55,7 +55,7 @@ class TestTempFilesUploadAPI:
 
         # When: 上传超大文件
         response = await async_client.post(
-            "/api/v1/temp-files/upload",
+            "/api/v1/temp_files/upload",
             files={"file": ("large.txt", file_data, "text/plain")}
         )
 
@@ -69,11 +69,11 @@ class TestTempFilesUploadAPI:
         测试没有文件的上传
 
         Given: 请求中没有文件
-        When: 客户端请求 POST /api/v1/temp-files/upload
+        When: 客户端请求 POST /api/v1/temp_files/upload
         Then: 应该返回 422 状态码（验证错误）
         """
         # When: 发送没有文件的请求
-        response = await async_client.post("/api/v1/temp-files/upload")
+        response = await async_client.post("/api/v1/temp_files/upload")
 
         # Then: 验证响应
         assert response.status_code == 422, f"Expected 422, got {response.status_code}"
@@ -84,7 +84,7 @@ class TestTempFilesUploadAPI:
         测试上传中文文件名
 
         Given: 存在中文文件名的文件
-        When: 客户端请求 POST /api/v1/temp-files/upload
+        When: 客户端请求 POST /api/v1/temp_files/upload
         Then: 应该返回 200 状态码并正确处理中文文件名
         """
         # Given: 创建测试文件
@@ -93,7 +93,7 @@ class TestTempFilesUploadAPI:
 
         # When: 上传文件
         response = await async_client.post(
-            "/api/v1/temp-files/upload",
+            "/api/v1/temp_files/upload",
             files={"file": ("测试文档.txt", file_data, "text/plain")}
         )
 
@@ -110,7 +110,7 @@ class TestTempFilesUploadAPI:
         测试上传二进制文件
 
         Given: 存在二进制文件（如图片）
-        When: 客户端请求 POST /api/v1/temp-files/upload
+        When: 客户端请求 POST /api/v1/temp_files/upload
         Then: 应该返回 200 状态码，content_preview 可能为 None
         """
         # Given: 创建测试二进制文件
@@ -119,7 +119,7 @@ class TestTempFilesUploadAPI:
 
         # When: 上传文件
         response = await async_client.post(
-            "/api/v1/temp-files/upload",
+            "/api/v1/temp_files/upload",
             files={"file": ("image.png", file_data, "image/png")}
         )
 
@@ -130,3 +130,78 @@ class TestTempFilesUploadAPI:
         assert data["size"] == len(file_content)
         # 二进制文件的 content_preview 可能为 None
         assert data["content_preview"] is None or isinstance(data["content_preview"], str)
+
+    @pytest.mark.asyncio
+    async def test_upload_empty_file(self, async_client: AsyncClient):
+        """
+        测试上传空文件
+
+        Given: 存在空文件
+        When: 客户端请求 POST /api/v1/temp_files/upload
+        Then: 应该返回 200 状态码（空文件是允许的）
+        """
+        # Given: 创建空文件
+        file_content = b""
+        file_data = io.BytesIO(file_content)
+
+        # When: 上传文件
+        response = await async_client.post(
+            "/api/v1/temp_files/upload",
+            files={"file": ("empty.txt", file_data, "text/plain")}
+        )
+
+        # Then: 验证响应
+        assert response.status_code == 200, f"Expected 200, got {response.status_code}"
+        data = response.json()
+        assert data["filename"] == "empty.txt"
+        assert data["size"] == 0
+        assert data["content_preview"] == ""
+
+    @pytest.mark.asyncio
+    async def test_upload_unsupported_file_type(self, async_client: AsyncClient):
+        """
+        测试上传不支持的文件类型
+
+        Given: 存在不支持扩展名的文件
+        When: 客户端请求 POST /api/v1/temp_files/upload
+        Then: 应该返回 400 状态码和错误信息
+        """
+        # Given: 创建不支持的文件类型
+        file_content = b"some content"
+        file_data = io.BytesIO(file_content)
+
+        # When: 上传不支持的文件类型
+        response = await async_client.post(
+            "/api/v1/temp_files/upload",
+            files={"file": ("test.exe", file_data, "application/octet-stream")}
+        )
+
+        # Then: 验证响应
+        assert response.status_code == 400, f"Expected 400, got {response.status_code}"
+        assert "不支持的文件类型" in response.json()["detail"]
+
+    @pytest.mark.asyncio
+    async def test_upload_path_traversal_attack(self, async_client: AsyncClient):
+        """
+        测试路径遍历攻击防护
+
+        Given: 文件名包含路径遍历字符
+        When: 客户端请求 POST /api/v1/temp_files/upload
+        Then: 应该返回 200 状态码，只保存纯文件名
+        """
+        # Given: 创建包含路径遍历的文件名
+        file_content = b"safe content"
+        file_data = io.BytesIO(file_content)
+
+        # When: 上传带有路径遍历的文件名
+        response = await async_client.post(
+            "/api/v1/temp_files/upload",
+            files={"file": ("../../../etc/passwd.txt", file_data, "text/plain")}
+        )
+
+        # Then: 验证响应 - 应该只保存文件名部分
+        assert response.status_code == 200, f"Expected 200, got {response.status_code}"
+        data = response.json()
+        # 应该只保存 "passwd.txt"，而不是完整路径
+        assert data["filename"] == "passwd.txt"
+        assert data["content_preview"] == "safe content"
