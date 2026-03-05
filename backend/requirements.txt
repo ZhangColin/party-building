@@ -33,3 +33,7 @@ python-jose[cryptography]==3.3.0
 bcrypt==4.1.2
 alembic==1.13.1
 python-multipart==0.0.21
+pandoc              # 文档转换
+python-docx         # Word 文件处理
+openpyxl            # Excel 文件处理
+PyPDF2              # PDF 文件处理
