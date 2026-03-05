@@ -360,6 +360,12 @@ onMounted(() => {
 defineExpose({
   expandCategoryNode: (nodeId: string) => {
     categoryTreeRef.value?.expandNode(nodeId)
+  },
+  closeUploadDialog: () => {
+    uploadDialogVisible.value = false
+  },
+  closeCreateFileDialog: () => {
+    createFileDialogVisible.value = false
   }
 })
 </script>

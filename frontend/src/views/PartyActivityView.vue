@@ -213,6 +213,8 @@ const handleUploadFile = async (file: File, categoryId: string) => {
     })
     uploadingFiles.value.delete(file.name)
     ElMessage.success('文件上传成功')
+    // 关闭上传对话框
+    fileManagementRef.value?.closeUploadDialog()
   } catch (error: any) {
     uploadingFiles.value.delete(file.name)
     ElMessage.error(error.message || '文件上传失败')
@@ -227,6 +229,8 @@ const handleCreateFile = async (data: { categoryId: string; filename: string; co
       content: data.content || ''
     })
     ElMessage.success('文件创建成功')
+    // 关闭新建文件对话框
+    fileManagementRef.value?.closeCreateFileDialog()
     // 跳转到编辑器
     router.push({
       path: '/markdown-editor',
