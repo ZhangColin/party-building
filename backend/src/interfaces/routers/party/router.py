@@ -70,6 +70,7 @@ def get_party_fee_service() -> PartyFeeService:
 
 @router.get("/organization-lives", response_model=OrganizationLifeListResponse)
 async def list_organization_lives(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(20, ge=1, le=100, description="每页数量"),
     activity_type: Optional[str] = Query(None, description="活动类型筛选"),
@@ -93,6 +94,7 @@ async def list_organization_lives(
 
 @router.post("/organization-lives", response_model=OrganizationLifeDetail, status_code=status.HTTP_201_CREATED)
 async def create_organization_life(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     request: OrganizationLifeCreate,
     service: OrganizationLifeService = Depends(get_organization_life_service)
 ):
@@ -111,6 +113,7 @@ async def create_organization_life(
 
 @router.get("/organization-lives/{life_id}", response_model=OrganizationLifeDetail)
 async def get_organization_life(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     life_id: str,
     service: OrganizationLifeService = Depends(get_organization_life_service)
 ):
@@ -123,6 +126,7 @@ async def get_organization_life(
 
 @router.patch("/organization-lives/{life_id}", response_model=OrganizationLifeDetail)
 async def update_organization_life(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     life_id: str,
     request: OrganizationLifeUpdate,
     service: OrganizationLifeService = Depends(get_organization_life_service)
@@ -136,6 +140,7 @@ async def update_organization_life(
 
 @router.delete("/organization-lives/{life_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_organization_life(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     life_id: str,
     service: OrganizationLifeService = Depends(get_organization_life_service)
 ):
@@ -150,6 +155,7 @@ async def delete_organization_life(
 
 @router.get("/fees", response_model=PartyFeeListResponse)
 async def list_party_fees(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(20, ge=1, le=100, description="每页数量"),
     member_id: Optional[str] = Query(None, description="党员ID筛选"),
@@ -177,6 +183,7 @@ async def list_party_fees(
 
 @router.post("/fees", response_model=PartyFeeDetail, status_code=status.HTTP_201_CREATED)
 async def create_party_fee(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     request: PartyFeeCreate,
     service: PartyFeeService = Depends(get_party_fee_service)
 ):
@@ -196,6 +203,7 @@ async def create_party_fee(
 
 @router.get("/fees/{fee_id}", response_model=PartyFeeDetail)
 async def get_party_fee(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     fee_id: str,
     service: PartyFeeService = Depends(get_party_fee_service)
 ):
@@ -208,6 +216,7 @@ async def get_party_fee(
 
 @router.patch("/fees/{fee_id}", response_model=PartyFeeDetail)
 async def update_party_fee(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     fee_id: str,
     request: PartyFeeUpdate,
     service: PartyFeeService = Depends(get_party_fee_service)
@@ -221,6 +230,7 @@ async def update_party_fee(
 
 @router.delete("/fees/{fee_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_party_fee(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     fee_id: str,
     service: PartyFeeService = Depends(get_party_fee_service)
 ):
