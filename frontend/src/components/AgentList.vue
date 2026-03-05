@@ -22,7 +22,7 @@
         v-for="agent in agentStore.agents"
         :key="agent.agent_id"
         :data-testid="`agent-item-${agent.agent_id}`"
-        class="agent-item"
+        class="agent-item party-card"
         @click="handleAgentClick(agent.agent_id)"
       >
         <h3 class="agent-name">{{ agent.name }}</h3>
@@ -90,14 +90,12 @@ onMounted(() => {
 
 .agent-item {
   padding: 1rem;
-  border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .agent-item:hover {
-  border-color: #3b82f6;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
