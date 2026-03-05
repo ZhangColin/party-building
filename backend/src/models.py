@@ -1083,3 +1083,10 @@ class TaskStatusResponse(BaseModel):
         }
     )
 
+
+# ==================== 模型重建 - 解析前向引用 ====================
+
+# 导入 AttachmentReference 并重建 ChatRequest 模型以解析前向引用
+from src.models.temp_files import AttachmentReference
+ChatRequest.model_rebuild()
+
