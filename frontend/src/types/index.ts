@@ -82,7 +82,8 @@ export interface Message {
   artifacts?: Artifact[] // 消息中包含的成果物列表（可选）
   error?: string // 错误信息（可选，用于显示发送失败）
   pending?: boolean // 是否正在发送（可选，用于显示加载状态）
-  
+  attachments?: MessageAttachment[] // 消息附件列表（可选）
+
   // 多模态支持字段
   media_content?: string // 多模态内容JSON字符串（图片、音频、视频等）
 }
@@ -104,6 +105,7 @@ export interface ChatRequest {
   message: string // 用户输入的消息
   session_id?: string | null // 会话 UUID（可选，如果有则继续会话，没有则创建新会话）
   history?: Message[] // 历史消息列表（可选）
+  attached_files?: AttachmentReference[] // 附件引用列表（可选）
 }
 
 /**
@@ -741,5 +743,54 @@ export interface UpdateCourseDocumentRequest {
   summary?: string // 文档摘要
   category_id?: string // 所属目录ID
   order?: number // 排序顺序
+}
+
+// ==================== 聊天附件模块 ====================
+
+/**
+ * 附件状态
+ */
+export type AttachmentStatus = 'uploading' | 'ready' | 'error'
+
+/**
+ * 附件引用（用于发送消息时）
+ */
+export interface AttachmentReference {
+  id: string // 附件ID
+  type: 'temp' | 'knowledge' | 'party' // 附件类型
+  name: string // 附件名称
+}
+
+/**
+ * 聊天附件（用于UI展示）
+ */
+export interface ChatAttachment {
+  id: string // 附件ID
+  name: string // 附件名称
+  type: 'temp' | 'knowledge' | 'party' // 附件类型
+  size: number // 文件大小（字节）
+  status: AttachmentStatus // 上传状态
+  error?: string // 错误信息（状态为error时）
+  uploadProgress?: number // 上传进度（0-100）
+}
+
+/**
+ * 消息附件（消息中保存的附件信息）
+ */
+export interface MessageAttachment {
+  id: string // 附件ID
+  name: string // 附件名称
+  type: 'temp' | 'knowledge' | 'party' // 附件类型
+  size: number // 文件大小（字节）
+}
+
+/**
+ * 临时文件上传响应
+ */
+export interface TempFileUploadResponse {
+  temp_id: string // 临时文件ID
+  filename: string // 文件名
+  size: number // 文件大小（字节）
+  content_preview?: string // 内容预览（可选，用于文本文件）
 }
 
