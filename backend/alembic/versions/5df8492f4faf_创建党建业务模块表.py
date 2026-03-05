@@ -69,7 +69,7 @@ def upgrade() -> None:
         sa.Column('status', sa.String(length=20), nullable=False, server_default='已缴', comment='状态'),
         sa.Column('remark', sa.String(length=500), nullable=True, comment='备注'),
         sa.Column('created_at', sa.DateTime(), nullable=False, server_default=sa.text('CURRENT_TIMESTAMP'), comment='创建时间'),
-        sa.Column('updated_at', sa.DateTime(), nullable=False, server_default=sa.text('CURRENT TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), comment='更新时间'),
+        sa.Column('updated_at', sa.DateTime(), nullable=False, server_default=sa.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), comment='更新时间'),
         sa.ForeignKeyConstraint(['member_id'], ['party_members.member_id'], ondelete='SET NULL'),
         sa.PrimaryKeyConstraint('fee_id')
     )

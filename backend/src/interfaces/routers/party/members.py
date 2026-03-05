@@ -14,6 +14,8 @@ from ....models_party import (
 )
 from ....services.party_member_service import PartyMemberService
 from ....database import get_db
+from ....interfaces.auth import get_current_user
+from ....models import UserInfo
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +74,7 @@ async def create_member(
 
 @router.get("", response_model=PartyMemberListResponse)
 async def list_members(
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(20, ge=1, le=100, description="每页数量"),
     name: Optional[str] = Query(None, description="姓名（模糊查询）"),

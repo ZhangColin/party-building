@@ -200,7 +200,8 @@ class PartyMemberService:
         """
         try:
             member_model = self.db.query(PartyMemberModel).filter(
-                PartyMemberModel.member_id == member_id
+                PartyMemberModel.member_id == member_id,
+                PartyMemberModel.status != "停止党籍"  # 过滤软删除的记录
             ).first()
 
             if member_model is None:
@@ -421,11 +422,16 @@ class PartyMemberService:
             if status:
                 conditions.append(PartyMemberModel.status == status)
 
+            # 自动过滤软删除的记录（状态为"停止党籍"的记录）
+            conditions.append(PartyMemberModel.status != "停止党籍")
+
             # 组合查询条件
             if conditions:
                 query = self.db.query(PartyMemberModel).filter(and_(*conditions))
             else:
-                query = self.db.query(PartyMemberModel)
+                query = self.db.query(PartyMemberModel).filter(
+                    PartyMemberModel.status != "停止党籍"
+                )
 
             # 获取总数
             total = query.count()

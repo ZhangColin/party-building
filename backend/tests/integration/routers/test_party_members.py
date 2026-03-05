@@ -12,20 +12,19 @@ class TestPartyMembersListAPI:
     """党员列表API测试"""
 
     @pytest.mark.asyncio
-    async def test_获取党员列表_返回空列表_当数据库无记录时(self, async_client: AsyncClient, admin_headers):
+    async def test_获取党员列表_返回空列表_当数据库无记录时(self, admin_client: AsyncClient):
         """RED: 测试获取党员列表 - 预期行为：空列表返回200状态码"""
-        response = await async_client.get(
-            "/api/v1/party/members",
-            headers=admin_headers
+        response = await admin_client.get(
+            "/api/v1/party/members"
         )
 
         # 应该返回200，即使没有数据
         assert response.status_code == 200
         data = response.json()
-        assert "records" in data
+        assert "members" in data
         assert "total" in data
         assert data["total"] == 0
-        assert data["records"] == []
+        assert data["members"] == []
 
     @pytest.mark.asyncio
     async def test_获取党员列表_需要认证(self, async_client: AsyncClient):
@@ -40,7 +39,7 @@ class TestCreatePartyMemberAPI:
     """创建党员API测试"""
 
     @pytest.mark.asyncio
-    async def test_创建党员_成功_当提供完整信息时(self, async_client: AsyncClient, admin_headers):
+    async def test_创建党员_成功_当提供完整信息时(self, admin_client: AsyncClient):
         """RED: 测试创建党员 - 预期行为：成功创建返回201"""
         member_data = {
             "name": "张三",
@@ -53,10 +52,9 @@ class TestCreatePartyMemberAPI:
             "email": "zhangsan@example.com"
         }
 
-        response = await async_client.post(
+        response = await admin_client.post(
             "/api/v1/party/members",
-            json=member_data,
-            headers=admin_headers
+            json=member_data
         )
 
         # 预期：创建成功
@@ -67,17 +65,16 @@ class TestCreatePartyMemberAPI:
         assert data["gender"] == "男"
 
     @pytest.mark.asyncio
-    async def test_创建党员_失败_当缺少必填字段时(self, async_client: AsyncClient, admin_headers):
+    async def test_创建党员_失败_当缺少必填字段时(self, admin_client: AsyncClient):
         """RED: 测试创建党员 - 缺少必填字段"""
         incomplete_data = {
             "name": "李四"
             # 缺少gender, birth_date, join_date, party_branch等必填字段
         }
 
-        response = await async_client.post(
+        response = await admin_client.post(
             "/api/v1/party/members",
-            json=incomplete_data,
-            headers=admin_headers
+            json=incomplete_data
         )
 
         # 预期：422验证错误
@@ -88,7 +85,7 @@ class TestGetPartyMemberDetailAPI:
     """党员详情API测试"""
 
     @pytest.mark.asyncio
-    async def test_获取党员详情_成功_当党员存在时(self, async_client: AsyncClient, admin_headers, db_session: Session):
+    async def test_获取党员详情_成功_当党员存在时(self, admin_client: AsyncClient, db_session: Session):
         """RED: 测试获取党员详情"""
         # 先创建一个党员
         from src.db_models_party import PartyMemberModel
@@ -109,9 +106,8 @@ class TestGetPartyMemberDetailAPI:
         db_session.commit()
 
         # 获取详情
-        response = await async_client.get(
-            f"/api/v1/party/members/{member.member_id}",
-            headers=admin_headers
+        response = await admin_client.get(
+            f"/api/v1/party/members/{member.member_id}"
         )
 
         assert response.status_code == 200
@@ -120,13 +116,12 @@ class TestGetPartyMemberDetailAPI:
         assert data["name"] == "测试党员"
 
     @pytest.mark.asyncio
-    async def test_获取党员详情_404_当党员不存在时(self, async_client: AsyncClient, admin_headers):
+    async def test_获取党员详情_404_当党员不存在时(self, admin_client: AsyncClient):
         """RED: 测试获取不存在党员的详情"""
         fake_id = "00000000-0000-0000-0000-000000000000"
 
-        response = await async_client.get(
-            f"/api/v1/party/members/{fake_id}",
-            headers=admin_headers
+        response = await admin_client.get(
+            f"/api/v1/party/members/{fake_id}"
         )
 
         assert response.status_code == 404
@@ -136,7 +131,7 @@ class TestUpdatePartyMemberAPI:
     """更新党员API测试"""
 
     @pytest.mark.asyncio
-    async def test_更新党员_成功_当数据有效时(self, async_client: AsyncClient, admin_headers, db_session: Session):
+    async def test_更新党员_成功_当数据有效时(self, admin_client: AsyncClient, db_session: Session):
         """RED: 测试更新党员信息"""
         from src.db_models_party import PartyMemberModel
         import uuid
@@ -161,10 +156,9 @@ class TestUpdatePartyMemberAPI:
             "phone": "13900139000"
         }
 
-        response = await async_client.patch(
+        response = await admin_client.patch(
             f"/api/v1/party/members/{member.member_id}",
-            json=update_data,
-            headers=admin_headers
+            json=update_data
         )
 
         assert response.status_code == 200
@@ -176,7 +170,7 @@ class TestDeletePartyMemberAPI:
     """删除党员API测试"""
 
     @pytest.mark.asyncio
-    async def test_删除党员_成功_当党员存在时(self, async_client: AsyncClient, admin_headers, db_session: Session):
+    async def test_删除党员_成功_当党员存在时(self, admin_client: AsyncClient, db_session: Session):
         """RED: 测试删除党员"""
         from src.db_models_party import PartyMemberModel
         import uuid
@@ -197,16 +191,14 @@ class TestDeletePartyMemberAPI:
         db_session.commit()
 
         # 删除
-        response = await async_client.delete(
-            f"/api/v1/party/members/{member.member_id}",
-            headers=admin_headers
+        response = await admin_client.delete(
+            f"/api/v1/party/members/{member.member_id}"
         )
 
         assert response.status_code == 204
 
         # 验证已删除
-        get_response = await async_client.get(
-            f"/api/v1/party/members/{member.member_id}",
-            headers=admin_headers
+        get_response = await admin_client.get(
+            f"/api/v1/party/members/{member.member_id}"
         )
         assert get_response.status_code == 404

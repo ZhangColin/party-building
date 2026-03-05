@@ -53,8 +53,11 @@ src.database.engine = test_engine
 src.database.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
 from src.database import Base, get_db
-from src.main import app
 from src.db_models import UserModel
+# 导入党建模型，确保测试时创建相关表
+# 必须在导入app之前导入，否则模型不会注册到Base.metadata
+import src.db_models_party
+from src.main import app
 
 
 # ==================== 数据库 Fixtures ====================
