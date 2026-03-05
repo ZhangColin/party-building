@@ -208,7 +208,6 @@ const handleDownloadSvg = () => {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background-color: #1890ff;
   color: white;
   padding: 10px 20px;
   border-radius: 4px;
@@ -217,6 +216,8 @@ const handleDownloadSvg = () => {
   transition: all 0.3s ease;
   pointer-events: none;
   z-index: 100;
+  /* 党建主题：使用全局标签样式 */
+  @apply party-tag party-tag-success;
 }
 
 .notification-show {

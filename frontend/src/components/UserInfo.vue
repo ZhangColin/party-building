@@ -143,7 +143,8 @@ onUnmounted(() => {
 }
 
 .dropdown-item {
-  @apply block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors;
+  @apply block w-full text-left px-4 py-2 text-sm transition-colors party-menu-item;
+  /* 党建主题：使用全局菜单项样式 */
 }
 
 .user-info-item {

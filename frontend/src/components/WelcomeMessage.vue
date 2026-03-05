@@ -38,7 +38,8 @@ const renderedWelcomeText = computed(() => {
 }
 
 .welcome-title {
-  @apply text-3xl font-semibold text-gray-900 mb-4;
+  @apply text-3xl font-semibold text-gray-900 mb-4 party-title-underline;
+  /* 党建主题：使用全局标题样式 */
   letter-spacing: -0.5px;
 }
 

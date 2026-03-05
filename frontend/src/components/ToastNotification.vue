@@ -32,11 +32,12 @@ defineProps<{
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: #1f2937;
   color: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 9999;
+  /* 党建主题：使用全局标签样式 */
+  @apply party-tag party-tag-success;
 }
 
 .toast-icon {

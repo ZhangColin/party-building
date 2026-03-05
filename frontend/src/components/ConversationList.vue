@@ -358,8 +358,8 @@ function formatTime(timestamp: string): string {
 }
 
 .conversation-item {
-  @apply px-4 py-3 mb-2 rounded-lg transition-all duration-200 relative;
-  /* 添加更柔和的hover效果 */
+  @apply px-4 py-3 mb-2 rounded-lg transition-all duration-200 relative party-menu-item;
+  /* 党建主题：使用全局菜单项样式 */
 }
 
 .conversation-item:hover {
@@ -368,10 +368,8 @@ function formatTime(timestamp: string): string {
 }
 
 .conversation-item.active {
-  @apply bg-primary-50 border-primary-600 pl-2.5;
-  border-left-width: 3px;
-  /* 激活状态添加更明显的视觉反馈 */
-  box-shadow: inset 0 0 0 1px theme('colors.primary.100');
+  @apply party-menu-item-active;
+  /* 党建主题：使用全局激活态样式 */
 }
 
 .conversation-content {

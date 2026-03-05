@@ -162,6 +162,8 @@ const handleClosePreview = () => {
   border-bottom: 1px solid #e0e0e0;
   align-items: center;
   justify-content: flex-end;
+  /* 党建主题：添加分隔线样式 */
+  @apply party-divider;
 }
 
 .toolbar-btn {
@@ -180,8 +182,8 @@ const handleClosePreview = () => {
 
 .toolbar-btn:hover:not(:disabled) {
   background-color: #f0f0f0;
-  border-color: #1890ff;
-  color: #1890ff;
+  border-color: #C8102E; /* 党建主题红色 */
+  color: #C8102E;
 }
 
 .toolbar-btn:disabled {

@@ -141,24 +141,18 @@ function handleSend() {
 }
 
 .send-button {
-  @apply px-6 py-3 bg-primary-500 text-white border-none rounded-xl text-sm font-medium cursor-pointer transition-all duration-200 flex-shrink-0;
-  /* 层级3：交互层 - 主色背景，明显阴影，添加hover提升效果 */
-  box-shadow: 0 2px 4px theme('colors.primary.500 / 0.3'), 0 1px 2px rgba(0, 0, 0, 0.1);
+  @apply px-6 py-3 text-white border-none rounded-xl text-sm font-medium cursor-pointer transition-all duration-200 flex-shrink-0 party-btn-primary;
+  /* 党建主题：使用全局主按钮样式 */
 }
 
 .send-button:hover:not(:disabled) {
-  @apply bg-primary-600;
-  box-shadow: 0 4px 8px theme('colors.primary.500 / 0.4'), 0 2px 4px rgba(0, 0, 0, 0.15);
+  @apply party-btn-primary-hover;
   transform: translateY(-1px);
 }
 
 .send-button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 4px theme('colors.primary.500 / 0.3'), 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.send-button:active:not(:disabled) {
-  @apply scale-[0.98];
+  @apply party-btn-primary-active;
 }
 
 .send-button:disabled {

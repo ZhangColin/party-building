@@ -520,8 +520,8 @@ onMounted(() => {
 }
 
 .user-message-content {
-  @apply text-sm leading-relaxed px-4 py-3 rounded-2xl bg-primary-500 text-white;
-  box-shadow: 0 2px 8px theme('colors.primary.500 / 0.3'), 0 1px 3px rgba(0, 0, 0, 0.1);
+  @apply text-sm leading-relaxed px-4 py-3 rounded-2xl text-white party-message-bubble-user;
+  /* 党建主题：使用全局消息气泡样式 */
   word-break: normal;
   overflow-wrap: break-word;
   white-space: pre-line;
@@ -595,7 +595,8 @@ onMounted(() => {
 }
 
 .error-retry-btn {
-  @apply px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors;
+  @apply px-4 py-2 text-white text-sm font-medium rounded-md transition-colors party-btn-primary;
+  /* 党建主题：使用全局主按钮样式 */
 }
 
 /* 图片展示区域 */
@@ -653,8 +654,9 @@ onMounted(() => {
 
 /* 通用下载按钮 */
 .media-download-btn {
-  @apply px-3 py-1.5 bg-primary-500 text-white text-xs rounded-md hover:bg-primary-600 transition-colors cursor-pointer;
+  @apply px-3 py-1.5 text-white text-xs rounded-md transition-colors cursor-pointer party-btn-primary;
   border: none;
+  /* 党建主题：使用全局主按钮样式 */
 }
 
 /* 响应式设计 */
