@@ -211,3 +211,24 @@ SQLAlchemy 模型位于 [backend/src/db_models.py](backend/src/db_models.py)：
 - `backend/src/services/party_fee_service.py`：党费管理
 - `backend/src/services/knowledge_base_service.py`：知识库服务
 - `backend/src/interfaces/routers/party/`：党建模块 API 路由
+
+## 样式规范
+
+### 党建主题色彩
+
+项目使用党建主题色彩系统，定义在 `frontend/src/styles/party-theme.css`：
+
+- **主红色:** `#C8102E`（中国红）
+- **金色:** `#FFD700`（五星金）
+- **深红色:** `#8B0000`
+
+### 使用全局 CSS 类
+
+优先使用预定义的全局类：
+- `.party-card`: 卡片容器（金色左边框）
+- `.party-btn-primary`: 主按钮（红色渐变）
+- `.party-menu-item-active`: 菜单激活态（金色左边框）
+- `.party-title-underline`: 标题装饰（金色底线）
+
+详细类列表参见 `party-theme.css`。
+
