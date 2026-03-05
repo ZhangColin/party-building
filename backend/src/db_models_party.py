@@ -178,27 +178,29 @@ class PartyFeeStandardModel(Base):
 
 
 class KnowledgeCategoryModel(Base):
-    """知识库分类数据库模型"""
+    """知识库目录数据库模型"""
     __tablename__ = "knowledge_categories"
 
     # 主键
     id = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()))
 
-    # 分类信息
-    name = Column(String(100), nullable=False, unique=True, comment="分类名称")
-    code = Column(String(50), nullable=False, unique=True, comment="分类代码")
-    description = Column(String(500), nullable=True, comment="描述")
+    # 目录信息
+    name = Column(String(100), nullable=False, comment="目录名称")
+    parent_id = Column(CHAR(36), ForeignKey("knowledge_categories.id", ondelete="CASCADE"), nullable=True, comment="父目录ID")
     order = Column(Integer, nullable=False, default=0, comment="排序")
 
     # 系统字段
     created_at = Column(DateTime, nullable=False, default=datetime.now, comment="创建时间")
+    updated_at = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now, comment="更新时间")
 
-    # 关系（暂时注释，等实现知识库功能时再配置）
-    # documents = relationship("KnowledgeDocumentModel", back_populates="category_rel", cascade="all, delete-orphan")
+    # 关系（自引用树形结构）
+    parent = relationship("KnowledgeCategoryModel", remote_side=[id], back_populates="children")
+    children = relationship("KnowledgeCategoryModel", back_populates="parent", cascade="all, delete-orphan")
+    # documents = relationship("KnowledgeDocumentModel", back_populates="category", cascade="all, delete-orphan")  # Task 2: 待知识库文档模型重构后启用
 
     # 索引
     __table_args__ = (
-        Index("idx_knowledge_category_code", "code"),
+        Index("idx_knowledge_category_parent", "parent_id"),
         Index("idx_knowledge_category_order", "order"),
     )
 
