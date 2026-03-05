@@ -5,6 +5,7 @@
       :messages="messages"
       :streaming-content="streamingContent"
       :auto-scroll="autoScroll"
+      :session-title="sessionTitle"
     />
 
     <Transition name="fade">
@@ -56,6 +57,7 @@ interface Props {
   autoScroll?: boolean;
   error?: string;
   showFileButtons?: boolean;
+  sessionTitle?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {

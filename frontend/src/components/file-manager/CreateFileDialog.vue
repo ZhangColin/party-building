@@ -2,7 +2,7 @@
 <template>
   <el-dialog
     v-model="visible"
-    title="新建 Markdown 文件"
+    :title="dialogTitle"
     :width="500"
     :close-on-click-modal="false"
     @closed="handleClosed"
@@ -29,7 +29,8 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item label="初始内容">
+      <!-- 新建模式下显示内容输入框 -->
+      <el-form-item v-if="mode === 'create'" label="初始内容">
         <el-input
           v-model="form.content"
           type="textarea"
@@ -46,32 +47,57 @@
         :class="isPartyTheme ? 'party-btn-primary' : ''"
         @click="handleConfirm"
       >
-        创建
+        {{ confirmButtonText }}
       </el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, watch } from 'vue'
 import type { Category } from '@/types/file-manager'
 import type { FormInstance, FormRules } from 'element-plus'
 
+/** 对话框模式 */
+type DialogMode = 'create' | 'save'
+
+/** 目标类型 */
+type TargetType = 'knowledge' | 'party'
+
 interface Props {
+  /** 对话框显示状态 */
   modelValue: boolean
+  /** 可选目录列表 */
   categories: Category[]
+  /** 默认目录 ID */
   defaultCategoryId?: string | null
+  /** 是否使用党建主题 */
   isPartyTheme?: boolean
+  /** 对话框模式：create（新建）或 save（保存） */
+  mode?: DialogMode
+  /** 保存模式下传入的内容 */
+  content?: string
+  /** 目标类型：knowledge（知识库）或 party（党建活动） */
+  target?: TargetType
+  /** 默认文件名 */
+  defaultFilename?: string
 }
 
 interface Emits {
   (e: 'update:modelValue', value: boolean): void
-  (e: 'confirm', data: { categoryId: string; filename: string; content: string }): void
+  (
+    e: 'confirm',
+    data: { categoryId: string; filename: string; content?: string }
+  ): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
   defaultCategoryId: null,
-  isPartyTheme: false
+  isPartyTheme: false,
+  mode: 'create',
+  content: '',
+  target: 'knowledge',
+  defaultFilename: ''
 })
 
 const emit = defineEmits<Emits>()
@@ -84,8 +110,8 @@ const form = reactive<{
   content: string
 }>({
   categoryId: props.defaultCategoryId,
-  filename: '',
-  content: ''
+  filename: props.defaultFilename,
+  content: props.content
 })
 
 const rules: FormRules = {
@@ -103,9 +129,33 @@ const rules: FormRules = {
   ]
 }
 
+/** 对话框显示状态 */
 const visible = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value)
+})
+
+/** 当前模式 */
+const mode = computed<DialogMode>(() => props.mode)
+
+/** 当前目标类型 */
+const target = computed<TargetType>(() => props.target)
+
+/** 对话框标题 */
+const dialogTitle = computed(() => {
+  if (mode.value === 'create') {
+    return '新建 Markdown 文件'
+  }
+  // 保存模式
+  if (target.value === 'party') {
+    return '保存到党建活动'
+  }
+  return '保存到知识库'
+})
+
+/** 确认按钮文本 */
+const confirmButtonText = computed(() => {
+  return mode.value === 'create' ? '创建' : '保存'
 })
 
 // 构建级联选择器选项
@@ -128,15 +178,33 @@ const cascaderProps = {
   emitPath: false
 }
 
+/** 监听 props 变化，更新表单 */
+watch(
+  () => [props.defaultCategoryId, props.defaultFilename, props.content] as const,
+  ([categoryId, filename, content]) => {
+    if (categoryId !== null) {
+      form.categoryId = categoryId
+    }
+    if (filename) {
+      form.filename = filename
+    }
+    if (content) {
+      form.content = content
+    }
+  }
+)
+
 const handleConfirm = async () => {
   if (!formRef.value) return
 
   try {
     await formRef.value.validate()
+    // 保存模式下传递 content，新建模式下传递表单中的 content
+    const emitContent = mode.value === 'save' ? props.content : form.content
     emit('confirm', {
       categoryId: form.categoryId!,
       filename: form.filename + '.md',
-      content: form.content
+      content: emitContent
     })
     // 关闭对话框
     visible.value = false
@@ -148,6 +216,10 @@ const handleConfirm = async () => {
 const handleClosed = () => {
   formRef.value?.resetFields()
   form.content = ''
+  // 保存模式下保留文件名，方便下次使用
+  if (mode.value === 'save' && props.defaultFilename) {
+    form.filename = props.defaultFilename
+  }
 }
 </script>
 

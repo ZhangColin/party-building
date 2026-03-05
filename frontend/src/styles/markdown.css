@@ -358,6 +358,22 @@
   height: 16px;
 }
 
+/* 代码块保存按钮样式 */
+.save-to-knowledge-button,
+.save-to-party-button {
+  color: #d1d5db;
+}
+
+.save-to-knowledge-button:hover {
+  color: #fbbf24;
+  background: #374151;
+}
+
+.save-to-party-button:hover {
+  color: #ef4444;
+  background: #374151;
+}
+
 .code-block-wrapper pre {
   margin: 0;
   padding: 16px;

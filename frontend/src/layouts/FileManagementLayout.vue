@@ -193,7 +193,7 @@ interface Emits {
   (e: 'fileRename', document: Document): void
   (e: 'fileDelete', document: Document): void
   (e: 'fileUpload', file: File, categoryId: string): void
-  (e: 'fileCreate', data: { categoryId: string; filename: string; content: string }): void
+  (e: 'fileCreate', data: { categoryId: string; filename: string; content?: string }): void
   (e: 'categoryAdd', parentId: string | null): void
   (e: 'categoryRename', category: Category): void
   (e: 'categoryDelete', category: Category): void
@@ -296,7 +296,7 @@ const handleUploadConfirm = async (data: { file: File; categoryId: string }) => 
   emit('fileUpload', data.file, data.categoryId)
 }
 
-const handleCreateFileConfirm = async (data: { categoryId: string; filename: string; content: string }) => {
+const handleCreateFileConfirm = async (data: { categoryId: string; filename: string; content?: string }) => {
   emit('fileCreate', data)
 }
 

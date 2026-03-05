@@ -233,6 +233,11 @@ defineExpose({
   loadConversations,
   setCurrentConversation: (sessionId: string) => {
     currentConversationId.value = sessionId
+  },
+  getCurrentConversationTitle: () => {
+    if (!currentConversationId.value) return ''
+    const conversation = conversations.value.find(c => c.session_id === currentConversationId.value)
+    return conversation?.title || ''
   }
 })
 

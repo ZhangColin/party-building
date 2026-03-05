@@ -71,13 +71,14 @@ const handleCategoryClick = async (category: Category | null) => {
 
 const handleAddCategory = async (parentId: string | null) => {
   try {
-    const { value } = await ElMessageBox.prompt('请输入目录名称', '新建目录', {
+    const result = await ElMessageBox.prompt('请输入目录名称', '新建目录', {
       confirmButtonText: '创建',
       cancelButtonText: '取消',
       inputPattern: /^.{1,100}$/,
       inputErrorMessage: '目录名称长度为 1-100 个字符'
     })
-    await store.createCategory({ name: value, parent_id: parentId })
+    const value = result as { value: string }
+    await store.createCategory({ name: value.value, parent_id: parentId })
     ElMessage.success('目录创建成功')
     // 如果是子目录，展开父节点
     if (parentId) {
@@ -90,14 +91,15 @@ const handleAddCategory = async (parentId: string | null) => {
 
 const handleRenameCategory = async (category: Category) => {
   try {
-    const { value } = await ElMessageBox.prompt('请输入新的目录名称', '重命名目录', {
+    const result = await ElMessageBox.prompt('请输入新的目录名称', '重命名目录', {
       confirmButtonText: '保存',
       cancelButtonText: '取消',
       inputValue: category.name,
       inputPattern: /^.{1,100}$/,
       inputErrorMessage: '目录名称长度为 1-100 个字符'
     })
-    await store.updateCategory(category.id, { name: value })
+    const value = result as { value: string }
+    await store.updateCategory(category.id, { name: value.value })
     ElMessage.success('目录重命名成功')
   } catch {
     // 用户取消
@@ -217,12 +219,12 @@ const handleUploadFile = async (file: File, categoryId: string) => {
   }
 }
 
-const handleCreateFile = async (data: { categoryId: string; filename: string; content: string }) => {
+const handleCreateFile = async (data: { categoryId: string; filename: string; content?: string }) => {
   try {
     const document = await store.createDocument({
       category_id: data.categoryId,
       filename: data.filename,
-      content: data.content
+      content: data.content || ''
     })
     ElMessage.success('文件创建成功')
     // 跳转到编辑器

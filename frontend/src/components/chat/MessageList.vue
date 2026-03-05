@@ -8,6 +8,7 @@
       v-for="(message, index) in messages"
       :key="message.message_id || index"
       :message="message"
+      :session-title="sessionTitle"
       data-testid="message-item"
     />
 
@@ -29,6 +30,7 @@ interface Props {
   messages: Message[];
   streamingContent?: string;
   autoScroll?: boolean;
+  sessionTitle?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {

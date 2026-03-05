@@ -22,6 +22,7 @@
       :conversation-collapsed="conversationListCollapsed"
       :error="sessionStore.error ?? undefined"
       :is-loading="sessionStore.loading"
+      :session-title="currentSessionTitle"
       class="chat-panel"
       :style="showPreview ? { width: chatPanelWidth + 'px' } : {}"
       @send="handleSendMessage"
@@ -69,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, watch, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import ConversationList from './ConversationList.vue'
 import ChatPanel from './ChatPanel.vue'
@@ -88,6 +89,12 @@ const props = defineProps<{
 const sessionStore = useSessionStore()
 const currentSessionId = ref<string | null>(null)
 const showPreview = ref(false)
+
+// 获取当前会话标题
+const currentSessionTitle = computed(() => {
+  if (!currentSessionId.value) return ''
+  return conversationListRef.value?.getCurrentConversationTitle() || ''
+})
 const currentArtifact = ref<Artifact | null>(null)
 const conversationListCollapsed = ref(false)
 const conversationListRef = ref<InstanceType<typeof ConversationList> | null>(null)
