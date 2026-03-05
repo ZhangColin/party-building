@@ -9,30 +9,9 @@ modules:
     icon: "sparkles"
     order: 1
 
-  # 党员管理模块
-  - name: "党员管理"
-    type: "page"
-    page_path: "/admin/party-members"
-    icon: "user-group"
-    order: 2
-
-  # 组织生活管理模块
-  - name: "组织生活"
-    type: "page"
-    page_path: "/admin/organization-life"
-    icon: "calendar"
-    order: 3
-
-  # 党费管理模块
-  - name: "党费管理"
-    type: "page"
-    page_path: "/admin/party-fees"
-    icon: "currency-yen"
-    order: 4
-
   # 知识库模块
   - name: "知识库"
     type: "page"
     page_path: "/knowledge-base"
     icon: "book-open"
-    order: 5
+    order: 2
