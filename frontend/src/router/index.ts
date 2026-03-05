@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    redirect: '/modules/ai-tools',
+    redirect: '/modules/party-ai',
   },
   {
     path: '/login',
@@ -188,7 +188,7 @@ router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormal
   if (to.path === '/login') {
     // 如果已登录，直接跳转到首页（不验证token，让后续请求自动处理）
     if (authStore.isAuthenticated) {
-      next('/modules/ai-tools')
+      next('/modules/party-ai')
       return
     }
     next()
@@ -238,7 +238,7 @@ router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormal
     // 检查是否为管理员
     if (!authStore.user?.is_admin) {
       // 非管理员，跳转到首页
-      next('/modules/ai-tools')
+      next('/modules/party-ai')
       return
     }
   }
