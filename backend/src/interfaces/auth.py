@@ -33,7 +33,7 @@ async def get_current_user(
         HTTPException: Token无效、过期或用户不存在
     """
     # 导入服务（避免循环导入）
-    from src.routers.dependencies import get_auth_service, get_user_service
+    from src.interfaces.dependencies import get_auth_service, get_user_service
 
     token = credentials.credentials
 

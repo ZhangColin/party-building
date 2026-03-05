@@ -71,6 +71,25 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/admin/AdminCourseDocumentsPage.vue'),
         meta: { requiresAdmin: true },
       },
+      // 党建业务管理模块
+      {
+        path: 'party-members',
+        name: 'admin-party-members',
+        component: () => import('../views/admin/PartyMembersPage.vue'),
+        meta: { requiresAdmin: true },
+      },
+      {
+        path: 'organization-life',
+        name: 'admin-organization-life',
+        component: () => import('../views/admin/OrganizationLifePage.vue'),
+        meta: { requiresAdmin: true },
+      },
+      {
+        path: 'party-fees',
+        name: 'admin-party-fees',
+        component: () => import('../views/admin/PartyFeesPage.vue'),
+        meta: { requiresAdmin: true },
+      },
     ],
   },
   {

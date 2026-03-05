@@ -5,7 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 from sqlalchemy import Column, String, DateTime, Text, Integer, Numeric, ForeignKey, Index, Date, Boolean
 from sqlalchemy.dialects.mysql import CHAR
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, foreign
 from .database import Base
 
 
@@ -193,8 +193,8 @@ class KnowledgeCategoryModel(Base):
     # 系统字段
     created_at = Column(DateTime, nullable=False, default=datetime.now, comment="创建时间")
 
-    # 关系
-    documents = relationship("KnowledgeDocumentModel", back_populates="category", cascade="all, delete-orphan")
+    # 关系（暂时注释，等实现知识库功能时再配置）
+    # documents = relationship("KnowledgeDocumentModel", back_populates="category_rel", cascade="all, delete-orphan")
 
     # 索引
     __table_args__ = (
@@ -230,8 +230,8 @@ class KnowledgeDocumentModel(Base):
     created_at = Column(DateTime, nullable=False, default=datetime.now, comment="创建时间")
     updated_at = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now, comment="更新时间")
 
-    # 关系
-    category_rel = relationship("KnowledgeCategoryModel", back_populates="documents", foreign_keys=[category], primaryjoin="KnowledgeDocumentModel.category == KnowledgeCategoryModel.code")
+    # 关系（暂时注释，等实现知识库功能时再配置）
+    # category_rel = relationship("KnowledgeCategoryModel", back_populates="documents")
 
     # 索引
     __table_args__ = (

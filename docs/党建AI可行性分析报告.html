@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>党建AI · 可行性分析报告 · 海创元2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a24;
+  --ink2: #3d3d52;
+  --ink3: #7a7a94;
+  --paper: #f8f6f0;
+  --paper2: #f0ede4;
+  --paper3: #e8e3d6;
+  --red: #c0392b;
+  --red-l: #e8a09a;
+  --red-d: rgba(192,57,43,.08);
+  --gold: #b8860b;
+  --gold-l: #f0d060;
+  --gold-d: rgba(184,134,11,.08);
+  --blue: #2c3e7a;
+  --blue-l: #6b7fbf;
+  --blue-d: rgba(44,62,122,.07);
+  --green: #1a6b3c;
+  --green-l: #5aab7e;
+  --green-d: rgba(26,107,60,.07);
+  --border: #d4cdb8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.75;
+  font-size: 14px;
+}
+
+/* HEADER */
+.report-header {
+  background: var(--ink);
+  color: #f0ede4;
+  padding: 56px 60px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.report-header::before {
+  content: '党建AI';
+  position: absolute;
+  right: -20px;
+  top: -30px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 180px;
+  font-weight: 900;
+  color: rgba(255,255,255,.03);
+  letter-spacing: -10px;
+  pointer-events: none;
+}
+.rh-label {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--red-l);
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.rh-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.rh-title em { font-style: normal; color: var(--gold-l); }
+.rh-sub {
+  font-size: 13px;
+  color: rgba(240,237,228,.55);
+  max-width: 600px;
+  margin-bottom: 32px;
+}
+.rh-meta {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.rh-meta-item { font-size: 11px; }
+.rh-meta-item span { display: block; color: rgba(240,237,228,.4); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
+
+/* VERDICT BANNER */
+.verdict {
+  background: linear-gradient(135deg, #1a6b3c 0%, #144d2c 100%);
+  color: #e8f5ee;
+  padding: 20px 60px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 3px solid var(--gold);
+}
+.verdict-icon { font-size: 28px; }
+.verdict-text strong { font-size: 15px; font-weight: 700; display: block; margin-bottom: 2px; }
+.verdict-text span { font-size: 12px; opacity: .75; }
+.verdict-score {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 600;
+  color: #7ddc9e;
+}
+.verdict-score small { font-size: 13px; opacity: .6; }
+
+/* MAIN LAYOUT */
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 60px 60px; }
+
+/* SECTION */
+.section { margin-bottom: 48px; }
+.sec-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+}
+.sec-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--red);
+  background: var(--red-d);
+  border: 1px solid var(--red-l);
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.sec-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+.sec-sub { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+
+/* CARDS */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: 10px 0 0 10px;
+}
+.card.red::before { background: var(--red); }
+.card.gold::before { background: var(--gold); }
+.card.green::before { background: var(--green); }
+.card.blue::before { background: var(--blue); }
+.card.gray::before { background: #aaa; }
+
+.card-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.card-meta {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.tag {
+  display: inline-block;
+  font-size: 9px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px;
+  letter-spacing: .3px;
+}
+.tag.r { background: var(--red-d); color: var(--red); border: 1px solid var(--red-l); }
+.tag.g { background: var(--green-d); color: var(--green); border: 1px solid var(--green-l); }
+.tag.a { background: var(--gold-d); color: var(--gold); border: 1px solid var(--gold-l); }
+.tag.b { background: var(--blue-d); color: var(--blue); border: 1px solid var(--blue-l); }
+.tag.k { background: #f0ede4; color: #555; border: 1px solid #ccc; }
+
+.card-body { font-size: 13px; color: var(--ink2); line-height: 1.8; }
+.card-body strong { color: var(--ink); }
+
+/* TABLE */
+table.t {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin: 14px 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+table.t th {
+  background: var(--ink);
+  color: #f0ede4;
+  padding: 9px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  text-align: left;
+}
+table.t td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--paper3);
+  vertical-align: middle;
+}
+table.t tr:last-child td { border-bottom: none; }
+table.t tr:hover td { background: var(--paper2); }
+table.t td.num { font-family: 'JetBrains Mono', monospace; text-align: right; font-size: 11.5px; }
+table.t td.hi-g { color: var(--green); font-weight: 700; }
+table.t td.hi-r { color: var(--red); font-weight: 700; }
+table.t td.hi-a { color: var(--gold); font-weight: 700; }
+
+/* KPI ROW */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+.kpi {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  text-align: center;
+}
+.kpi-n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.kpi-l { font-size: 10px; color: var(--ink3); letter-spacing: .3px; }
+
+/* GRID 2 */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+
+/* ALERT */
+.alert {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 14px 0;
+  border-left: 4px solid;
+}
+.alert.warn { background: var(--gold-d); border-color: var(--gold); }
+.alert.danger { background: var(--red-d); border-color: var(--red); }
+.alert.ok { background: var(--green-d); border-color: var(--green); }
+.alert.info { background: var(--blue-d); border-color: var(--blue); }
+.alert-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.alert-body { font-size: 12.5px; color: var(--ink2); line-height: 1.8; }
+
+/* TIMELINE */
+.timeline { position: relative; padding-left: 28px; margin: 16px 0; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 6px; top: 4px; bottom: 4px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--red), var(--gold), var(--green));
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -24px; top: 16px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 2px var(--red);
+}
+.tl-phase { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.tl-title { font-weight: 700; font-size: 13px; margin-bottom: 5px; }
+.tl-body { font-size: 12px; color: var(--ink2); line-height: 1.8; }
+
+/* SCORE CARD */
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0; }
+.score-item {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.score-label { font-size: 11px; color: var(--ink3); margin-bottom: 6px; }
+.score-bar-track {
+  height: 6px;
+  background: var(--paper3);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+.score-bar-fill { height: 100%; border-radius: 3px; }
+.score-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; }
+
+/* FOOTER */
+.report-footer {
+  background: var(--ink);
+  color: rgba(240,237,228,.4);
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.report-footer strong { color: rgba(240,237,228,.8); }
+
+@media(max-width:768px){
+  .report-header, .container { padding: 28px 20px; }
+  .kpi-row { grid-template-columns: repeat(2,1fr); }
+  .g2, .score-grid { grid-template-columns: 1fr; }
+  .verdict { flex-wrap: wrap; }
+  .rh-title { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="rh-label">海创元 · 新业务可行性分析报告 · 2026年2月</div>
+  <h1 class="rh-title">党建<em>AI</em>：<br>从街道支部到企业党委的<em>智能党务助手</em></h1>
+  <p class="rh-sub">基于市场深度调研，针对基层党支部（街道下属支部、企业党支部）的AI赋能党务工作产品，全维度可行性评估</p>
+  <div class="rh-meta">
+    <div class="rh-meta-item"><span>报告类型</span>新业务可行性分析</div>
+    <div class="rh-meta-item"><span>目标客户</span>街道党支部 · 企业党支部</div>
+    <div class="rh-meta-item"><span>建议启动方式</span>轻资产MVP · 3个月验证</div>
+    <div class="rh-meta-item"><span>与主业协同</span>强协同（进校业务延伸）</div>
+  </div>
+</div>
+
+<!-- VERDICT -->
+<div class="verdict">
+  <div class="verdict-icon">⚖️</div>
+  <div class="verdict-text">
+    <strong>综合评判：审慎推进，分阶段验证，与AI教育主业形成协同</strong>
+    <span>市场需求真实存在但付费路径需要疏通；建议以"轻量MVP + 街道试点"方式启动，3个月内以低于30万成本验证商业模式</span>
+  </div>
+  <div class="verdict-score">★★★<small>/5</small></div>
+</div>
+
+<div class="container">
+
+<!-- ===== SECTION 1 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">01</div>
+    <div><div class="sec-title">市场背景与政策环境</div><div class="sec-sub">为什么"党建AI"这个时间点成立？</div></div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title">🏛️ 政策强驱动：智慧党建已成国家战略方向</div>
+    <div class="card-meta"><span class="tag g">政策利好</span><span class="tag k">顶层设计</span></div>
+    <div class="card-body">
+      早在2019年，《中共中央关于加强党的政治建设的意见》就明确指出，要"积极运用互联网、大数据等新兴技术，创新党组织活动内容方式，推进'智慧党建'"。<br><br>
+      2025年DeepSeek等国产大模型的爆发，将"AI赋能党建"从学术讨论推向落地实践。各级组织部门、党校、国企党委均在积极探索AI工具应用，<strong>这是政治正确与技术可行的交叉窗口期。</strong><br><br>
+      中国移动"星火党建"系统已服务超2.8万家行业客户、12.8万个党支部、110余万名党员，充分说明该赛道需求真实、市场规模可观。
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-n" style="color:var(--red)">500<span style="font-size:14px">万+</span></div>
+      <div class="kpi-l">全国基层党支部数量</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-n" style="color:var(--blue)">9800<span style="font-size:14px">万+</span></div>
+      <div class="kpi-l">全国共产党员总数</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-n" style="color:var(--green)">70%<span style="font-size:14px">+</span></div>
+      <div class="kpi-l">基层党务"纸质+人工"比例</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-n" style="color:var(--gold)">120%</div>
+      <div class="kpi-l">企业级AI Agent市场年复合增长率</div>
+    </div>
+  </div>
+
+  <div class="card gold">
+    <div class="card-title">📍 精准目标客群分析</div>
+    <div class="card-meta"><span class="tag a">高优先级</span></div>
+    <div class="card-body">
+      海创元现有资源最匹配以下两类目标客户：<br><br>
+      <strong>① 街道下属党支部（社区党支部、居委会）：</strong>党务工作人员数量有限（通常1-2名兼职），日常承担"三会一课"记录、党费收缴、材料报送、活动策划等大量事务性工作，AI减负需求强烈。<br><br>
+      <strong>② 企业党支部（非公党建、国企基层党委）：</strong>随着国家持续推进"两个覆盖"（党的组织覆盖、党的工作覆盖），规模企业、外资企业党建工作日趋规范化，党务专员需求激增，且企业付费意愿明显强于街道（有自主经营收入）。<br><br>
+      <strong>与主业协同点：</strong>进校业务中已触达大量学校，而学校党支部（教职工党支部）本身也是高质量的潜在客户，无需额外获客。
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 2 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">02</div>
+    <div><div class="sec-title">竞争格局与市场现状</div><div class="sec-sub">谁在做，做得怎么样，海创元的机会在哪里？</div></div>
+  </div>
+
+  <table class="t">
+    <tr>
+      <th>竞争对手/产品</th>
+      <th>类型</th>
+      <th>核心能力</th>
+      <th>弱点/机会</th>
+      <th>市场定位</th>
+    </tr>
+    <tr>
+      <td><strong>中国移动"星火党建"</strong></td>
+      <td>运营商级平台</td>
+      <td>全流程电子化、服务12.8万党支部</td>
+      <td>AI能力弱、交互笨重、无私域AI助手</td>
+      <td class="hi-a">大客户/政府采购</td>
+    </tr>
+    <tr>
+      <td><strong>广东动易智慧党建</strong></td>
+      <td>传统软件厂商</td>
+      <td>RAG+DeepSeek智能问答、党费管理</td>
+      <td>ToB重交付，中小支部难落地</td>
+      <td class="hi-a">中大型机关/企业</td>
+    </tr>
+    <tr>
+      <td><strong>简道云党务模板</strong></td>
+      <td>通用低代码平台</td>
+      <td>无代码搭建、AI推荐党员发展对象</td>
+      <td>需要自行配置，无党建专业知识库</td>
+      <td class="hi-g">中小支部</td>
+    </tr>
+    <tr>
+      <td><strong>钉钉AI党建</strong></td>
+      <td>平台生态产品</td>
+      <td>组织管理+AI融合</td>
+      <td>依赖钉钉生态，不独立，替代性强</td>
+      <td class="hi-a">企业党支部</td>
+    </tr>
+    <tr>
+      <td><strong>AI党建云（中央党校联合开发）</strong></td>
+      <td>权威机构产品</td>
+      <td>政治背书强，内容权威</td>
+      <td>商业化能力弱，更新慢，互动差</td>
+      <td class="hi-r">机关单位</td>
+    </tr>
+    <tr>
+      <td><strong>海创元党建AI（拟）</strong></td>
+      <td>垂直AI助手</td>
+      <td>对话式AI + 场景化模板 + AI写作</td>
+      <td class="hi-g">聚焦中小支部痛点，轻量化、低价格</td>
+      <td class="hi-g">街道/企业基层支部</td>
+    </tr>
+  </table>
+
+  <div class="alert ok">
+    <div class="alert-title">💡 海创元的差异化机会</div>
+    <div class="alert-body">
+      现有竞争产品普遍存在两个问题：<strong>要么太重（大平台、定制化、政府采购门槛高），要么太浅（低代码模板、无专业党建知识）</strong>。海创元可以占据"垂直AI对话助手"的空白——以类似"智能党务助理"的产品形态，专门服务基层党务工作者日常高频痛点（材料撰写、活动策划、政策查询），无需IT部门参与即可上手，定价轻量，按支部/年订阅。这与海创元在AI教育领域的产品思路高度一致。
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 3 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">03</div>
+    <div><div class="sec-title">产品方案设计</div><div class="sec-sub">"党建AI助手"的核心功能、技术路线与产品形态</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card red">
+      <div class="card-title">🤖 核心产品：党建AI智能助手</div>
+      <div class="card-meta"><span class="tag r">MVP核心</span></div>
+      <div class="card-body">
+        以对话式AI为交互入口，覆盖党务工作者日常最高频、最耗时的工作场景。技术上基于国产大模型（DeepSeek/文心/通义）+ 党建专属知识库（RAG），可私有化部署或SaaS云服务。
+      </div>
+    </div>
+    <div class="card blue">
+      <div class="card-title">📱 产品形态</div>
+      <div class="card-meta"><span class="tag b">轻量化</span></div>
+      <div class="card-body">
+        <strong>第一阶段（0-6个月）：</strong>微信小程序 + H5网页版，无需安装，扫码即用。<br>
+        <strong>第二阶段（6-12个月）：</strong>企业微信插件 + 钉钉插件，嵌入现有办公平台。<br>
+        <strong>长期：</strong>独立App + 后台管理系统。
+      </div>
+    </div>
+  </div>
+
+  <div class="card gold">
+    <div class="card-title">📋 功能模块详解（分阶段）</div>
+    <div class="card-meta"><span class="tag a">产品规划</span></div>
+    <div class="card-body">
+    <table class="t" style="margin-top:10px">
+      <tr>
+        <th>功能模块</th>
+        <th>具体场景</th>
+        <th>用户价值</th>
+        <th>阶段</th>
+      </tr>
+      <tr>
+        <td><strong>🖊️ AI材料写作</strong></td>
+        <td>党员发展入党申请书、思想汇报、工作总结、三会一课记录、述职报告</td>
+        <td>原本2-3小时的材料，AI辅助10分钟完成初稿</td>
+        <td class="hi-g">MVP</td>
+      </tr>
+      <tr>
+        <td><strong>📅 活动策划助手</strong></td>
+        <td>主题党日活动方案、党史学习教育计划、红色参观线路推荐</td>
+        <td>一键生成活动方案，包含时间安排、主持词、注意事项</td>
+        <td class="hi-g">MVP</td>
+      </tr>
+      <tr>
+        <td><strong>📚 政策智能问答</strong></td>
+        <td>党规党纪查询、最新文件精神解读、党费计算标准、发展党员流程</td>
+        <td>替代人工查阅，实时精准回答，减少出错风险</td>
+        <td class="hi-g">MVP</td>
+      </tr>
+      <tr>
+        <td><strong>🎤 会议纪要生成</strong></td>
+        <td>党支部委员会、党员大会、支部书记工作讲评的纪要整理</td>
+        <td>录音转文字→AI自动结构化→格式化纪要</td>
+        <td class="hi-a">V1.5</td>
+      </tr>
+      <tr>
+        <td><strong>📊 党务台账管理</strong></td>
+        <td>党员信息库、党费台账、组织生活记录、积分管理</td>
+        <td>替代Excel人工维护，自动统计、一键导出</td>
+        <td class="hi-a">V1.5</td>
+      </tr>
+      <tr>
+        <td><strong>🎨 宣传内容生成</strong></td>
+        <td>党建宣传海报文案、公众号推文、学习强国投稿内容</td>
+        <td>AI生成文案+设计模板，支持一键分享</td>
+        <td class="hi-r">V2.0</td>
+      </tr>
+      <tr>
+        <td><strong>📈 党建数据分析</strong></td>
+        <td>党员活动参与率、学习情况统计、支部工作评分卡</td>
+        <td>可视化数据报告，辅助书记汇报、迎检</td>
+        <td class="hi-r">V2.0</td>
+      </tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="alert info">
+    <div class="alert-title">🔧 技术路线建议（控制成本）</div>
+    <div class="alert-body">
+      <strong>底层大模型：</strong>优先调用DeepSeek API（成本极低，政治可接受度高），辅以文心一言作备选。<br>
+      <strong>知识库：</strong>基于RAG技术构建党章党规、历年重要文件、党建工作条例的专属知识库，这是核心竞争壁垒。<br>
+      <strong>开发成本估算：</strong>MVP版（AI写作+政策问答+活动策划）外包开发约 <strong>8-15万元</strong>，3个月可上线。内部有技术团队则可降至5万以下。<br>
+      <strong>运营成本：</strong>初期月均API调用成本预估 3,000-8,000元/月（视用量而定，极低）。
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 4 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">04</div>
+    <div><div class="sec-title">市场定价策略</div><div class="sec-sub">怎么定价才能打进去又能赚到钱？</div></div>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-title">⚠️ 付费路径是核心难点</div>
+    <div class="alert-body">
+      街道党支部：预算来自财政拨款，采购需走政府采购流程，单笔超5万元需招标。但<strong>非公党建（企业党支部）预算更灵活</strong>，由企业管理层批准即可，是更优先的突破口。同时，学校党支部（教职工支部）天然与海创元进校业务协同，可作为捆绑销售切入点。
+    </div>
+  </div>
+
+  <table class="t">
+    <tr>
+      <th>套餐</th>
+      <th>目标客户</th>
+      <th>功能范围</th>
+      <th>建议定价（年）</th>
+      <th>付费主体</th>
+    </tr>
+    <tr>
+      <td><strong>🌱 基础版</strong></td>
+      <td>50人以下小支部（街道/社区）</td>
+      <td>AI写作 + 政策问答 + 活动策划 + 5个账号</td>
+      <td class="num hi-g">980元/年</td>
+      <td>个人 / 支部活动经费</td>
+    </tr>
+    <tr>
+      <td><strong>🏢 标准版</strong></td>
+      <td>企业党支部（100人以下）</td>
+      <td>基础版全功能 + 台账管理 + 20个账号 + 宣传模板</td>
+      <td class="num hi-g">3,800元/年</td>
+      <td>企业行政/党务经费</td>
+    </tr>
+    <tr>
+      <td><strong>🏛️ 专业版</strong></td>
+      <td>街道党委 / 国企党委 / 大型支部</td>
+      <td>全功能 + 不限账号 + 数据分析看板 + 专属客服</td>
+      <td class="num hi-a">9,800元/年</td>
+      <td>政府采购 / 企业党建经费</td>
+    </tr>
+    <tr>
+      <td><strong>🎓 校园版（捆绑）</strong></td>
+      <td>学校教职工党支部（进校业务延伸）</td>
+      <td>标准版功能 + 教育定制模板</td>
+      <td class="num hi-a">2,800元/年（随进校合同附赠或低价捆绑）</td>
+      <td>学校经费（延伸进校合同价值）</td>
+    </tr>
+    <tr>
+      <td><strong>📦 渠道分销版</strong></td>
+      <td>通过街道、商会等渠道批量销售</td>
+      <td>批量购买基础版，渠道商留30-40%分成</td>
+      <td class="num">600-700元/年（渠道价）</td>
+      <td>渠道商向其下属组织销售</td>
+    </tr>
+  </table>
+
+  <div class="g2">
+    <div class="card green">
+      <div class="card-title">💡 定价逻辑说明</div>
+      <div class="card-body">
+        基础版980元/年，约等于月均81元，相当于一名党务工作者每天省下30分钟工作时间的价值，<strong>性价比极强，决策门槛极低</strong>。参照竞品（简道云党务系统约2000-6000元/年，动易平台万元以上），海创元定位"性价比最高的基层党建AI工具"，走量为主。
+      </div>
+    </div>
+    <div class="card blue">
+      <div class="card-title">💰 校园版捆绑策略（重要）</div>
+      <div class="card-body">
+        每所进校学校通常有3-8个教职工党支部。在进校合同中将"党建AI校园版"作为增值服务附赠（含于AI进校服务包），或以极低价（500元/年/学校）捆绑销售。<strong>一所学校可带来500-3,800元额外收入</strong>，且无额外销售成本。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 5 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">05</div>
+    <div><div class="sec-title">收入测算与财务预期</div><div class="sec-sub">能赚多少钱？什么时候能回本？</div></div>
+  </div>
+
+  <table class="t">
+    <tr>
+      <th>阶段</th>
+      <th>时间</th>
+      <th>目标客户数</th>
+      <th>客单价均值</th>
+      <th>预计年收入</th>
+      <th>备注</th>
+    </tr>
+    <tr>
+      <td><strong>种子期</strong></td>
+      <td>2026年Q2-Q3</td>
+      <td class="num">10-20个支部</td>
+      <td class="num">1,500元</td>
+      <td class="num hi-r">1.5-3万元</td>
+      <td>验证产品，重在反馈</td>
+    </tr>
+    <tr>
+      <td><strong>启动期</strong></td>
+      <td>2026年Q4</td>
+      <td class="num">50-100个</td>
+      <td class="num">2,500元</td>
+      <td class="num hi-a">12.5-25万元</td>
+      <td>通过学校渠道快速铺量</td>
+    </tr>
+    <tr>
+      <td><strong>成长期</strong></td>
+      <td>2027年全年</td>
+      <td class="num">300-500个</td>
+      <td class="num">3,000元</td>
+      <td class="num hi-g">90-150万元</td>
+      <td>续费+新客，毛利60-70%</td>
+    </tr>
+    <tr>
+      <td><strong>规模期</strong></td>
+      <td>2028年全年</td>
+      <td class="num">1,000-2,000个</td>
+      <td class="num">3,500元</td>
+      <td class="num hi-g">350-700万元</td>
+      <td>成为独立业务线</td>
+    </tr>
+  </table>
+
+  <div class="alert ok">
+    <div class="alert-title">✅ 投入产出分析（2026年）</div>
+    <div class="alert-body">
+      <strong>初始投入：</strong>MVP开发8-15万 + 知识库建设3-5万 + 市场推广5万 = 合计约 <strong>16-25万元</strong>（一次性）<br>
+      <strong>月均运营成本：</strong>API费用约3,000-8,000元/月，可忽略不计<br>
+      <strong>回本周期：</strong>若Q4达到50个付费支部（均价2,500元），年收入约12.5万元，加上进校捆绑价值，整体2026年不亏损<br>
+      <strong>2027年利润预期：</strong>90-150万收入 × 65%毛利率 = 净毛利约 <strong>58-97万元</strong>
+    </div>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-title">⚠️ 与海创元主业的现金流协同</div>
+    <div class="alert-body">
+      根据海创元2026战略文件，公司H1现金流持续失血（合计-474万），需靠借款维持。党建AI本身初期收入有限，<strong>建议将开发成本控制在15万以内</strong>，可通过以下方式降低投入：① 复用AI进校业务已有的大模型调用框架；② 聘用兼职学生开发MVP小程序；③ 以学校教职工党支部为首批试点，利用已签约学校资源零成本获客。
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 6 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">06</div>
+    <div><div class="sec-title">获客路径与销售策略</div><div class="sec-sub">怎么把产品卖出去？</div></div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-phase">路径一 · 优先级最高</div>
+      <div class="tl-title">🏫 进校业务延伸 → 学校教职工党支部</div>
+      <div class="tl-body">
+        已签约145所学校，每所学校平均3-5个教职工党支部，<strong>零获客成本</strong>。在AI进校服务交付时，同步向校长/书记推介"党建AI校园版"，作为进校合同的增值附赠或低价捆绑（500元/年/校），不占用单独销售资源。<br><br>
+        <strong>转化预期：</strong>145所学校中保守转化30%即43所学校，贡献约2.2-8万元增量收入，同时提升进校客户粘性。
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">路径二 · 中期重点</div>
+      <div class="tl-title">🏢 通过商会/园区/街道办事处批量触达企业党支部</div>
+      <div class="tl-body">
+        企业党支部付费能力强，决策快。通过联系工商联、商会、产业园区党工委等组织，以"一站式党建AI解决方案"批量签约。可设计"园区包"：某园区内所有企业党支部统一采购，总价优惠30%，园区或商会协会负责催款，海创元提供统一培训。<br><br>
+        <strong>单园区价值：</strong>20家企业×2,800元=5.6万元/年，毛利约3.6万元。
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">路径三 · 建立后尝试</div>
+      <div class="tl-title">🏛️ 对接街道党建工作站 → 获取区级推广资质</div>
+      <div class="tl-body">
+        通过1-2个区级组织部门的试点背书，获得"区级推荐采购名录"资质。一旦进入政府采购白名单，街道下属各支部可通过统一采购渠道购买，实现批量化。<br>此路径周期较长（6-12个月），但一旦打通，可快速放量。<br><br>
+        <strong>注意：</strong>政府采购5万元以下无需招标，建议定价控制在单次订单5万元以内，降低采购门槛。
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">路径四 · 长期生态</div>
+      <div class="tl-title">🌐 党建AI + OPC生态 → 分销体系</div>
+      <div class="tl-body">
+        结合海创元正在规划的OPC合伙人体系，将"党建AI"纳入OPC合伙人的可销售产品清单，给予合伙人25-35%分成。OPC合伙人中若有在政府、国企、学校有资源的人，可快速打开各自渠道。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 7 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">07</div>
+    <div><div class="sec-title">风险识别与应对策略</div><div class="sec-sub">有哪些坑？怎么提前规避？</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card red">
+      <div class="card-title">🔴 高风险：政治合规与内容安全</div>
+      <div class="card-meta"><span class="tag r">必须重点管控</span></div>
+      <div class="card-body">
+        AI生成党建材料必须<strong>绝对准确、政治正确</strong>，任何错误表达都可能带来严重声誉风险。<br><br>
+        <strong>应对：</strong>① 建立严格的内容审核机制，AI生成内容均需注明"供参考，请人工审核"；② 仅使用经过政治合规训练的国产大模型（DeepSeek、文心）；③ 知识库内容来源严格限于官方文件；④ 禁止涉及干部人事评价、组织发展建议等敏感内容生成。
+      </div>
+    </div>
+    <div class="card gold">
+      <div class="card-title">🟡 中风险：付费意愿与预算路径</div>
+      <div class="card-meta"><span class="tag a">需要疏通</span></div>
+      <div class="card-body">
+        街道基层支部可能面临"认为是公益工具，不应收费"的心理障碍；政府采购流程长，回款慢。<br><br>
+        <strong>应对：</strong>① 优先攻企业党支部（付费能力强，决策快）；② 对街道支部提供"免费基础版"作为引流，以流量换口碑，再转化街道党委或上级单位为付费客户；③ 配合年底预算使用周期，在10-12月集中推广，争取党建工作经费预算。
+      </div>
+    </div>
+    <div class="card blue">
+      <div class="card-title">🔵 中风险：大平台竞争与免费化</div>
+      <div class="card-meta"><span class="tag b">保持差异化</span></div>
+      <div class="card-body">
+        钉钉、企业微信等大平台随时可能推出免费党建AI功能，对中小厂商形成降维打击。<br><br>
+        <strong>应对：</strong>① 深耕专业党建知识库，这是大平台短期内无法复制的护城河；② 提供"党建AI + 党务工作培训"的组合服务，用人的服务弥补产品差距；③ 通过渠道关系而非产品功能建立客户粘性。
+      </div>
+    </div>
+    <div class="card gray">
+      <div class="card-title">⚪ 低风险：开发与交付能力</div>
+      <div class="card-meta"><span class="tag k">可控</span></div>
+      <div class="card-body">
+        海创元团队目前研发资源有限，并发推进多个新业务存在摊薄风险。<br><br>
+        <strong>应对：</strong>MVP阶段以外包开发为主，内部产品经理负责需求和知识库建设；严格遵守"3个月止损期"原则（与会议纪要指令一致），若Q3末未获得10个付费客户则暂停。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 8 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">08</div>
+    <div><div class="sec-title">与海创元主业的协同价值</div><div class="sec-sub">党建AI不只是一个新业务，更是主业的杠杆</div></div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title">🔗 业务协同矩阵</div>
+    <div class="card-body">
+    <table class="t" style="margin-top:10px">
+      <tr>
+        <th>协同路径</th>
+        <th>机制说明</th>
+        <th>价值量化</th>
+      </tr>
+      <tr>
+        <td><strong>进校业务 → 党建AI</strong></td>
+        <td>进校签约学校的教职工党支部，天然是党建AI客户，无额外获客成本</td>
+        <td class="hi-g">145所学校×均价500元=7.2万元捆绑增量</td>
+      </tr>
+      <tr>
+        <td><strong>党建AI → 进校业务</strong></td>
+        <td>通过党建AI深度服务学校，书记/校长关系升温，有利于进校续约和转介绍</td>
+        <td class="hi-g">续约率提升预计+5-10%</td>
+      </tr>
+      <tr>
+        <td><strong>党建AI → 政企培训</strong></td>
+        <td>服务企业党委/党支部的过程中，自然发现"AI员工培训"需求，顺势推进政企培训业务</td>
+        <td class="hi-a">每个企业党支部潜在带出1-2个培训单</td>
+      </tr>
+      <tr>
+        <td><strong>党建AI → OPC生态</strong></td>
+        <td>有政府、学校资源的OPC合伙人，可同时销售党建AI和AI进校产品，形成"套餐"</td>
+        <td class="hi-a">OPC合伙人销售意愿更强（有分成）</td>
+      </tr>
+      <tr>
+        <td><strong>党建AI → 品牌背书</strong></td>
+        <td>"智慧党建AI"产品在政府和国企圈层传播，提升海创元政治可信度，助力大客户开拓</td>
+        <td class="hi-a">品牌溢价，难以量化但战略价值高</td>
+      </tr>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 9 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">09</div>
+    <div><div class="sec-title">执行路线图与决策节点</div><div class="sec-sub">怎么干，干多久，干到什么程度再决定继续？</div></div>
+  </div>
+
+  <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi">
+      <div class="kpi-n" style="color:var(--red)">15万</div>
+      <div class="kpi-l">最大初始投入上限</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-n" style="color:var(--gold)">3个月</div>
+      <div class="kpi-l">MVP上线时间目标</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-n" style="color:var(--green)">10个</div>
+      <div class="kpi-l">3个月止损验证线（付费支部数）</div>
+    </div>
+  </div>
+
+  <div class="timeline" style="margin-top:20px">
+    <div class="tl-item">
+      <div class="tl-phase">2026年 3月</div>
+      <div class="tl-title">立项与MVP开发启动</div>
+      <div class="tl-body">① 确定产品经理（可由现有人员兼任）；② 启动知识库建设（党章、党规、三会一课指引、入党流程等核心内容）；③ 对接MVP开发（微信小程序，AI写作+政策问答2个核心模块）；④ 在已签约学校中选取5所作为种子试点。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">2026年 4-5月</div>
+      <div class="tl-title">内部试点 + 产品打磨</div>
+      <div class="tl-body">① 邀请5所学校教职工党支部书记免费试用，深度访谈收集反馈；② 同步接触2-3家企业党支部进行验证；③ 根据反馈快速迭代，重点提升AI输出内容的"党建专业度"；④ 确定最终定价策略与销售话术。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">2026年 6月 · 决策节点1</div>
+      <div class="tl-title">半年关键复盘：继续 or 调整</div>
+      <div class="tl-body"><strong>继续标准：</strong>付费客户≥5个，用户反馈NPS≥7，至少1个企业党支部愿意付费。<br><strong>调整标准：</strong>若付费转化为零，考虑将产品转为"进校合同增值服务"而非独立产品销售，降低资源投入。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">2026年 7-9月</div>
+      <div class="tl-title">商业化推广 + 渠道开拓</div>
+      <div class="tl-body">① 启动企业党支部定向销售（通过商会/园区渠道）；② 将党建AI纳入OPC合伙人产品清单；③ 开发活动策划、会议纪要等V1.5功能；④ 争取1-2个区级组织部门试点背书。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">2026年 10-12月 · 决策节点2</div>
+      <div class="tl-title">年底冲量 + 全年总结</div>
+      <div class="tl-body"><strong>年底党建工作经费使用高峰，是一年中最佳销售时机。</strong>配合年底续约和新签，争取Q4新增30-50个支部付费。年末评估是否作为独立业务线在2027年加大投入，或作为进校业务的长期增值服务维持现状运营。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 10 ===== -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">10</div>
+    <div><div class="sec-title">综合评估与最终建议</div><div class="sec-sub">一句话结论与行动清单</div></div>
+  </div>
+
+  <div class="score-grid">
+    <div class="score-item">
+      <div class="score-label">市场需求真实度</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:var(--green)"></div></div>
+      <div class="score-val" style="color:var(--green)">85分</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">政策环境友好度</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:90%;background:var(--green)"></div></div>
+      <div class="score-val" style="color:var(--green)">90分</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">产品可实现性</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:80%;background:var(--green)"></div></div>
+      <div class="score-val" style="color:var(--green)">80分</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">与主业协同度</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:88%;background:var(--green)"></div></div>
+      <div class="score-val" style="color:var(--green)">88分</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">付费路径通畅度</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:52%;background:var(--gold)"></div></div>
+      <div class="score-val" style="color:var(--gold)">52分</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">短期现金流贡献</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:35%;background:var(--red)"></div></div>
+      <div class="score-val" style="color:var(--red)">35分</div>
+    </div>
+  </div>
+
+  <div class="alert ok">
+    <div class="alert-title">✅ 核心结论</div>
+    <div class="alert-body">
+      <strong>党建AI是一个正确方向的业务，但不是2026年的救命业务，而是2027年的增长业务。</strong><br><br>
+      建议以"轻量MVP + 进校捆绑"方式在2026年Q2低成本启动，控制投入在15万以内，通过已有145所学校的进校资源零成本获客。不要将它作为独立现金流来源考核，而是定位为：① 提升进校客户粘性的增值服务；② 打开政企市场（企业党支部）的敲门砖；③ 为2027年的规模化做产品和市场验证。<br><br>
+      如果2026年Q4能实现50个付费支部（创收约12.5万元），即可判断模型成立，2027年加大投入；若未达标，以"进校合同增值服务"模式维持运营，不单独追加资源。
+    </div>
+  </div>
+
+  <div class="card gold">
+    <div class="card-title">📋 立即行动清单（接下来30天）</div>
+    <div class="card-body">
+      <strong>Week 1：</strong>指定1名产品负责人（兼任即可），完成"党建AI"竞品深度试用报告（至少试用简道云、动易平台、AI党建云3个产品）<br>
+      <strong>Week 1-2：</strong>收集5所已签约学校的教职工党支部书记联系方式，安排访谈，收集痛点（重点问：每周花多少时间做材料、最头痛的是什么）<br>
+      <strong>Week 2-3：</strong>整理党建知识库内容清单，确定MVP知识库范围（建议：党章全文、三会一课规程、入党发展程序、党费计算标准、常用报告模板20套）<br>
+      <strong>Week 3-4：</strong>获取MVP开发报价（至少3家），确定技术方案和时间节点；同步向集团汇报"党建AI"立项计划，明确资源支持和止损条件
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<div class="report-footer">
+  <strong>海创元 · 党建AI可行性分析报告</strong> &nbsp;|&nbsp; 2026年2月 &nbsp;|&nbsp; 本报告基于公开市场调研及海创元2026战略文件综合分析 &nbsp;|&nbsp; 仅供内部决策参考
+</div>
+
+</body>
+</html>

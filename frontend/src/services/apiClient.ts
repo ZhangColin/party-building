@@ -59,6 +59,21 @@ import type {
   UpdateCourseDocumentRequest,
 } from '../types'
 import type { NavigationResponse } from '../types/navigation'
+import type {
+  PartyMemberListResponse,
+  PartyMemberDetail,
+  PartyMemberCreateRequest,
+  PartyMemberUpdateRequest,
+  PartyMemberBatchImportResponse,
+  OrganizationLifeListResponse,
+  OrganizationLifeDetail,
+  OrganizationLifeCreateRequest,
+  OrganizationLifeUpdateRequest,
+  PartyFeeListResponse,
+  PartyFeeDetail,
+  PartyFeeCreateRequest,
+  PartyFeeUpdateRequest,
+} from '../types/party'
 
 /**
  * API 错误响应格式
@@ -959,6 +974,240 @@ export class ApiService {
   static async moveCourseDocumentDown(docId: string): Promise<{ message: string }> {
     const response = await apiClient.post<{ message: string }>(`/admin/course-documents/${docId}/move-down`)
     return response.data
+  }
+
+  // ==================== 党员管理模块 ====================
+
+  /**
+   * 获取党员列表
+   * @param page 页码（可选，默认1）
+   * @param pageSize 每页数量（可选，默认20）
+   * @param name 姓名筛选（模糊查询，可选）
+   * @param partyBranch 党支部筛选（可选）
+   * @param memberType 党员类型筛选（可选）
+   * @param status 状态筛选（可选）
+   */
+  static async getPartyMembers(
+    page: number = 1,
+    pageSize: number = 20,
+    name?: string,
+    partyBranch?: string,
+    memberType?: string,
+    status?: string
+  ): Promise<PartyMemberListResponse> {
+    const params: Record<string, any> = {
+      page,
+      page_size: pageSize,
+    }
+    if (name) params.name = name
+    if (partyBranch) params.party_branch = partyBranch
+    if (memberType) params.member_type = memberType
+    if (status) params.status = status
+
+    const response = await apiClient.get<PartyMemberListResponse>('/party/members', { params })
+    return response.data
+  }
+
+  /**
+   * 获取党员详情
+   * @param memberId 党员ID
+   */
+  static async getPartyMember(memberId: string): Promise<PartyMemberDetail> {
+    const response = await apiClient.get<PartyMemberDetail>(`/party/members/${memberId}`)
+    return response.data
+  }
+
+  /**
+   * 创建党员
+   * @param request 创建党员请求
+   */
+  static async createPartyMember(request: PartyMemberCreateRequest): Promise<PartyMemberDetail> {
+    const response = await apiClient.post<PartyMemberDetail>('/party/members', request)
+    return response.data
+  }
+
+  /**
+   * 更新党员信息
+   * @param memberId 党员ID
+   * @param request 更新党员请求
+   */
+  static async updatePartyMember(
+    memberId: string,
+    request: PartyMemberUpdateRequest
+  ): Promise<PartyMemberDetail> {
+    const response = await apiClient.patch<PartyMemberDetail>(`/party/members/${memberId}`, request)
+    return response.data
+  }
+
+  /**
+   * 删除党员
+   * @param memberId 党员ID
+   */
+  static async deletePartyMember(memberId: string): Promise<void> {
+    await apiClient.delete(`/party/members/${memberId}`)
+  }
+
+  /**
+   * 批量导入党员
+   * @param members 党员数据列表
+   */
+  static async batchImportPartyMembers(
+    members: PartyMemberCreateRequest[]
+  ): Promise<PartyMemberBatchImportResponse> {
+    const response = await apiClient.post<PartyMemberBatchImportResponse>(
+      '/party/members/batch-import',
+      members
+    )
+    return response.data
+  }
+
+  // ==================== 组织生活管理 API ====================
+
+  /**
+   * 获取组织生活列表
+   * @param page 页码（可选，默认1）
+   * @param pageSize 每页数量（可选，默认20）
+   * @param activityType 活动类型筛选（可选）
+   * @param keyword 关键词搜索（可选）
+   */
+  static async getOrganizationLives(
+    page: number = 1,
+    pageSize: number = 20,
+    activityType?: string,
+    keyword?: string
+  ): Promise<OrganizationLifeListResponse> {
+    const params: Record<string, any> = {
+      page,
+      page_size: pageSize,
+    }
+    if (activityType) params.activity_type = activityType
+    if (keyword) params.keyword = keyword
+
+    const response = await apiClient.get<OrganizationLifeListResponse>(
+      '/party/organization-lives',
+      { params }
+    )
+    return response.data
+  }
+
+  /**
+   * 获取组织生活详情
+   * @param lifeId 记录ID
+   */
+  static async getOrganizationLife(lifeId: string): Promise<OrganizationLifeDetail> {
+    const response = await apiClient.get<OrganizationLifeDetail>(
+      `/party/organization-lives/${lifeId}`
+    )
+    return response.data
+  }
+
+  /**
+   * 创建组织生活记录
+   * @param request 创建请求
+   */
+  static async createOrganizationLife(
+    request: OrganizationLifeCreateRequest
+  ): Promise<OrganizationLifeDetail> {
+    const response = await apiClient.post<OrganizationLifeDetail>(
+      '/party/organization-lives',
+      request
+    )
+    return response.data
+  }
+
+  /**
+   * 更新组织生活记录
+   * @param lifeId 记录ID
+   * @param request 更新请求
+   */
+  static async updateOrganizationLife(
+    lifeId: string,
+    request: OrganizationLifeUpdateRequest
+  ): Promise<OrganizationLifeDetail> {
+    const response = await apiClient.patch<OrganizationLifeDetail>(
+      `/party/organization-lives/${lifeId}`,
+      request
+    )
+    return response.data
+  }
+
+  /**
+   * 删除组织生活记录
+   * @param lifeId 记录ID
+   */
+  static async deleteOrganizationLife(lifeId: string): Promise<void> {
+    await apiClient.delete(`/party/organization-lives/${lifeId}`)
+  }
+
+  // ==================== 党费管理 API ====================
+
+  /**
+   * 获取党费记录列表
+   * @param page 页码（可选，默认1）
+   * @param pageSize 每页数量（可选，默认20）
+   * @param memberId 党员ID筛选（可选）
+   * @param feeMonth 缴费月份筛选（可选）
+   * @param status 状态筛选（可选）
+   * @param keyword 关键词搜索（可选）
+   */
+  static async getPartyFees(
+    page: number = 1,
+    pageSize: number = 20,
+    memberId?: string,
+    feeMonth?: string,
+    status?: string,
+    keyword?: string
+  ): Promise<PartyFeeListResponse> {
+    const params: Record<string, any> = {
+      page,
+      page_size: pageSize,
+    }
+    if (memberId) params.member_id = memberId
+    if (feeMonth) params.fee_month = feeMonth
+    if (status) params.status = status
+    if (keyword) params.keyword = keyword
+
+    const response = await apiClient.get<PartyFeeListResponse>('/party/fees', { params })
+    return response.data
+  }
+
+  /**
+   * 获取党费记录详情
+   * @param feeId 记录ID
+   */
+  static async getPartyFee(feeId: string): Promise<PartyFeeDetail> {
+    const response = await apiClient.get<PartyFeeDetail>(`/party/fees/${feeId}`)
+    return response.data
+  }
+
+  /**
+   * 创建党费记录
+   * @param request 创建请求
+   */
+  static async createPartyFee(request: PartyFeeCreateRequest): Promise<PartyFeeDetail> {
+    const response = await apiClient.post<PartyFeeDetail>('/party/fees', request)
+    return response.data
+  }
+
+  /**
+   * 更新党费记录
+   * @param feeId 记录ID
+   * @param request 更新请求
+   */
+  static async updatePartyFee(
+    feeId: string,
+    request: PartyFeeUpdateRequest
+  ): Promise<PartyFeeDetail> {
+    const response = await apiClient.patch<PartyFeeDetail>(`/party/fees/${feeId}`, request)
+    return response.data
+  }
+
+  /**
+   * 删除党费记录
+   * @param feeId 记录ID
+   */
+  static async deletePartyFee(feeId: string): Promise<void> {
+    await apiClient.delete(`/party/fees/${feeId}`)
   }
 }
 
