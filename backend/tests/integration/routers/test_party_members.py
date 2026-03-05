@@ -34,6 +34,38 @@ class TestPartyMembersListAPI:
         assert response.status_code == 401
         assert "detail" in response.json()
 
+    @pytest.mark.asyncio
+    async def test_获取党员列表_分页正常_当有25条数据时(self, admin_client: AsyncClient, db_session: Session):
+        """RED: 测试分页功能"""
+        from src.db_models_party import PartyMemberModel
+        import uuid
+        from datetime import date
+
+        # 创建25条测试数据
+        for i in range(25):
+            member = PartyMemberModel(
+                member_id=str(uuid.uuid4()),
+                name=f"测试党员{i}",
+                gender="男",
+                birth_date=date(1990, 1, 1),
+                join_date=date(2020, 7, 1),
+                party_branch="第一党支部",
+                member_type="正式党员",
+                status="正常"
+            )
+            db_session.add(member)
+        db_session.commit()
+
+        # 请求第一页，每页20条
+        response = await admin_client.get(
+            "/api/v1/party/members?page=1&page_size=20"
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 25
+        assert len(data["members"]) == 20
+
 
 class TestCreatePartyMemberAPI:
     """创建党员API测试"""
