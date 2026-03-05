@@ -28,7 +28,10 @@
       ref="chatInputRef"
       :disabled="disabled"
       :is-loading="isLoading"
+      :show-file-buttons="showFileButtons"
       @send="handleSend"
+      @open-knowledge="handleOpenKnowledge"
+      @open-party-activity="handleOpenPartyActivity"
     />
   </div>
 </template>
@@ -39,6 +42,7 @@ import MessageList from './chat/MessageList.vue';
 import ChatInput from './chat/ChatInput.vue';
 import { useSessionStore } from '../stores/sessionStore';
 import type { Message } from '@/types';
+import type { AttachmentReference } from '@/types';
 
 interface Props {
   toolId?: string;
@@ -51,6 +55,7 @@ interface Props {
   isLoading?: boolean;
   autoScroll?: boolean;
   error?: string;
+  showFileButtons?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,11 +64,14 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   isLoading: false,
   autoScroll: true,
+  showFileButtons: true,
 });
 
 const emit = defineEmits<{
-  send: [content: string];
+  send: [content: string, attachments: AttachmentReference[]];
   retry: [];
+  openKnowledge: [];
+  openPartyActivity: [];
 }>();
 
 const sessionStore = useSessionStore();
@@ -94,12 +102,20 @@ watch(() => props.sessionId, async (newSessionId) => {
   }
 }, { immediate: true });
 
-const handleSend = (content: string) => {
-  emit('send', content);
+const handleSend = (content: string, attachments: AttachmentReference[]) => {
+  emit('send', content, attachments);
 };
 
 const handleRetry = () => {
   emit('retry');
+};
+
+const handleOpenKnowledge = () => {
+  emit('openKnowledge');
+};
+
+const handleOpenPartyActivity = () => {
+  emit('openPartyActivity');
 };
 
 // 聚焦输入框

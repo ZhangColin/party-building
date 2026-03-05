@@ -18,6 +18,22 @@
     </div>
 
     <div class="message-content">
+      <!-- 消息附件展示 -->
+      <div
+        v-if="message.attachments && message.attachments.length > 0"
+        class="message-attachments"
+      >
+        <div
+          v-for="attachment in message.attachments"
+          :key="attachment.id"
+          class="message-attachment"
+        >
+          <DocumentIcon class="attachment-icon" />
+          <span class="attachment-name">{{ attachment.name }}</span>
+          <span class="attachment-type">{{ getAttachmentTypeLabel(attachment.type) }}</span>
+        </div>
+      </div>
+
       <div
         class="message-text"
         :class="{ 'markdown-content': message.role === 'assistant', 'user-text': message.role === 'user' }"
@@ -48,10 +64,10 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { DocumentDuplicateIcon } from '@heroicons/vue/24/outline';
+import { DocumentDuplicateIcon, DocumentIcon } from '@heroicons/vue/24/outline';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 import { useClipboard } from '@/composables/useClipboard';
-import type { Message } from '@/types';
+import type { Message, MessageAttachment } from '@/types';
 
 interface Props {
   message: Message;
@@ -87,6 +103,18 @@ const formattedTime = computed(() => {
     minute: '2-digit',
   });
 });
+
+/**
+ * 获取附件类型标签
+ */
+const getAttachmentTypeLabel = (type: MessageAttachment['type']): string => {
+  const labels: Record<MessageAttachment['type'], string> = {
+    temp: '本地文件',
+    knowledge: '知识库',
+    party: '党建活动'
+  };
+  return labels[type];
+};
 
 async function handleCopy() {
   await copy(props.message.content);
@@ -142,6 +170,61 @@ async function handleCopy() {
   align-items: flex-end;
   /* 用户消息限制宽度 */
   max-width: 70%;
+}
+
+/* 消息附件样式 */
+.message-attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.message-attachment {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.message-user .message-attachment {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.attachment-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.message-user .attachment-icon {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.attachment-name {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-type {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.message-user .attachment-type {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .message-text {
