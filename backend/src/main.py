@@ -26,12 +26,14 @@ from src.interfaces.routers.admin import tools as new_admin_tools_router
 from src.interfaces.routers import works as new_works_router
 from src.interfaces.routers import courses as new_courses_router
 from src.interfaces.routers import common as new_common_router
+from src.interfaces.routers import party as party_router
+from src.interfaces.routers.party.members import router as party_members_router
 
 # 导入错误处理中间件
 from src.interfaces.middleware.error_handler import error_handler
 
 # 创建 FastAPI 应用
-app = FastAPI(title="AI Teacher Platform Backend")
+app = FastAPI(title="党建AI智能平台 Backend")
 
 # ==================== 静态文件服务 ====================
 
@@ -140,6 +142,9 @@ app.include_router(new_courses_router.router)
 app.include_router(new_common_router.router)
 # app.include_router(common_router)  # 旧路由已迁移
 
+# 党建业务模块路由（新架构）
+app.include_router(party_router.router)
+app.include_router(party_members_router)
 
 # ==================== 已废弃的 Agent API ====================
 # 保留这些接口是为了向后兼容，实际功能已迁移到 Tool API
