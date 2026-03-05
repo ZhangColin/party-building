@@ -96,15 +96,17 @@ onUnmounted(() => {
 }
 
 .user-avatar {
-  @apply w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-200;
-  /* 使用主色渐变（待品牌色提取后更新） */
-  background: linear-gradient(135deg, theme('colors.primary.500') 0%, theme('colors.primary.700') 100%);
-  box-shadow: 0 2px 4px theme('colors.primary.500 / 0.3');
+  @apply w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200;
+  /* 党建主题：红色渐变背景 */
+  background: linear-gradient(135deg, #C8102E 0%, #E84D56 100%);
+  border: 2px solid rgba(255, 215, 0, 0.3); /* 金色边框装饰 */
+  box-shadow: 0 2px 4px rgba(200, 16, 46, 0.3);
 }
 
 .user-avatar:hover {
   @apply scale-105;
-  box-shadow: 0 4px 8px theme('colors.primary.500 / 0.4');
+  border-color: rgba(255, 215, 0, 0.6); /* 悬停时金色边框更明显 */
+  box-shadow: 0 4px 8px rgba(200, 16, 46, 0.4), 0 0 8px rgba(255, 215, 0, 0.3); /* 金色光晕 */
 }
 
 .avatar-text {
