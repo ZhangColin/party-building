@@ -76,9 +76,9 @@ describe('LoginPage', () => {
         }
       })
 
-      expect(wrapper.text()).toContain('海创元AI教育智研云平台')
+      expect(wrapper.text()).toContain('党建AI智能平台')
       expect(wrapper.text()).toContain('欢迎登录')
-      expect(wrapper.text()).toContain('探索AI赋能教育的无限可能')
+      expect(wrapper.text()).toContain('以AI赋能党建工作，推动全面从严治党向纵深发展')
     })
 
     it('应该显示所有模块卡片', () => {
@@ -88,11 +88,11 @@ describe('LoginPage', () => {
         }
       })
 
-      expect(wrapper.text()).toContain('AI模型能力')
-      expect(wrapper.text()).toContain('AI教研员智能体')
-      expect(wrapper.text()).toContain('扩展工具箱')
-      expect(wrapper.text()).toContain('教案学案区')
-      expect(wrapper.text()).toContain('AI素养提升区')
+      expect(wrapper.text()).toContain('AI党建助手')
+      expect(wrapper.text()).toContain('党员教育学习')
+      expect(wrapper.text()).toContain('组织生活管理')
+      expect(wrapper.text()).toContain('党费管理')
+      expect(wrapper.text()).toContain('党建知识库')
     })
 
     it('应该正确挂载和卸载', () => {
