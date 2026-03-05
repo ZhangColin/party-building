@@ -26,6 +26,21 @@
             <el-icon><User /></el-icon>
             <span>用户管理</span>
           </el-menu-item>
+
+          <el-menu-item index="/admin/party-members">
+            <el-icon><User /></el-icon>
+            <span>党员管理</span>
+          </el-menu-item>
+
+          <el-menu-item index="/admin/organization-life">
+            <el-icon><Calendar /></el-icon>
+            <span>组织生活</span>
+          </el-menu-item>
+
+          <el-menu-item index="/admin/party-fees">
+            <el-icon><Coin /></el-icon>
+            <span>党费管理</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -42,7 +57,7 @@ import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { User } from '@element-plus/icons-vue'
+import { User, Calendar, Coin } from '@element-plus/icons-vue'
 import Logo from '../components/Logo.vue'
 
 const router = useRouter()
