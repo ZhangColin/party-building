@@ -66,6 +66,38 @@ class TestPartyMembersListAPI:
         assert data["total"] == 25
         assert len(data["members"]) == 20
 
+    @pytest.mark.asyncio
+    async def test_获取党员列表_按支部筛选_正常工作(self, admin_client: AsyncClient, db_session: Session):
+        """RED: 测试按党支部筛选"""
+        from src.db_models_party import PartyMemberModel
+        import uuid
+        from datetime import date
+
+        # 创建不同支部的党员
+        for branch in ["第一党支部", "第二党支部", "第一党支部"]:
+            member = PartyMemberModel(
+                member_id=str(uuid.uuid4()),
+                name=f"测试党员{branch}",
+                gender="男",
+                birth_date=date(1990, 1, 1),
+                join_date=date(2020, 7, 1),
+                party_branch=branch,
+                member_type="正式党员",
+                status="正常"
+            )
+            db_session.add(member)
+        db_session.commit()
+
+        # 筛选第一党支部
+        response = await admin_client.get(
+            "/api/v1/party/members?party_branch=第一党支部"
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 2
+        assert all(m["party_branch"] == "第一党支部" for m in data["members"])
+
 
 class TestCreatePartyMemberAPI:
     """创建党员API测试"""
