@@ -69,11 +69,11 @@ function handleChildClick(childId: string) {
 
 .menu-item-primary {
   @apply flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 text-gray-700 text-sm;
-  /* 添加更柔和的hover效果 */
 }
 
 .menu-item-primary:hover:not(.not-clickable) {
-  @apply bg-gray-100;
+  background: rgba(200, 16, 46, 0.08);
+  color: #C8102E;
   transform: translateX(2px);
 }
 
@@ -82,9 +82,11 @@ function handleChildClick(childId: string) {
 }
 
 .menu-item-primary.active {
-  @apply bg-primary-50 text-primary-600 font-semibold;
-  /* 激活状态添加更明显的视觉反馈 */
-  box-shadow: inset 0 0 0 1px theme('colors.primary.100');
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.1), rgba(139, 0, 0, 0.1));
+  border-left: 3px solid #FFD700;
+  color: #C8102E;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(200, 16, 46, 0.15);
 }
 
 .menu-label {
@@ -101,18 +103,20 @@ function handleChildClick(childId: string) {
 
 .menu-item-secondary {
   @apply px-4 py-2.5 rounded-md cursor-pointer transition-all duration-200 text-gray-500 text-xs;
-  /* 添加更柔和的hover效果 */
 }
 
 .menu-item-secondary:hover {
-  @apply bg-gray-100 text-gray-800;
+  background: rgba(200, 16, 46, 0.08);
+  color: #C8102E;
   transform: translateX(2px);
 }
 
 .menu-item-secondary.active {
-  @apply bg-primary-50 text-primary-600 font-semibold;
-  /* 激活状态添加更明显的视觉反馈 */
-  box-shadow: inset 0 0 0 1px theme('colors.primary.100');
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.1), rgba(139, 0, 0, 0.1));
+  border-left: 3px solid #FFD700;
+  color: #C8102E;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(200, 16, 46, 0.15);
 }
 </style>
 
