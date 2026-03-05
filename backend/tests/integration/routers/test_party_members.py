@@ -144,6 +144,26 @@ class TestCreatePartyMemberAPI:
         # 预期：422验证错误
         assert response.status_code == 422
 
+    @pytest.mark.asyncio
+    async def test_创建党员_失败_当身份证号格式错误时(self, admin_client: AsyncClient):
+        """RED: 测试身份证号格式验证"""
+        member_data = {
+            "name": "张三",
+            "gender": "男",
+            "birth_date": "1990-01-01",
+            "join_date": "2020-07-01",
+            "party_branch": "第一党支部",
+            "member_type": "正式党员",
+            "id_card": "123456"  # 错误格式
+        }
+
+        response = await admin_client.post(
+            "/api/v1/party/members",
+            json=member_data
+        )
+
+        assert response.status_code == 422
+
 
 class TestGetPartyMemberDetailAPI:
     """党员详情API测试"""

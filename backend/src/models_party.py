@@ -3,7 +3,7 @@
 from datetime import datetime, date
 from typing import List, Optional
 from decimal import Decimal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 
 # ==================== 党员管理 ====================
@@ -53,7 +53,13 @@ class PartyMemberBase(BaseModel):
 
 class PartyMemberCreate(PartyMemberBase):
     """创建党员请求"""
-    pass
+
+    @field_validator('id_card')
+    def validate_id_card(cls, v):
+        """验证身份证号格式"""
+        if v and len(v) != 18:
+            raise ValueError('身份证号必须为18位')
+        return v
 
 
 class PartyMemberUpdate(BaseModel):
