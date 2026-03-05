@@ -238,3 +238,31 @@ class KnowledgeDocumentModel(Base):
         Index("idx_knowledge_doc_category", "category_id"),
         Index("idx_knowledge_doc_type", "file_type"),
     )
+
+
+class PartyActivityCategoryModel(Base):
+    """党建活动目录数据库模型"""
+    __tablename__ = "party_activity_categories"
+
+    # 主键
+    id = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+
+    # 目录信息
+    name = Column(String(100), nullable=False, comment="目录名称")
+    parent_id = Column(CHAR(36), ForeignKey("party_activity_categories.id", ondelete="CASCADE"), nullable=True, comment="父目录ID")
+    order = Column(Integer, nullable=False, default=0, comment="排序")
+
+    # 系统字段
+    created_at = Column(DateTime, nullable=False, default=datetime.now, comment="创建时间")
+    updated_at = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now, comment="更新时间")
+
+    # 关系
+    parent = relationship("PartyActivityCategoryModel", remote_side=[id], back_populates="children")
+    children = relationship("PartyActivityCategoryModel", back_populates="parent", cascade="all, delete-orphan")
+    # documents = relationship("PartyActivityDocumentModel", back_populates="category", cascade="all, delete-orphan")  # Task 4: 待党建活动文档模型创建后启用
+
+    # 索引
+    __table_args__ = (
+        Index("idx_party_activity_category_parent", "parent_id"),
+        Index("idx_party_activity_category_order", "order"),
+    )

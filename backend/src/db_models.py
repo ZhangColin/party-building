@@ -224,4 +224,5 @@ from .db_models_party import (
     PartyFeeStandardModel,
     KnowledgeCategoryModel,
     KnowledgeDocumentModel,
+    PartyActivityCategoryModel,
 )

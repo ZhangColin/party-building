@@ -55,3 +55,17 @@ def test_knowledge_document_model_creation(db_session):
     assert document.id is not None
     assert document.filename == "test.md"
     assert document.category_id == category.id
+
+
+def test_party_activity_category_model(db_session):
+    """测试党建活动目录模型"""
+    from src.db_models_party import PartyActivityCategoryModel
+
+    category = PartyActivityCategoryModel(name="三会一课")
+    db_session.add(category)
+    db_session.commit()
+    db_session.refresh(category)
+
+    assert category.id is not None
+    assert category.name == "三会一课"
+    assert category.parent_id is None
