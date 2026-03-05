@@ -21,8 +21,15 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     """添加文件管理相关表"""
     # 先删除旧的知识库表（如果存在）
-    op.drop_table('knowledge_documents', if_exists=True)
-    op.drop_table('knowledge_categories', if_exists=True)
+    # 使用 batch_alter_table 以避免外键约束问题
+    try:
+        op.drop_table('knowledge_documents')
+    except Exception:
+        pass
+    try:
+        op.drop_table('knowledge_categories')
+    except Exception:
+        pass
 
     # 创建知识库目录表（支持树形结构）
     op.create_table('knowledge_categories',
