@@ -58,7 +58,9 @@ function toggleCollapse() {
   height: 100%;
   position: relative;
   transition: width 0.3s;
-  /* 层级1：容器层 - 继承父容器的浅灰背景 */
+  /* 党建主题：淡红色背景 */
+  background: linear-gradient(180deg, rgba(200, 16, 46, 0.03) 0%, rgba(139, 0, 0, 0.05) 100%);
+  border-right: 1px solid rgba(200, 16, 46, 0.1);
 }
 
 .sidebar-menu.collapsed {
@@ -73,14 +75,18 @@ function toggleCollapse() {
 }
 
 .collapse-button {
-  @apply absolute top-3 -right-4 w-8 h-8 bg-white border border-gray-200 rounded-full cursor-pointer flex items-center justify-center text-gray-500 z-10 transition-all duration-200;
-  /* 层级3：交互层 - 白色背景，明显阴影 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  @apply absolute top-3 -right-4 w-8 h-8 rounded-full cursor-pointer flex items-center justify-center z-10 transition-all duration-200;
+  /* 党建主题：白色背景 + 金色边框 */
+  background: white;
+  border: 1px solid #FFD700;
+  color: #C8102E;
+  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.15);
 }
 
 .collapse-button:hover {
-  @apply bg-gray-50 text-gray-800;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #FFF5E6;
+  border-color: #C8102E;
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.25);
 }
 </style>
 
