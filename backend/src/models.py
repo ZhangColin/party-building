@@ -299,6 +299,10 @@ class ChatRequest(BaseModel):
         None,
         description="历史消息列表（可选）。如果提供，后端使用该历史；如果不提供，后端从数据库读取"
     )
+    attached_files: Optional[List["AttachmentReference"]] = Field(
+        None,
+        description="附件列表（可选）。包含临时文件、知识库文档或党建文档的引用"
+    )
 
 
 class ChatResponse(BaseModel):
