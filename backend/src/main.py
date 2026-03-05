@@ -30,6 +30,7 @@ from src.interfaces.routers import party as party_router
 from src.interfaces.routers.party.members import router as party_members_router
 from src.interfaces.routers.knowledge import router as knowledge_router
 from src.interfaces.routers.party_activities import router as party_activities_router
+from src.interfaces.routers.temp_files import router as temp_files_router
 
 # 导入错误处理中间件
 from src.interfaces.middleware.error_handler import error_handler
@@ -151,6 +152,9 @@ app.include_router(party_members_router)
 # 文件管理模块路由
 app.include_router(knowledge_router.router)
 app.include_router(party_activities_router.router)
+
+# 临时文件路由
+app.include_router(temp_files_router, prefix="/api/v1/temp-files", tags=["临时文件"])
 
 # ==================== 已废弃的 Agent API ====================
 # 保留这些接口是为了向后兼容，实际功能已迁移到 Tool API
