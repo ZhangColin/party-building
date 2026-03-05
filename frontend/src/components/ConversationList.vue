@@ -335,13 +335,18 @@ function formatTime(timestamp: string): string {
 }
 
 .new-conversation-btn {
-  @apply w-full px-3 py-2.5 bg-primary-500 text-white border-none rounded-lg text-sm font-medium cursor-pointer transition-all duration-200;
-  box-shadow: 0 2px 4px theme('colors.primary.500 / 0.25');
+  @apply w-full px-3 py-2.5 text-white border-none rounded-lg text-sm font-medium cursor-pointer transition-all duration-200;
+  /* 党建主题：红色渐变背景 */
+  background: linear-gradient(135deg, #C8102E 0%, #E84D56 100%);
+  border: 1px solid rgba(255, 215, 0, 0.3); /* 金色边框装饰 */
+  box-shadow: 0 2px 4px rgba(200, 16, 46, 0.25);
 }
 
 .new-conversation-btn:hover {
-  @apply bg-primary-600;
-  box-shadow: 0 4px 8px theme('colors.primary.500 / 0.35');
+  /* 党建主题：悬停时更深红色渐变 */
+  background: linear-gradient(135deg, #8B0000 0%, #C8102E 100%);
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3), 0 0 8px rgba(255, 215, 0, 0.2); /* 金色光晕 */
+  transform: translateY(-1px);
 }
 
 .new-conversation-btn:active {
