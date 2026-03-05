@@ -196,7 +196,7 @@ class KnowledgeCategoryModel(Base):
     # 关系（自引用树形结构）
     parent = relationship("KnowledgeCategoryModel", remote_side=[id], back_populates="children")
     children = relationship("KnowledgeCategoryModel", back_populates="parent", cascade="all, delete-orphan")
-    # documents = relationship("KnowledgeDocumentModel", back_populates="category", cascade="all, delete-orphan")  # Task 2: 待知识库文档模型重构后启用
+    documents = relationship("KnowledgeDocumentModel", back_populates="category", cascade="all, delete-orphan")
 
     # 索引
     __table_args__ = (
@@ -212,32 +212,29 @@ class KnowledgeDocumentModel(Base):
     # 主键
     id = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()))
 
-    # 文档基本信息
-    title = Column(String(200), nullable=False, comment="文档标题")
-    category = Column(String(50), nullable=False, comment="分类代码")
+    # 所属目录
+    category_id = Column(CHAR(36), ForeignKey("knowledge_categories.id", ondelete="CASCADE"), nullable=False, index=True, comment="所属目录ID")
 
     # 文件信息
-    file_path = Column(String(500), nullable=True, comment="文件路径")
-    file_type = Column(String(20), nullable=True, comment="文件类型（PDF/Word/TXT）")
+    filename = Column(String(255), nullable=False, comment="文件名")
+    original_filename = Column(String(255), nullable=False, comment="原始文件名")
+    original_path = Column(String(500), nullable=True, comment="原文件存储路径")
+    markdown_path = Column(String(500), nullable=True, comment="Markdown文件路径")
+    file_type = Column(String(20), nullable=False, comment="文件类型: word/pdf/excel/markdown/text/image")
+    file_size = Column(Integer, nullable=True, comment="文件大小（字节）")
 
-    # 向量化信息
-    chunk_count = Column(Integer, nullable=True, comment="分块数量")
-    vector_collection = Column(String(100), nullable=True, comment="向量集合名称")
-
-    # 元数据
-    doc_metadata = Column(Text, nullable=True, comment="元数据（JSON）- 发布时间、文号、关键词等")
+    # 上传者
+    uploaded_by = Column(CHAR(36), nullable=True, comment="上传者ID")
 
     # 系统字段
-    uploaded_by = Column(CHAR(36), nullable=True, comment="上传者ID")
     created_at = Column(DateTime, nullable=False, default=datetime.now, comment="创建时间")
     updated_at = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now, comment="更新时间")
 
-    # 关系（暂时注释，等实现知识库功能时再配置）
-    # category_rel = relationship("KnowledgeCategoryModel", back_populates="documents")
+    # 关系
+    category = relationship("KnowledgeCategoryModel", back_populates="documents")
 
     # 索引
     __table_args__ = (
-        Index("idx_knowledge_doc_category", "category"),
-        Index("idx_knowledge_doc_title", "title"),
+        Index("idx_knowledge_doc_category", "category_id"),
         Index("idx_knowledge_doc_type", "file_type"),
     )

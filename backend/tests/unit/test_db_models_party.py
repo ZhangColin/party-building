@@ -33,3 +33,25 @@ def test_knowledge_category_tree_structure(db_session):
     assert parent.children is not None
     assert len(parent.children) == 1
     assert parent.children[0].name == "党章学习"
+
+
+def test_knowledge_document_model_creation(db_session):
+    """测试创建知识库文档"""
+    category = KnowledgeCategoryModel(name="测试分类")
+    db_session.add(category)
+    db_session.commit()
+
+    document = KnowledgeDocumentModel(
+        category_id=category.id,
+        filename="test.md",
+        original_filename="test.md",
+        file_type="markdown",
+        file_size=1024
+    )
+    db_session.add(document)
+    db_session.commit()
+    db_session.refresh(document)
+
+    assert document.id is not None
+    assert document.filename == "test.md"
+    assert document.category_id == category.id
