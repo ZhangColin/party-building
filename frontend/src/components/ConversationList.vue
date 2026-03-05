@@ -358,8 +358,15 @@ function formatTime(timestamp: string): string {
 }
 
 .conversation-item {
-  @apply px-4 py-3 mb-2 rounded-lg transition-all duration-200 relative party-menu-item;
-  /* 党建主题：使用全局菜单项样式 */
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  position: relative;
+  /* 党建主题：菜单项样式 */
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  background: white;
 }
 
 .conversation-item:hover {
@@ -368,8 +375,9 @@ function formatTime(timestamp: string): string {
 }
 
 .conversation-item.active {
-  @apply party-menu-item-active;
-  /* 党建主题：使用全局激活态样式 */
+  /* 党建主题：菜单激活态样式 */
+  background-color: #fff5e6;
+  border-left: 4px solid #FFD700;
 }
 
 .conversation-content {

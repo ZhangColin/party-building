@@ -36,8 +36,9 @@ defineProps<{
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 9999;
-  /* 党建主题：使用全局标签样式 */
-  @apply party-tag party-tag-success;
+  /* 党建主题：成功通知样式 */
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-left: 4px solid #059669;
 }
 
 .toast-icon {

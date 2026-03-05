@@ -549,7 +549,6 @@ const currentMember = ref<PartyMemberDetail | null>(null)
 
 // 批量导入对话框
 const importDialogVisible = ref(false)
-const uploadRef = ref()
 const importFile = ref<File | null>(null)
 
 // 提交状态

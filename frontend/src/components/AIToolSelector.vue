@@ -238,16 +238,30 @@ onMounted(() => {
 
 /* 工具卡片（缩小版） */
 .tool-card {
-  @apply flex items-center gap-2.5 px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-200 party-card;
-  /* 党建主题：使用全局卡片样式 */
+  /* 党建主题：卡片样式 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  border-left: 4px solid #FFD700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .tool-card:hover {
-  @apply party-card-hover;
+  /* 党建主题：卡片悬停态 */
+  box-shadow: 0 4px 16px rgba(200, 16, 46, 0.1);
+  border-left-color: #C8102E;
 }
 
 .tool-card.active {
-  @apply party-card-active;
+  /* 党建主题：卡片激活态 */
+  background: #fff5e6;
+  border-left-color: #C8102E;
+  box-shadow: 0 4px 16px rgba(200, 16, 46, 0.15);
 }
 
 .tool-icon {

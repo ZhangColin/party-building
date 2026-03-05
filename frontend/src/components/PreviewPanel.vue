@@ -216,8 +216,9 @@ const handleDownloadSvg = () => {
   transition: all 0.3s ease;
   pointer-events: none;
   z-index: 100;
-  /* 党建主题：使用全局标签样式 */
-  @apply party-tag party-tag-success;
+  /* 党建主题：成功通知样式 */
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-left: 4px solid #059669;
 }
 
 .notification-show {

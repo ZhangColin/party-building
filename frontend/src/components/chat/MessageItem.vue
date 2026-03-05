@@ -153,8 +153,9 @@ async function handleCopy() {
 }
 
 .message-user .message-text {
-  @apply party-message-bubble-user;
-  /* 党建主题：使用全局用户消息气泡样式 */
+  /* 党建主题：用户消息气泡样式 */
+  background: linear-gradient(135deg, #C8102E 0%, #8B0000 100%);
+  color: white;
 }
 
 .message-assistant .message-text {

@@ -159,11 +159,10 @@ const handleClosePreview = () => {
   gap: 8px;
   padding: 8px;
   background-color: #f5f5f5;
-  border-bottom: 1px solid #e0e0e0;
   align-items: center;
   justify-content: flex-end;
-  /* 党建主题：添加分隔线样式 */
-  @apply party-divider;
+  /* 党建主题：分隔线样式 */
+  border-bottom: 2px solid #FFD700;
 }
 
 .toolbar-btn {

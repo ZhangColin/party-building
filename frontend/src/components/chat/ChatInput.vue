@@ -170,12 +170,15 @@ defineExpose({
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  @apply party-btn-primary;
-  /* 党建主题：使用全局主按钮样式 */
+  /* 党建主题：主按钮样式 */
+  background: linear-gradient(135deg, #C8102E 0%, #8B0000 100%);
+  color: white;
 }
 
 .send-button:hover:not(:disabled) {
-  @apply party-btn-primary-hover;
+  /* 党建主题：主按钮悬停态 */
+  background: linear-gradient(135deg, #a00d25 0%, #6d0000 100%);
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
   transform: scale(1.05);
 }
 

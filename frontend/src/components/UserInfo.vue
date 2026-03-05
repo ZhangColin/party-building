@@ -143,8 +143,20 @@ onUnmounted(() => {
 }
 
 .dropdown-item {
-  @apply block w-full text-left px-4 py-2 text-sm transition-colors party-menu-item;
-  /* 党建主题：使用全局菜单项样式 */
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  font-size: 14px;
+  transition: all 0.2s;
+  /* 党建主题：菜单项样式 */
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+
+.dropdown-item:hover {
+  background-color: #fff5e6;
+  border-left-color: #FFD700;
 }
 
 .user-info-item {

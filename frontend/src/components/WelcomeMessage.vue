@@ -38,9 +38,25 @@ const renderedWelcomeText = computed(() => {
 }
 
 .welcome-title {
-  @apply text-3xl font-semibold text-gray-900 mb-4 party-title-underline;
-  /* 党建主题：使用全局标题样式 */
+  font-size: 30px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 16px;
+  /* 党建主题：标题下划线样式 */
+  position: relative;
+  padding-bottom: 12px;
   letter-spacing: -0.5px;
+}
+
+.welcome-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%);
 }
 
 .welcome-text {
