@@ -280,7 +280,7 @@ class OrganizationLifeDetail(OrganizationLifeBase):
 class PartyFeeBase(BaseModel):
     """党费基础信息"""
     member_name: str = Field(..., description="党员姓名", min_length=1, max_length=50)
-    amount: Decimal = Field(..., description="缴纳金额", gt=0)
+    amount: Decimal = Field(..., description="缴纳金额", ge=0)
     payment_date: datetime = Field(..., description="缴纳时间")
     payment_method: str = Field(default="现金", description="缴纳方式（现金/微信/支付宝/银行转账）", max_length=50)
     fee_month: str = Field(..., description="缴费月份（YYYY-MM）", pattern=r"^\d{4}-\d{2}$")
@@ -292,14 +292,14 @@ class PartyFeeBase(BaseModel):
 
 class PartyFeeCreate(PartyFeeBase):
     """创建党费记录请求"""
-    member_id: str = Field(..., description="党员ID")
+    member_id: Optional[str] = Field(None, description="党员ID")
 
     @field_validator('*')
     @classmethod
     def validate_empty_strings(cls, v, info):
         """将空字符串转换为None"""
-        # 跳过必填字段
-        if info.field_name in ['member_id', 'amount', 'payment_date', 'fee_month']:
+        # 跳过必填字段（member_id现在是可选的）
+        if info.field_name in ['amount', 'payment_date', 'fee_month']:
             return v
         # 可选字段的空字符串处理
         if isinstance(v, str) and v == "":
@@ -309,7 +309,7 @@ class PartyFeeCreate(PartyFeeBase):
 
 class PartyFeeUpdate(BaseModel):
     """更新党费记录请求"""
-    amount: Optional[Decimal] = Field(None, description="缴纳金额", gt=0)
+    amount: Optional[Decimal] = Field(None, description="缴纳金额", ge=0)
     payment_date: Optional[datetime] = Field(None, description="缴纳时间")
     payment_method: Optional[str] = Field(None, description="缴纳方式", max_length=50)
     fee_month: Optional[str] = Field(None, description="缴费月份（YYYY-MM）", pattern=r"^\d{4}-\d{2}$")

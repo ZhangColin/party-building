@@ -67,6 +67,60 @@ class TestCreatePartyFeeAPI:
 
         assert response.status_code == 422
 
+    @pytest.mark.asyncio
+    async def test_创建党费_成功_当没有member_id时(self, admin_client: AsyncClient):
+        """RED: 测试创建党费 - 前端只提供党员姓名不提供member_id"""
+        from datetime import datetime
+
+        fee_data = {
+            "member_name": "王五",
+            "amount": "100.00",
+            "payment_date": datetime.now().isoformat(),
+            "payment_method": "微信",
+            "fee_month": "2026-03",
+            "status": "已缴"
+        }
+
+        response = await admin_client.post(
+            "/api/v1/party/fees",
+            json=fee_data
+        )
+
+        assert response.status_code == 201
+        data = response.json()
+        assert "fee_id" in data
+        assert data["member_name"] == "王五"
+        # member_id应该是None
+        assert data.get("member_id") is None or data.get("member_id") == ""
+
+    @pytest.mark.asyncio
+    async def test_创建党费_成功_当包含空字符串的可选字段时(self, admin_client: AsyncClient):
+        """RED: 测试创建党费 - 前端发送空字符串的可选字段"""
+        from datetime import datetime
+
+        fee_data = {
+            "member_name": "赵六",
+            "amount": "75.50",
+            "payment_date": datetime.now().isoformat(),
+            "payment_method": "支付宝",
+            "fee_month": "2026-03",
+            "status": "已缴",
+            "collector": "",  # 空字符串
+            "remark": ""  # 空字符串
+        }
+
+        response = await admin_client.post(
+            "/api/v1/party/fees",
+            json=fee_data
+        )
+
+        assert response.status_code == 201
+        data = response.json()
+        assert data["member_name"] == "赵六"
+        # 空字符串应该被转换为None
+        assert data.get("collector") is None or data.get("collector") == ""
+        assert data.get("remark") is None or data.get("remark") == ""
+
 
 class TestGetPartyFeeDetailAPI:
     """党费详情API测试"""
