@@ -92,10 +92,11 @@ function handleModuleClick(moduleId: string) {
 
 .module-button.active {
   @apply font-semibold;
-  /* 党建主题：激活状态使用白色背景 + 红色文字 */
-  background-color: #FFFFFF;
-  color: #C8102E;
-  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1);
+  /* 党建主题：激活状态使用红色渐变背景 + 白色文字 */
+  background: linear-gradient(135deg, #C8102E 0%, #8B0000 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.4), 0 2px 4px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .module-button:active {
