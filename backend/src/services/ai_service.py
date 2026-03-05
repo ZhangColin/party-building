@@ -141,7 +141,26 @@ class AIService:
                 return "⚠️ AI服务响应超时，请检查网络连接后重试。"
             else:
                 return "欢迎使用 AI 助手！抱歉，当前服务暂时不可用，请稍后重试。"
-    
+
+    def build_system_prompt_with_attachments(
+        self,
+        base_system_prompt: str,
+        attachments: list[dict]
+    ) -> str:
+        """构建包含附件内容的 system_prompt"""
+        if not attachments:
+            return base_system_prompt
+
+        attachment_content = "用户附件内容：\n"
+        for i, att in enumerate(attachments, 1):
+            name = att.get("name", f"文件{i}")
+            content = att.get("content", "")
+            if len(content) > 10000:
+                content = content[:10000] + "\n（因内容过长，后续内容已省略）"
+            attachment_content += f"\n【文件{i}：{name}】\n{content}\n"
+
+        return f"{base_system_prompt}\n\n---\n{attachment_content}\n---\n"
+
     def _find_html_end_position(self, content: str) -> int:
         """
         找到 HTML 文档的结束位置（</html> 标签的位置）

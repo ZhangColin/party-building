@@ -105,6 +105,49 @@ async def chat_stream(
         # 准备模型配置
         model_config = tool.model if tool.model else None
 
+        # 处理附件
+        attachment_contents = []
+        if request.attached_files:
+            from src.services.temp_file_service import TempFileService
+            temp_file_service = TempFileService()
+
+            for att in request.attached_files:
+                content = None
+                if att.type == "temp":
+                    content_bytes = temp_file_service.get_file_content(att.id)
+                    if content_bytes:
+                        content = content_bytes.decode('utf-8', errors='ignore')
+                elif att.type == "knowledge":
+                    from src.services.knowledge_service import KnowledgeService
+                    from src.database import get_async_db
+                    async for db in get_async_db():
+                        knowledge_service = KnowledgeService(db)
+                        docs = await knowledge_service.batch_get_documents([att.id])
+                        if docs:
+                            content = docs[0].get("content")
+                        break
+                elif att.type == "party":
+                    from src.services.party_activity_service import PartyActivityService
+                    from src.database import get_async_db
+                    async for db in get_async_db():
+                        party_service = PartyActivityService(db)
+                        docs = await party_service.batch_get_documents([att.id])
+                        if docs:
+                            content = docs[0].get("content")
+                        break
+
+                if content:
+                    attachment_contents.append({"name": att.name, "content": content})
+
+        # 构建带附件的 system_prompt
+        if attachment_contents:
+            system_prompt = ai_service.build_system_prompt_with_attachments(
+                tool.system_prompt,
+                attachment_contents
+            )
+        else:
+            system_prompt = tool.system_prompt
+
         # 获取流式响应
         async def generate():
             try:
@@ -117,7 +160,7 @@ async def chat_stream(
 
                 full_response = ""
                 async for chunk in ai_service.chat_stream(
-                    system_prompt=tool.system_prompt,
+                    system_prompt=system_prompt,
                     history=history_messages,
                     user_message=request.message,
                     model_config=model_config
@@ -257,8 +300,52 @@ async def chat_non_stream(
 
         # 获取AI响应
         model_config = tool.model if tool.model else None
+
+        # 处理附件
+        attachment_contents = []
+        if request.attached_files:
+            from src.services.temp_file_service import TempFileService
+            temp_file_service = TempFileService()
+
+            for att in request.attached_files:
+                content = None
+                if att.type == "temp":
+                    content_bytes = temp_file_service.get_file_content(att.id)
+                    if content_bytes:
+                        content = content_bytes.decode('utf-8', errors='ignore')
+                elif att.type == "knowledge":
+                    from src.services.knowledge_service import KnowledgeService
+                    from src.database import get_async_db
+                    async for db in get_async_db():
+                        knowledge_service = KnowledgeService(db)
+                        docs = await knowledge_service.batch_get_documents([att.id])
+                        if docs:
+                            content = docs[0].get("content")
+                        break
+                elif att.type == "party":
+                    from src.services.party_activity_service import PartyActivityService
+                    from src.database import get_async_db
+                    async for db in get_async_db():
+                        party_service = PartyActivityService(db)
+                        docs = await party_service.batch_get_documents([att.id])
+                        if docs:
+                            content = docs[0].get("content")
+                        break
+
+                if content:
+                    attachment_contents.append({"name": att.name, "content": content})
+
+        # 构建带附件的 system_prompt
+        if attachment_contents:
+            system_prompt = ai_service.build_system_prompt_with_attachments(
+                tool.system_prompt,
+                attachment_contents
+            )
+        else:
+            system_prompt = tool.system_prompt
+
         response = await ai_service.chat(
-            system_prompt=tool.system_prompt,
+            system_prompt=system_prompt,
             history=history_messages,
             user_message=request.message,
             model_config=model_config
