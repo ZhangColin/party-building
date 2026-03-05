@@ -9,7 +9,7 @@ export const useNavigationStore = defineStore('navigation', () => {
   const modules = ref<NavigationModule[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
-  const currentModuleId = ref<string>('ai-tools') // 默认值
+  const currentModuleId = ref<string>('party-ai') // 默认值
   const isLoaded = ref(false) // 标记是否已加载
 
   // 计算属性
@@ -60,9 +60,9 @@ export const useNavigationStore = defineStore('navigation', () => {
       // 如果后端不可用，使用默认配置（向后兼容）
       modules.value = [
         {
-          name: 'AI工具',
+          name: 'AI党建助手',
           type: 'toolset',
-          config_source: 'tools/ai_tools',
+          config_source: 'tools/party_ai',
           icon: '🤖',
           order: 1
         }

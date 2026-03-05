@@ -1,7 +1,7 @@
 # configs/tools/party_ai/three_meetings.yaml
 tool_id: "three_meetings"
-name: "三会一课一键生成"
-description: "输入会议基本信息，AI自动生成符合规范的党务会议文档，包括支部书记讲话稿、会议记录摘要等"
+name: "三会一课"
+description: "输入会议基本信息，AI自动创作符合规范的党务会议文档，包括支部书记讲话稿、会议记录摘要等"
 category: "智能文稿生成"
 system_prompt_file: "prompts/three_meetings.md"
 welcome_message: |

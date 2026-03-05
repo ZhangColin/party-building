@@ -1,7 +1,7 @@
 # configs/tools/party_ai/work_summary.yaml
 tool_id: "work_summary"
-name: "工作总结与汇报材料生成"
-description: "生成季度/年度工作总结、专项工作汇报、述职报告等汇报材料"
+name: "工作总结与汇报材料"
+description: "创作季度/年度工作总结、专项工作汇报、述职报告等汇报材料"
 category: "智能文稿生成"
 system_prompt_file: "prompts/work_summary.md"
 welcome_message: |

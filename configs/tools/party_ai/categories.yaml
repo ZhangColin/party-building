@@ -2,8 +2,8 @@
 # 党建AI工具分类
 
 categories:
-  - name: "智能文稿生成"
-    description: "自动生成各类党务文稿"
+  - name: "智能文稿"
+    description: "智能创作各类党务文稿"
     order: 1
     icon: "document-text"
     tools:
@@ -13,9 +13,10 @@ categories:
       - activity_plan
 
   - name: "智能问答"
-    description: "党规党纪智能问答"
+    description: "党规党纪智能问答、文稿合规性检查"
     order: 2
     icon: "chat-bubble"
     tools:
       - smart_qa
+      - compliance_check
 

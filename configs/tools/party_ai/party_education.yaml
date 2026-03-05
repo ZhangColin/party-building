@@ -1,7 +1,7 @@
 # configs/tools/party_ai/party_education.yaml
 tool_id: "party_education"
-name: "党员教育学习材料生成"
-description: "生成党员教育学习心得、宣讲提纲、学习笔记等材料"
+name: "党员教育学习材料"
+description: "创作党员教育学习心得、宣讲提纲、学习笔记等材料"
 category: "智能文稿生成"
 system_prompt_file: "prompts/party_education.md"
 welcome_message: |

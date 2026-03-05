@@ -12,7 +12,7 @@ import logoImage from '@/assets/logo/logo_dark.png'
 const router = useRouter()
 
 function handleClick() {
-  router.push('/modules/ai-tools')
+  router.push('/modules/party-ai')
 }
 </script>
 

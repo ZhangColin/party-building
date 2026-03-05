@@ -251,7 +251,7 @@ async function handleSubmit() {
 
     // 登录成功，跳转到原访问页面或首页
     const redirect = route.query.redirect as string | undefined
-    router.push(redirect || '/modules/ai-tools')
+    router.push(redirect || '/modules/party-ai')
   } catch (err) {
     // 错误已在authStore中处理
     console.error('登录失败:', err)

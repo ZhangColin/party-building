@@ -58,8 +58,8 @@ const currentModule = computed(() => {
     return getModuleId(module)
   }
 
-  // 默认返回 ai-tools
-  return 'ai-tools'
+  // 默认返回 party-ai
+  return 'party-ai'
 })
 
 const isOpen = ref(false)

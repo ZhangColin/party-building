@@ -1,0 +1,35 @@
+# configs/tools/party_ai/compliance_check.yaml
+tool_id: "compliance_check"
+name: "文稿合规性检查"
+description: "检查文稿政治性表述准确性、敏感词风险，提供针对性修改建议"
+category: "智能问答"
+system_prompt_file: "prompts/compliance_check.md"
+welcome_message: |
+  # 文稿合规性智能检查
+
+  欢迎使用文稿合规性检查系统！我可以帮您检查党务文稿的合规性问题。
+
+  ## 请上传您的文稿或粘贴文本内容
+
+  我将为您检查以下方面：
+
+  1. **政治性表述准确性**：检查政治术语、领导人称谓、政策表述是否准确规范
+  2. **敏感词风险检测**：识别可能存在的敏感词汇和表述风险
+  3. **格式规范性**：检查党务文稿的格式是否符合规范要求
+  4. **修改建议**：针对发现的问题提供具体的修改建议
+
+  ## 检查完成后，您将获得：
+
+  - 问题清单及位置标注
+  - 风险等级评估（高/中/低）
+  - 具体修改建议
+  - 修改后的参考版本
+
+  请上传或粘贴您需要检查的文稿内容。
+icon: "shield-check"
+order: 6
+visible: true
+type: "normal"
+toolset_id: "party_ai"
+content_type: "text"
+model: "deepseek:deepseek-chat"
