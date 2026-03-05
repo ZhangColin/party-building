@@ -2,6 +2,7 @@
 import MarkdownIt from 'markdown-it'
 import katex from '@traptitech/markdown-it-katex'
 import type { Artifact } from '../types'
+import { unescapeHtml, escapeHtml } from './htmlUtils'
 
 // 创建 markdown-it 实例，配置安全选项和数学公式支持
 const md = new MarkdownIt({
@@ -141,6 +142,26 @@ export function renderMarkdown(content: string, artifacts: Artifact[] = []): str
             </svg>
           </button>
           <button
+            class="save-to-knowledge-button"
+            data-code-type="${artifactType}"
+            data-code-content="${codeContentForCopy}"
+            title="保存到知识库"
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+            </svg>
+          </button>
+          <button
+            class="save-to-party-button"
+            data-code-type="${artifactType}"
+            data-code-content="${codeContentForCopy}"
+            title="保存到党建活动"
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+              <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+          <button
             class="copy-code-button"
             data-code-content="${codeContentForCopy}"
             title="复制代码"
@@ -157,21 +178,6 @@ export function renderMarkdown(content: string, artifacts: Artifact[] = []): str
   })
 
   return html
-}
-
-/**
- * 反转义 HTML（将 HTML 实体转换回原始字符）
- */
-function unescapeHtml(text: string): string {
-  const map: Record<string, string> = {
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&quot;': '"',
-    '&#039;': "'",
-    '&nbsp;': ' ',
-  }
-  return text.replace(/&(?:amp|lt|gt|quot|#039|nbsp);/g, (m) => map[m] || m)
 }
 
 /**
@@ -233,19 +239,5 @@ function detectLanguageByContent(content: string): string {
 // @ts-expect-error - Reserved for future functionality
 function _escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-/**
- * 转义 HTML（不使用 DOM，避免 SSR 问题）
- */
-function escapeHtml(text: string): string {
-  const map: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;',
-  }
-  return text.replace(/[&<>"']/g, (m) => map[m] || m)
 }
 
