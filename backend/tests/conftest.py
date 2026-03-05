@@ -83,6 +83,38 @@ def db_session() -> Generator[Session, None, None]:
     Base.metadata.drop_all(test_engine)
 
 
+@pytest.fixture(scope="function")
+async def async_db_session() -> AsyncGenerator["AsyncSession", None]:
+    """
+    异步数据库会话fixture（用于测试异步服务）
+    - 使用内存SQLite
+    - 每个测试函数独立数据库
+    - 自动清理
+    """
+    from sqlalchemy.ext.asyncio import create_engine as async_create_engine, AsyncSession, async_sessionmaker
+
+    # 创建异步测试引擎
+    test_async_engine = async_create_engine(
+        "sqlite+aiosqlite:///:memory:",
+        connect_args={"check_same_thread": False}
+    )
+
+    # 创建所有表
+    Base.metadata.create_all(test_async_engine)
+
+    # 创建异步会话工厂
+    AsyncTestingSessionLocal = async_sessionmaker(
+        bind=test_async_engine,
+        class_=AsyncSession,
+        expire_on_commit=False
+    )
+
+    async with AsyncTestingSessionLocal() as session:
+        yield session
+
+    await test_async_engine.dispose()
+
+
 # ==================== HTTP Client Fixtures ====================
 
 @pytest.fixture(scope="session")
