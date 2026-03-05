@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { ApiService } from '../services/apiClient'
-import type { Message, Artifact } from '../types'
+import type { Message, Artifact, AttachmentReference, MessageAttachment } from '../types'
 
 export const useSessionStore = defineStore('session', () => {
   // 状态
@@ -49,9 +49,11 @@ export const useSessionStore = defineStore('session', () => {
   }
 
   /**
-   * 发送消息（支持延迟创建会话）
+   * 发送消息（支持延迟创建会话和附件）
+   * @param content 消息内容
+   * @param attachments 附件列表（可选）
    */
-  async function sendMessage(content: string) {
+  async function sendMessage(content: string, attachments?: AttachmentReference[]) {
     if (!toolId.value) {
       const errorMsg = '工具未初始化，无法发送消息'
       console.error(errorMsg, { toolId: toolId.value })
@@ -62,12 +64,21 @@ export const useSessionStore = defineStore('session', () => {
     loading.value = true
     error.value = null
 
+    // 转换附件为消息附件格式（用于在历史消息中显示）
+    const messageAttachments: MessageAttachment[] = (attachments || []).map(att => ({
+      id: att.id,
+      name: att.name,
+      type: att.type,
+      size: 0, // API 没有返回 size，使用默认值
+    }))
+
     // 添加用户消息（标记为 pending）
     messages.value.push({
       role: 'user',
       content,
       pending: true,
       created_at: new Date().toISOString(),
+      attachments: messageAttachments.length > 0 ? messageAttachments : undefined,
     })
     const userMsgIndex = messages.value.length - 1
 
@@ -88,6 +99,7 @@ export const useSessionStore = defineStore('session', () => {
         {
           message: content,
           session_id: sessionId.value || null,
+          attached_files: attachments && attachments.length > 0 ? attachments : undefined,
           history: messages.value.slice(0, -2).map(msg => ({
             role: msg.role,
             content: msg.content,

@@ -1,4 +1,6 @@
-/** 临时文件上传服务 */
+/**
+ * 临时文件上传 API
+ */
 import axios from 'axios'
 import type { TempFileUploadResponse } from '@/types'
 
@@ -7,8 +9,8 @@ const API_BASE = '/api/v1/temp_files'
 /**
  * 上传临时文件
  * @param file 要上传的文件
- * @param onProgress 上传进度回调函数（0-100）
- * @returns 上传响应结果
+ * @param onProgress 上传进度回调（0-100）
+ * @returns 上传响应，包含临时文件ID等信息
  */
 export async function uploadTempFile(
   file: File,
@@ -21,10 +23,14 @@ export async function uploadTempFile(
     `${API_BASE}/upload`,
     formData,
     {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
       onUploadProgress: (progressEvent) => {
         if (onProgress && progressEvent.total) {
-          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          const progress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          )
           onProgress(progress)
         }
       }
@@ -32,12 +38,4 @@ export async function uploadTempFile(
   )
 
   return response.data
-}
-
-/**
- * 删除临时文件
- * @param tempId 临时文件ID
- */
-export async function deleteTempFile(tempId: string): Promise<void> {
-  await axios.delete(`${API_BASE}/${tempId}`)
 }

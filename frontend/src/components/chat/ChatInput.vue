@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import {
   DocumentIcon,
   XMarkIcon,
@@ -301,18 +301,6 @@ const formatFileSize = (bytes: number): string => {
   const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
-};
-
-/**
- * 获取附件类型标签
- */
-const getAttachmentTypeLabel = (type: 'temp' | 'knowledge' | 'party'): string => {
-  const labels = {
-    temp: '本地文件',
-    knowledge: '知识库',
-    party: '党建活动'
-  };
-  return labels[type];
 };
 
 const handleSend = () => {

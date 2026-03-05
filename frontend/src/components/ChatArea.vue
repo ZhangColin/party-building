@@ -54,7 +54,7 @@ import ConversationList from './ConversationList.vue'
 import ChatPanel from './ChatPanel.vue'
 import PreviewPanel from './PreviewPanel.vue'
 import { useSessionStore } from '../stores/sessionStore'
-import type { Artifact } from '../types'
+import type { Artifact, AttachmentReference } from '../types'
 
 const props = defineProps<{
   toolId?: string
@@ -125,8 +125,8 @@ function handleNewConversation() {
   sessionStore.clearSession()
 }
 
-async function handleSendMessage(content: string) {
-  console.log('[ChatArea] handleSendMessage called with:', content)
+async function handleSendMessage(content: string, attachments?: AttachmentReference[]) {
+  console.log('[ChatArea] handleSendMessage called with:', content, 'attachments:', attachments)
 
   // 安全检查：如果toolId为空，尝试从props重新初始化
   if (!sessionStore.toolId && props.toolId) {
@@ -146,7 +146,7 @@ async function handleSendMessage(content: string) {
   }
 
   try {
-    await sessionStore.sendMessage(content)
+    await sessionStore.sendMessage(content, attachments)
     console.log('[ChatArea] Message sent successfully')
   } catch (err) {
     console.error('[ChatArea] Failed to send message:', err)

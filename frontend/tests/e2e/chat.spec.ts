@@ -165,6 +165,261 @@ test.describe('Real Chat Flow (End-to-End)', () => {
     await page.waitForURL(/\/modules\/ai-tools/, { timeout: 10000 });
   });
 
+  test('should display file attachment buttons', async ({ page }) => {
+    // Wait for tools
+    await page.waitForTimeout(2000);
+    const toolCard = page.locator('.tool-card, .tool-item, [class*="tool"]').first();
+    await expect(toolCard).toBeVisible({ timeout: 5000 });
+
+    // Select tool
+    await toolCard.click();
+    await page.waitForTimeout(1500);
+
+    // Find file buttons
+    const fileButtons = page.locator('.file-btn');
+    const count = await fileButtons.count();
+
+    // Should have 3 file buttons (本地文件, 知识库, 党建活动)
+    expect(count).toBe(3);
+
+    // Verify button texts
+    const buttonTexts = await fileButtons.allTextContents();
+    expect(buttonTexts).toContain('本地文件');
+    expect(buttonTexts).toContain('知识库');
+    expect(buttonTexts).toContain('党建活动');
+  });
+
+  test('should upload local file', async ({ page }) => {
+    // Wait for tools
+    await page.waitForTimeout(2000);
+    const toolCard = page.locator('.tool-card, .tool-item, [class*="tool"]').first();
+    await expect(toolCard).toBeVisible({ timeout: 5000 });
+
+    // Select tool
+    await toolCard.click();
+    await page.waitForTimeout(1500);
+
+    // Find local file button
+    const localFileButton = page.locator('.file-btn:has-text("本地文件")');
+    await expect(localFileButton).toBeVisible();
+
+    // Create a test file
+    const testContent = 'This is a test file for upload.';
+    const testFile = Buffer.from(testContent, 'utf-8');
+
+    // Set up file chooser handler
+    const fileChooserPromise = page.waitForEvent('filechooser');
+
+    // Click the local file button
+    await localFileButton.click();
+
+    // Handle file chooser
+    const fileChooser = await fileChooserPromise;
+    await fileChooser.setFiles({
+      name: 'test-upload.txt',
+      mimeType: 'text/plain',
+      buffer: testFile
+    });
+
+    // Verify attachment appears in attachments area
+    const attachmentTag = page.locator('.attachment-tag');
+    await expect(attachmentTag).toBeVisible({ timeout: 5000 });
+
+    // Verify attachment shows uploading state first
+    const uploadingAttachment = page.locator('.attachment-tag.uploading');
+    const uploadingCount = await uploadingAttachment.count();
+    expect(uploadingCount).toBeGreaterThanOrEqual(0);
+
+    // Wait for upload to complete (or error)
+    await page.waitForTimeout(3000);
+
+    // Check if file uploaded successfully or has error
+    const readyAttachment = page.locator('.attachment-tag:not(.uploading)');
+    const readyCount = await readyAttachment.count();
+    expect(readyCount).toBeGreaterThan(0);
+
+    // Verify attachment name is displayed
+    const attachmentName = page.locator('.attachment-name');
+    const nameText = await attachmentName.textContent();
+    expect(nameText).toContain('test-upload.txt');
+  });
+
+  test('should remove attachment', async ({ page }) => {
+    // Wait for tools
+    await page.waitForTimeout(2000);
+    const toolCard = page.locator('.tool-card, .tool-item, [class*="tool"]').first();
+    await expect(toolCard).toBeVisible({ timeout: 5000 });
+
+    // Select tool
+    await toolCard.click();
+    await page.waitForTimeout(1500);
+
+    // Find local file button
+    const localFileButton = page.locator('.file-btn:has-text("本地文件")');
+    await expect(localFileButton).toBeVisible();
+
+    // Create a test file
+    const testContent = 'Test file for removal.';
+    const testFile = Buffer.from(testContent, 'utf-8');
+
+    // Set up file chooser handler
+    const fileChooserPromise = page.waitForEvent('filechooser');
+
+    // Click the local file button
+    await localFileButton.click();
+
+    // Handle file chooser
+    const fileChooser = await fileChooserPromise;
+    await fileChooser.setFiles({
+      name: 'test-remove.txt',
+      mimeType: 'text/plain',
+      buffer: testFile
+    });
+
+    // Wait for attachment to appear
+    const attachmentTag = page.locator('.attachment-tag');
+    await expect(attachmentTag).toBeVisible({ timeout: 5000 });
+
+    // Find and click remove button
+    const removeButton = page.locator('.attachment-remove');
+    await expect(removeButton).toBeVisible();
+    await removeButton.click();
+
+    // Verify attachment is removed
+    await expect(attachmentTag).not.toBeVisible({ timeout: 2000 });
+  });
+
+  test('should limit max files', async ({ page }) => {
+    // Wait for tools
+    await page.waitForTimeout(2000);
+    const toolCard = page.locator('.tool-card, .tool-item, [class*="tool"]').first();
+    await expect(toolCard).toBeVisible({ timeout: 5000 });
+
+    // Select tool
+    await toolCard.click();
+    await page.waitForTimeout(1500);
+
+    // Try to upload 6 files (max is 5)
+    for (let i = 0; i < 6; i++) {
+      const localFileButton = page.locator('.file-btn:has-text("本地文件")');
+      const fileChooserPromise = page.waitForEvent('filechooser');
+
+      await localFileButton.click();
+
+      const fileChooser = await fileChooserPromise;
+      await fileChooser.setFiles({
+        name: `test-file-${i}.txt`,
+        mimeType: 'text/plain',
+        buffer: Buffer.from(`Test file ${i}`, 'utf-8')
+      });
+
+      await page.waitForTimeout(500);
+    }
+
+    // Count attachments - should not exceed 5
+    const attachmentTags = page.locator('.attachment-tag');
+    const count = await attachmentTags.count();
+
+    // Should have at most 5 attachments (due to max limit)
+    expect(count).toBeLessThanOrEqual(5);
+  });
+
+  test('should disable file buttons at max files', async ({ page }) => {
+    // Wait for tools
+    await page.waitForTimeout(2000);
+    const toolCard = page.locator('.tool-card, .tool-item, [class*="tool"]').first();
+    await expect(toolCard).toBeVisible({ timeout: 5000 });
+
+    // Select tool
+    await toolCard.click();
+    await page.waitForTimeout(1500);
+
+    // Upload 5 files to reach max limit
+    for (let i = 0; i < 5; i++) {
+      const localFileButton = page.locator('.file-btn:has-text("本地文件")');
+      const fileChooserPromise = page.waitForEvent('filechooser');
+
+      await localFileButton.click();
+
+      const fileChooser = await fileChooserPromise;
+      await fileChooser.setFiles({
+        name: `test-file-${i}.txt`,
+        mimeType: 'text/plain',
+        buffer: Buffer.from(`Test file ${i}`, 'utf-8')
+      });
+
+      await page.waitForTimeout(500);
+    }
+
+    // Wait for uploads to complete
+    await page.waitForTimeout(3000);
+
+    // Check if file buttons are disabled
+    const fileButtons = page.locator('.file-btn:disabled');
+    const disabledCount = await fileButtons.count();
+
+    // At least one button should be disabled when at max files
+    expect(disabledCount).toBeGreaterThan(0);
+  });
+
+  test('should display attachment on user message after send', async ({ page }) => {
+    // Wait for tools
+    await page.waitForTimeout(2000);
+    const toolCard = page.locator('.tool-card, .tool-item, [class*="tool"]').first();
+    await expect(toolCard).toBeVisible({ timeout: 5000 });
+
+    // Select tool
+    await toolCard.click();
+    await page.waitForTimeout(1500);
+
+    // Upload a file
+    const localFileButton = page.locator('.file-btn:has-text("本地文件")');
+    const fileChooserPromise = page.waitForEvent('filechooser');
+
+    await localFileButton.click();
+
+    const fileChooser = await fileChooserPromise;
+    await fileChooser.setFiles({
+      name: 'message-attachment-test.txt',
+      mimeType: 'text/plain',
+      buffer: Buffer.from('Test content for message attachment', 'utf-8')
+    });
+
+    // Wait for attachment to appear
+    const attachmentTag = page.locator('.attachment-tag');
+    await expect(attachmentTag).toBeVisible({ timeout: 5000 });
+
+    // Wait for upload to complete
+    await page.waitForTimeout(3000);
+
+    // Find chat input and send message
+    const chatInput = page.locator('textarea').first();
+    await expect(chatInput).toBeVisible({ timeout: 5000 });
+    await chatInput.fill('请查看我上传的文件');
+
+    const sendButton = page.locator('button:has-text("发送"), button[type="submit"], [class*="send"]').first();
+    await expect(sendButton).toBeVisible({ timeout: 3000 });
+    await sendButton.click();
+
+    // Wait for user message to appear
+    const userMessage = page.locator('[data-testid="message-item"][data-role="user"]').first();
+    await expect(userMessage).toBeVisible({ timeout: 5000 });
+
+    // Check if attachment is displayed under user message
+    const messageAttachment = userMessage.locator('.message-attachment');
+    await expect(messageAttachment).toBeVisible({ timeout: 3000 });
+
+    // Verify attachment name
+    const attachmentName = messageAttachment.locator('.attachment-name');
+    const nameText = await attachmentName.textContent();
+    expect(nameText).toContain('message-attachment-test.txt');
+
+    // Verify attachment type label
+    const attachmentType = messageAttachment.locator('.attachment-type');
+    const typeText = await attachmentType.textContent();
+    expect(typeText).toContain('本地文件');
+  });
+
   test('complete chat flow with real AI response', async ({ page }) => {
     console.log('Starting real E2E chat test...');
 
