@@ -111,11 +111,20 @@ async def list_members(
             status=status_filter
         )
         return response
+    except ValueError as e:
+        # 业务规则错误
+        logger.error(f"获取党员列表失败 - 业务规则错误: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
     except Exception as e:
-        logger.error(f"获取党员列表失败: {str(e)}")
+        # 记录完整错误堆栈
+        import traceback
+        logger.error(f"获取党员列表失败: {str(e)}\n堆栈信息:\n{traceback.format_exc()}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="获取党员列表失败"
+            detail=f"获取党员列表失败: {str(e)}"
         )
 
 
