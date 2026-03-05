@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """党建活动文件管理服务"""
+import logging
 import uuid
 from pathlib import Path
 from datetime import datetime
@@ -10,6 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db_models_party import PartyActivityCategoryModel, PartyActivityDocumentModel
 from src.services.file_conversion_service import FileConversionService
+
+logger = logging.getLogger(__name__)
 
 
 class PartyActivityService:
@@ -286,6 +289,30 @@ class PartyActivityService:
         await self.db.commit()
 
         return True
+
+    async def batch_get_documents(self, document_ids: list[str]) -> list[dict]:
+        """批量获取文档内容"""
+        documents = []
+
+        for doc_id in document_ids:
+            stmt = select(PartyActivityDocumentModel).where(PartyActivityDocumentModel.id == doc_id)
+            result = await self.db.execute(stmt)
+            doc = result.scalar_one_or_none()
+
+            if doc and doc.markdown_path:
+                try:
+                    markdown_path = Path(doc.markdown_path)
+                    if markdown_path.exists():
+                        content = markdown_path.read_text(encoding="utf-8")
+                        documents.append({
+                            "id": doc.id,
+                            "filename": doc.original_filename,
+                            "content": content
+                        })
+                except Exception as e:
+                    logger.warning(f"读取文档 {doc_id} 内容失败: {e}")
+
+        return documents
 
     def _document_to_dict(self, document: PartyActivityDocumentModel) -> dict:
         """模型转字典"""
