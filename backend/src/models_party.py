@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """党建业务模块 Pydantic 模型（API 请求/响应）"""
 from datetime import datetime, date
-from typing import List, Optional
+from typing import List, Optional, Union
 from decimal import Decimal
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 
@@ -53,6 +53,28 @@ class PartyMemberBase(BaseModel):
 
 class PartyMemberCreate(PartyMemberBase):
     """创建党员请求"""
+    # 覆盖日期字段为Union类型以支持空字符串
+    application_date: Union[date, None] = Field(None, description="入党申请书提交时间")
+    activist_date: Union[date, None] = Field(None, description="确定为积极分子时间")
+    candidate_date: Union[date, None] = Field(None, description="确定为发展对象时间")
+    provisional_date: Union[date, None] = Field(None, description="接收为预备党员时间")
+    full_member_date: Union[date, None] = Field(None, description="转正时间")
+
+    @field_validator('application_date', 'activist_date', 'candidate_date', 'provisional_date', 'full_member_date', mode='before')
+    @classmethod
+    def validate_empty_date_strings(cls, v):
+        """将空字符串转换为None"""
+        if v == "" or v is None:
+            return None
+        return v
+
+    @field_validator('id_card', 'phone', 'email', 'address', 'work_unit', 'job_title',
+                    'party_position', 'introducer_1', 'introducer_2', 'mobile_type', 'mobile_reason', 'branch_id')
+    def validate_empty_strings(cls, v):
+        """将空字符串转换为None"""
+        if v == "":
+            return None
+        return v
 
     @field_validator('id_card')
     def validate_id_card(cls, v):
@@ -176,7 +198,14 @@ class OrganizationLifeBase(BaseModel):
 
 class OrganizationLifeCreate(OrganizationLifeBase):
     """创建组织生活记录请求"""
-    pass
+
+    @field_validator('meeting_type', 'location', 'host', 'recorder', 'absent_members',
+                    'agenda', 'content', 'resolutions', 'photos', 'attachments', 'organizer', 'branch_id', 'created_by')
+    def validate_empty_strings(cls, v):
+        """将空字符串转换为None"""
+        if v == "":
+            return None
+        return v
 
 
 class OrganizationLifeUpdate(BaseModel):
@@ -260,6 +289,13 @@ class PartyFeeBase(BaseModel):
 class PartyFeeCreate(PartyFeeBase):
     """创建党费记录请求"""
     member_id: str = Field(..., description="党员ID")
+
+    @field_validator('collector', 'remark', 'branch_id')
+    def validate_empty_strings(cls, v):
+        """将空字符串转换为None"""
+        if v == "":
+            return None
+        return v
 
 
 class PartyFeeUpdate(BaseModel):

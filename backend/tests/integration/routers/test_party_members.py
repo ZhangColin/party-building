@@ -164,6 +164,38 @@ class TestCreatePartyMemberAPI:
 
         assert response.status_code == 422
 
+    @pytest.mark.asyncio
+    async def test_创建党员_成功_当包含空字符串的可选字段时(self, admin_client: AsyncClient):
+        """RED: 测试创建党员 - 前端发送空字符串的可选字段"""
+        member_data = {
+            "name": "李四",
+            "gender": "女",
+            "birth_date": "1992-05-15",
+            "join_date": "2021-09-01",
+            "party_branch": "第二党支部",
+            "id_card": "",  # 空字符串
+            "education": "",  # 空字符串
+            "phone": "",  # 空字符串
+            "address": "",  # 空字符串
+            "application_date": "",  # 空字符串
+            "activist_date": "",  # 空字符串
+            "candidate_date": "",  # 空字符串
+            "provisional_date": "",  # 空字符串
+            "full_member_date": ""  # 空字符串
+        }
+
+        response = await admin_client.post(
+            "/api/v1/party/members",
+            json=member_data
+        )
+
+        assert response.status_code == 201
+        data = response.json()
+        assert data["name"] == "李四"
+        # 空字符串应该被保存（这是实际需求）
+        # 前端发送空字符串表示清除该字段
+        assert data["id_card"] == "" or data["id_card"] is None
+
 
 class TestGetPartyMemberDetailAPI:
     """党员详情API测试"""
