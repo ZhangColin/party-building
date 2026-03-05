@@ -94,12 +94,20 @@ async def chat_stream(
                 for msg in db_messages
             ]
 
-        # 保存用户消息
+        # 保存用户消息（包含附件）
+        attachments_data = None
+        if request.attached_files:
+            attachments_data = [
+                {"id": att.id, "name": att.name, "type": att.type, "size": 0}
+                for att in request.attached_files
+            ]
+
         session_service.add_message(
             session_id=session_id,
             role="user",
             content=request.message,
-            user_id=current_user.user_id
+            user_id=current_user.user_id,
+            attachments=attachments_data
         )
 
         # 准备模型配置
@@ -290,12 +298,20 @@ async def chat_non_stream(
                 for msg in db_messages
             ]
 
-        # 保存用户消息
+        # 保存用户消息（包含附件）
+        attachments_data = None
+        if request.attached_files:
+            attachments_data = [
+                {"id": att.id, "name": att.name, "type": att.type, "size": 0}
+                for att in request.attached_files
+            ]
+
         session_service.add_message(
             session_id=session_id,
             role="user",
             content=request.message,
-            user_id=current_user.user_id
+            user_id=current_user.user_id,
+            attachments=attachments_data
         )
 
         # 获取AI响应

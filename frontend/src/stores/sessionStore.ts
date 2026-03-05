@@ -232,6 +232,7 @@ export const useSessionStore = defineStore('session', () => {
         content: msg.content,
         timestamp: msg.timestamp || (msg as any).created_at,
         artifacts: msg.artifacts || [],
+        attachments: msg.attachments,
       }))
     } catch (err) {
       error.value = err instanceof Error ? err.message : '恢复会话失败'

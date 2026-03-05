@@ -244,11 +244,17 @@ class Message(BaseModel):
         default_factory=list,
         description="消息中包含的成果物列表（从 content 中解析）"
     )
-    
+
     # 多模态支持字段（新增）
     media_content: Optional[str] = Field(
-        None, 
+        None,
         description="多模态内容JSON字符串（图片、音频、视频等）。存储MultiModalContent的JSON序列化结果"
+    )
+
+    # 附件信息（新增）
+    attachments: Optional[List[MessageAttachment]] = Field(
+        None,
+        description="消息附件列表（本地文件、知识库、党建活动）"
     )
     
     @property
@@ -1087,6 +1093,6 @@ class TaskStatusResponse(BaseModel):
 # ==================== 模型重建 - 解析前向引用 ====================
 
 # 导入 AttachmentReference 并重建 ChatRequest 模型以解析前向引用
-from src.models.temp_files import AttachmentReference
+from src.models.temp_files import AttachmentReference, MessageAttachment
 ChatRequest.model_rebuild()
 

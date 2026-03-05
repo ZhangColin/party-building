@@ -202,31 +202,35 @@ class SessionService:
         role: str,
         content: str,
         user_id: Optional[str] = None,
-        created_at: Optional[datetime] = None
+        created_at: Optional[datetime] = None,
+        attachments: Optional[List[dict]] = None
     ) -> MessageDomain:
         """
         添加消息到会话
-        
+
         Args:
             session_id: 会话ID
             role: 消息角色（'user' 或 'assistant'）
             content: 消息内容
             user_id: 用户ID（可选，如果提供则验证会话是否属于该用户）
             created_at: 消息创建时间（可选，如果不提供则使用当前时间）
-            
+            attachments: 附件列表（可选，格式：[{"id": "...", "name": "...", "type": "temp|knowledge|party", "size": 123}]）
+
         Returns:
             Message 领域模型实例
         """
+        import json
+
         with self._get_db_session() as db:
             # 验证会话存在且属于用户
             query = db.query(SessionModel).filter(SessionModel.session_id == session_id)
             if user_id:
                 query = query.filter(SessionModel.user_id == user_id)
-            
+
             session_model = query.first()
             if not session_model:
                 raise ValueError(f"Session '{session_id}' not found")
-            
+
             # 创建消息（使用传入的时间或当前时间）
             message_time = created_at if created_at is not None else datetime.now()
             message_id = str(uuid.uuid4())
@@ -237,15 +241,19 @@ class SessionService:
                 content=content,
                 created_at=message_time
             )
-            
+
+            # 保存附件信息为 JSON 字符串
+            if attachments and len(attachments) > 0:
+                message_model.attachments = json.dumps(attachments, ensure_ascii=False)
+
             db.add(message_model)
-            
+
             # 更新会话的 updated_at
             session_model.updated_at = datetime.now()
-            
+
             db.commit()
             db.refresh(message_model)
-            
+
             # 转换为领域模型
             return self._to_domain_model_message(message_model)
     
@@ -308,6 +316,19 @@ class SessionService:
     
     def _to_domain_model_message(self, message_model: MessageModel) -> MessageDomain:
         """将数据库模型转换为领域模型"""
+        import json
+        from ..models.temp_files import MessageAttachment
+
+        # 恢复附件信息
+        attachments = None
+        if hasattr(message_model, 'attachments') and message_model.attachments:
+            try:
+                attachments_data = json.loads(message_model.attachments)
+                attachments = [MessageAttachment(**a) for a in attachments_data]
+            except Exception as e:
+                from ..config_loader import logger
+                logger.warning(f"解析附件信息失败: {e}")
+
         return MessageDomain(
             message_id=message_model.message_id,
             session_id=message_model.session_id,
@@ -316,7 +337,8 @@ class SessionService:
             created_at=message_model.created_at,
             timestamp=message_model.created_at,  # 兼容前端
             artifacts=[],  # 成果物需要单独查询
-            media_content=getattr(message_model, 'media_content', None)  # 多模态内容
+            media_content=getattr(message_model, 'media_content', None),  # 多模态内容
+            attachments=attachments  # 附件信息
         )
     
     # ==================== 多模态支持方法 ====================

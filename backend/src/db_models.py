@@ -56,16 +56,19 @@ class SessionModel(Base):
 class MessageModel(Base):
     """消息数据库模型（SQLAlchemy ORM）"""
     __tablename__ = "messages"
-    
+
     message_id = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     session_id = Column(CHAR(36), ForeignKey("sessions.session_id", ondelete="CASCADE"), nullable=False, index=True)
     role = Column(Enum(MessageRole), nullable=False)
     content = Column(Text, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now, index=True)
-    
-    # 多模态支持字段（新增）
+
+    # 多模态支持字段
     media_content = Column(Text, nullable=True, comment="多模态内容JSON字符串")
-    
+
+    # 附件信息（JSON 格式存储）
+    attachments = Column(Text, nullable=True, comment="附件列表JSON字符串")
+
     # 关系
     session = relationship("SessionModel", back_populates="messages")
     artifacts = relationship("ArtifactModel", back_populates="message", cascade="all, delete-orphan")

@@ -1,17 +1,17 @@
 <template>
   <div class="chat-area" :class="{ 'with-preview': showPreview, 'conversation-collapsed': conversationListCollapsed }">
     <!-- 左侧：历史对话列表 -->
-    <ConversationList 
+    <ConversationList
       ref="conversationListRef"
       :tool-id="toolId"
       :collapsed="conversationListCollapsed"
-      class="conversation-list" 
+      class="conversation-list"
       :class="{ collapsed: conversationListCollapsed }"
       @conversation-change="handleConversationChange"
       @new-conversation="handleNewConversation"
     />
-    
-    
+
+
     <!-- 中间：当前对话区域 -->
     <ChatPanel
       ref="chatPanelRef"
@@ -27,17 +27,19 @@
       @send="handleSendMessage"
       @retry="handleRetry"
       @preview="openPreview"
+      @open-knowledge="handleOpenKnowledge"
+      @open-party-activity="handleOpenPartyActivity"
     />
-    
+
     <!-- 可拖拽的分隔条 -->
-    <div 
+    <div
       v-if="showPreview"
       class="resizer"
       @mousedown="startResize"
     >
       <div class="resizer-handle"></div>
     </div>
-    
+
     <!-- 右侧：预览区域 -->
     <PreviewPanel
       v-if="showPreview"
@@ -45,16 +47,38 @@
       class="preview-panel"
       @close-preview="closePreview"
     />
+
+    <!-- 文件选择对话框 -->
+    <FileSelectorDialog
+      v-model="knowledgeDialogVisible"
+      source="knowledge"
+      :files="knowledgeFiles"
+      :categories="knowledgeCategories"
+      :loading="knowledgeLoading"
+      @confirm="handleKnowledgeFilesSelected"
+    />
+    <FileSelectorDialog
+      v-model="partyDialogVisible"
+      source="party"
+      :files="partyFiles"
+      :categories="partyCategories"
+      :loading="partyLoading"
+      @confirm="handlePartyFilesSelected"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ElMessage } from 'element-plus'
 import ConversationList from './ConversationList.vue'
 import ChatPanel from './ChatPanel.vue'
 import PreviewPanel from './PreviewPanel.vue'
+import FileSelectorDialog, { type FileItem } from './FileSelectorDialog.vue'
 import { useSessionStore } from '../stores/sessionStore'
-import type { Artifact, AttachmentReference } from '../types'
+import * as knowledgeApi from '@/services/knowledgeApi'
+import * as partyActivityApi from '@/services/partyActivityApi'
+import type { Artifact, AttachmentReference, ChatAttachment } from '../types'
 
 const props = defineProps<{
   toolId?: string
@@ -68,6 +92,16 @@ const currentArtifact = ref<Artifact | null>(null)
 const conversationListCollapsed = ref(false)
 const conversationListRef = ref<InstanceType<typeof ConversationList> | null>(null)
 const chatPanelRef = ref<InstanceType<typeof ChatPanel> | null>(null)
+
+// 文件选择对话框状态
+const knowledgeDialogVisible = ref(false)
+const partyDialogVisible = ref(false)
+const knowledgeFiles = ref<FileItem[]>([])
+const partyFiles = ref<FileItem[]>([])
+const knowledgeCategories = ref<Array<{ id: string; name: string }>>([])
+const partyCategories = ref<Array<{ id: string; name: string }>>([])
+const knowledgeLoading = ref(false)
+const partyLoading = ref(false)
 
 // 拖拽相关
 const chatPanelWidth = ref<number>(0)
@@ -162,6 +196,102 @@ async function handleRetry() {
   console.log('[ChatArea] Retry requested')
   // Clear the error and let the user resend
   sessionStore.error = null
+}
+
+// 打开知识库文件选择对话框
+async function handleOpenKnowledge() {
+  knowledgeDialogVisible.value = true
+  knowledgeLoading.value = true
+  try {
+    // 加载知识库文件列表
+    const documents = await knowledgeApi.getDocuments()
+    knowledgeFiles.value = documents.map(doc => ({
+      id: doc.id,
+      title: doc.original_filename,
+      name: doc.original_filename,
+      category_id: doc.category_id,
+      size: doc.file_size ?? undefined
+    }))
+
+    // 加载知识库分类
+    const categories = await knowledgeApi.getCategoryTree()
+    const flatCategories: Array<{ id: string; name: string }> = []
+    const flatten = (cats: any[]) => {
+      for (const cat of cats) {
+        flatCategories.push({ id: cat.id, name: cat.name })
+        if (cat.children?.length) {
+          flatten(cat.children)
+        }
+      }
+    }
+    flatten(categories)
+    knowledgeCategories.value = flatCategories
+  } catch (error) {
+    console.error('获取知识库文件失败:', error)
+    ElMessage.error('获取知识库文件失败')
+  } finally {
+    knowledgeLoading.value = false
+  }
+}
+
+// 打开党建活动文件选择对话框
+async function handleOpenPartyActivity() {
+  partyDialogVisible.value = true
+  partyLoading.value = true
+  try {
+    // 加载党建活动文件列表
+    const documents = await partyActivityApi.getDocuments()
+    partyFiles.value = documents.map(doc => ({
+      id: doc.id,
+      title: doc.original_filename,
+      name: doc.original_filename,
+      category_id: doc.category_id,
+      size: doc.file_size ?? undefined
+    }))
+
+    // 加载党建活动分类
+    const categories = await partyActivityApi.getCategoryTree()
+    const flatCategories: Array<{ id: string; name: string }> = []
+    const flatten = (cats: any[]) => {
+      for (const cat of cats) {
+        flatCategories.push({ id: cat.id, name: cat.name })
+        if (cat.children?.length) {
+          flatten(cat.children)
+        }
+      }
+    }
+    flatten(categories)
+    partyCategories.value = flatCategories
+  } catch (error) {
+    console.error('获取党建活动文件失败:', error)
+    ElMessage.error('获取党建活动文件失败')
+  } finally {
+    partyLoading.value = false
+  }
+}
+
+// 处理知识库文件选择确认
+function handleKnowledgeFilesSelected(selectedAttachments: ChatAttachment[]) {
+  // 将选中的附件添加到 ChatPanel 的输入框
+  const chatInput = chatPanelRef.value?.chatInputRef
+  if (chatInput && 'addAttachment' in chatInput && typeof chatInput.addAttachment === 'function') {
+    for (const att of selectedAttachments) {
+      chatInput.addAttachment(att)
+    }
+    ElMessage.success(`已添加 ${selectedAttachments.length} 个知识库文件`)
+  }
+}
+
+// 处理党建活动文件选择确认
+function handlePartyFilesSelected(selectedAttachments: ChatAttachment[]) {
+  // 将选中的附件添加到 ChatPanel 的输入框
+  const chatInput = chatPanelRef.value?.chatInputRef
+  if (chatInput && 'addAttachment' in chatInput && typeof chatInput.addAttachment === 'function') {
+    for (const att of selectedAttachments) {
+      chatInput.addAttachment(att)
+    }
+    ElMessage.success(`已添加 ${selectedAttachments.length} 个党建活动文件`)
+  }
 }
 
 function openPreview(artifact: Artifact) {

@@ -19,3 +19,12 @@ class AttachmentReference(BaseModel):
     id: str = Field(..., description="临时文件ID或文档ID")
     type: Literal["temp", "knowledge", "party"] = Field(..., description="附件类型")
     name: str = Field(..., description="附件名称")
+
+
+class MessageAttachment(BaseModel):
+    """消息附件（用于API响应，包含完整信息）"""
+
+    id: str = Field(..., description="附件ID")
+    name: str = Field(..., description="附件名称")
+    type: Literal["temp", "knowledge", "party"] = Field(..., description="附件类型")
+    size: int = Field(..., description="文件大小（字节）", ge=0)

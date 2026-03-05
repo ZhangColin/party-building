@@ -192,9 +192,9 @@ async function handleCopy() {
 }
 
 .message-user .message-attachment {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: white;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(200, 16, 46, 0.3);
+  color: #333;
 }
 
 .attachment-icon {
@@ -204,7 +204,7 @@ async function handleCopy() {
 }
 
 .message-user .attachment-icon {
-  color: rgba(255, 255, 255, 0.8);
+  color: #C8102E;
 }
 
 .attachment-name {
@@ -223,8 +223,9 @@ async function handleCopy() {
 }
 
 .message-user .attachment-type {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.8);
+  background-color: #f0f0f0;
+  color: #C8102E;
+  font-weight: 500;
 }
 
 .message-text {

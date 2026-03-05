@@ -131,6 +131,7 @@ const scrollToBottom = () => {
 defineExpose({
   focusInput,
   scrollToBottom,
+  chatInputRef,
 });
 </script>
 
