@@ -199,11 +199,15 @@ class OrganizationLifeBase(BaseModel):
 class OrganizationLifeCreate(OrganizationLifeBase):
     """创建组织生活记录请求"""
 
-    @field_validator('meeting_type', 'location', 'host', 'recorder', 'absent_members',
-                    'agenda', 'content', 'resolutions', 'photos', 'attachments', 'organizer', 'branch_id', 'created_by')
-    def validate_empty_strings(cls, v):
+    @field_validator('*')
+    @classmethod
+    def validate_empty_strings(cls, v, info):
         """将空字符串转换为None"""
-        if v == "":
+        # 跳过必填字段
+        if info.field_name in ['activity_type', 'title', 'activity_date']:
+            return v
+        # 可选字段的空字符串处理
+        if isinstance(v, str) and v == "":
             return None
         return v
 
@@ -290,10 +294,15 @@ class PartyFeeCreate(PartyFeeBase):
     """创建党费记录请求"""
     member_id: str = Field(..., description="党员ID")
 
-    @field_validator('collector', 'remark', 'branch_id')
-    def validate_empty_strings(cls, v):
+    @field_validator('*')
+    @classmethod
+    def validate_empty_strings(cls, v, info):
         """将空字符串转换为None"""
-        if v == "":
+        # 跳过必填字段
+        if info.field_name in ['member_id', 'amount', 'payment_date', 'fee_month']:
+            return v
+        # 可选字段的空字符串处理
+        if isinstance(v, str) and v == "":
             return None
         return v
 
