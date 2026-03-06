@@ -252,7 +252,7 @@ class Message(BaseModel):
     )
 
     # 附件信息（新增）
-    attachments: Optional[List[MessageAttachment]] = Field(
+    attachments: Optional[List["MessageAttachment"]] = Field(
         None,
         description="消息附件列表（本地文件、知识库、党建活动）"
     )
@@ -410,7 +410,7 @@ class CreateUserRequest(BaseModel):
 
 class CreateUserResponse(BaseModel):
     """创建用户响应"""
-    user: UserListItem = Field(..., description="新创建的用户信息")
+    user: "UserListItem" = Field(..., description="新创建的用户信息")
 
 
 class UserListItem(BaseModel):
@@ -444,7 +444,7 @@ class UpdateUserRequest(BaseModel):
 
 class UpdateUserResponse(BaseModel):
     """更新用户信息响应"""
-    user: UserListItem = Field(..., description="更新后的用户信息")
+    user: "UserListItem" = Field(..., description="更新后的用户信息")
 
 
 class ResetPasswordRequest(BaseModel):
@@ -698,24 +698,24 @@ class UpdateToolRequest(BaseModel):
 
 class CreateToolResponse(BaseModel):
     """创建工具响应"""
-    tool: AdminCommonToolListItem = Field(..., description="新创建的工具信息")
+    tool: "AdminCommonToolListItem" = Field(..., description="新创建的工具信息")
 
 
 class UpdateToolResponse(BaseModel):
     """更新工具响应"""
-    tool: AdminCommonToolListItem = Field(..., description="更新后的工具信息")
+    tool: "AdminCommonToolListItem" = Field(..., description="更新后的工具信息")
 
 
 class MoveToolResponse(BaseModel):
     """移动工具响应"""
     message: str = Field(..., description="操作结果消息")
-    tool: AdminCommonToolListItem = Field(..., description="移动后的工具信息")
+    tool: "AdminCommonToolListItem" = Field(..., description="移动后的工具信息")
 
 
 class ToggleVisibilityResponse(BaseModel):
     """切换可见性响应"""
     message: str = Field(..., description="操作结果消息")
-    tool: AdminCommonToolListItem = Field(..., description="更新后的工具信息")
+    tool: "AdminCommonToolListItem" = Field(..., description="更新后的工具信息")
 
 
 # ==================== 后台管理 - 工具分类管理模块 ====================
@@ -752,18 +752,18 @@ class UpdateToolCategoryRequest(BaseModel):
 
 class CreateToolCategoryResponse(BaseModel):
     """创建工具分类响应"""
-    category: AdminToolCategoryListItem = Field(..., description="新创建的分类信息")
+    category: "AdminToolCategoryListItem" = Field(..., description="新创建的分类信息")
 
 
 class UpdateToolCategoryResponse(BaseModel):
     """更新工具分类响应"""
-    category: AdminToolCategoryListItem = Field(..., description="更新后的分类信息")
+    category: "AdminToolCategoryListItem" = Field(..., description="更新后的分类信息")
 
 
 class MoveCategoryResponse(BaseModel):
     """移动分类响应"""
     message: str = Field(..., description="操作结果消息")
-    category: AdminToolCategoryListItem = Field(..., description="移动后的分类信息")
+    category: "AdminToolCategoryListItem" = Field(..., description="移动后的分类信息")
 
 
 # ==================== 后台管理 - 作品管理模块 ====================
@@ -803,24 +803,24 @@ class UpdateWorkRequest(BaseModel):
 
 class CreateWorkResponse(BaseModel):
     """创建作品响应"""
-    work: AdminWorkListItem = Field(..., description="新创建的作品信息")
+    work: "AdminWorkListItem" = Field(..., description="新创建的作品信息")
 
 
 class UpdateWorkResponse(BaseModel):
     """更新作品响应"""
-    work: AdminWorkListItem = Field(..., description="更新后的作品信息")
+    work: "AdminWorkListItem" = Field(..., description="更新后的作品信息")
 
 
 class MoveWorkResponse(BaseModel):
     """移动作品响应"""
     message: str = Field(..., description="操作结果消息")
-    work: AdminWorkListItem = Field(..., description="移动后的作品信息")
+    work: "AdminWorkListItem" = Field(..., description="移动后的作品信息")
 
 
 class ToggleWorkVisibilityResponse(BaseModel):
     """切换作品可见性响应"""
     message: str = Field(..., description="操作结果消息")
-    work: AdminWorkListItem = Field(..., description="更新后的作品信息")
+    work: "AdminWorkListItem" = Field(..., description="更新后的作品信息")
 
 
 # ==================== 后台管理 - 作品分类管理模块 ====================
@@ -857,18 +857,18 @@ class UpdateWorkCategoryRequest(BaseModel):
 
 class CreateWorkCategoryResponse(BaseModel):
     """创建作品分类响应"""
-    category: AdminWorkCategoryListItem = Field(..., description="新创建的分类信息")
+    category: "AdminWorkCategoryListItem" = Field(..., description="新创建的分类信息")
 
 
 class UpdateWorkCategoryResponse(BaseModel):
     """更新作品分类响应"""
-    category: AdminWorkCategoryListItem = Field(..., description="更新后的分类信息")
+    category: "AdminWorkCategoryListItem" = Field(..., description="更新后的分类信息")
 
 
 class MoveWorkCategoryResponse(BaseModel):
     """移动作品分类响应"""
     message: str = Field(..., description="操作结果消息")
-    category: AdminWorkCategoryListItem = Field(..., description="移动后的分类信息")
+    category: "AdminWorkCategoryListItem" = Field(..., description="移动后的分类信息")
 
 
 # ==================== 课程文档模块 - 前台接口 ====================
@@ -949,18 +949,18 @@ class UpdateCourseCategoryRequest(BaseModel):
 
 class CreateCourseCategoryResponse(BaseModel):
     """创建目录响应"""
-    category: AdminCourseCategoryListItem = Field(..., description="新创建的目录信息")
+    category: "AdminCourseCategoryListItem" = Field(..., description="新创建的目录信息")
 
 
 class UpdateCourseCategoryResponse(BaseModel):
     """更新目录响应"""
-    category: AdminCourseCategoryListItem = Field(..., description="更新后的目录信息")
+    category: "AdminCourseCategoryListItem" = Field(..., description="更新后的目录信息")
 
 
 class MoveCourseCategoryResponse(BaseModel):
     """移动目录响应"""
     message: str = Field(..., description="操作结果消息")
-    category: AdminCourseCategoryListItem = Field(..., description="移动后的目录信息")
+    category: "AdminCourseCategoryListItem" = Field(..., description="移动后的目录信息")
 
 
 # ==================== 后台管理 - 文档管理模块 ====================
@@ -1004,18 +1004,18 @@ class UpdateCourseDocumentRequest(BaseModel):
 
 class CreateCourseDocumentResponse(BaseModel):
     """创建文档响应"""
-    document: AdminCourseDocumentListItem = Field(..., description="新创建的文档信息")
+    document: "AdminCourseDocumentListItem" = Field(..., description="新创建的文档信息")
 
 
 class UpdateCourseDocumentResponse(BaseModel):
     """更新文档响应"""
-    document: AdminCourseDocumentListItem = Field(..., description="更新后的文档信息")
+    document: "AdminCourseDocumentListItem" = Field(..., description="更新后的文档信息")
 
 
 class MoveCourseDocumentResponse(BaseModel):
     """移动文档响应"""
     message: str = Field(..., description="操作结果消息")
-    document: AdminCourseDocumentListItem = Field(..., description="移动后的文档信息")
+    document: "AdminCourseDocumentListItem" = Field(..., description="移动后的文档信息")
 
 
 # ==================== 多模态生成模块 ====================

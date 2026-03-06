@@ -1,7 +1,7 @@
 """添加文件管理模型
 
 Revision ID: 8c9d0e1f2g3a
-Revises: 7b840677f9ce
+Revises: 5df8492f4faf
 Create Date: 2026-03-05 15:30:00.000000
 
 """
@@ -13,7 +13,7 @@ from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
 revision: str = '8c9d0e1f2g3a'
-down_revision: Union[str, Sequence[str], None] = '7b840677f9ce'
+down_revision: Union[str, Sequence[str], None] = '5df8492f4faf'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
