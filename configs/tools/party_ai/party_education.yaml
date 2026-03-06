@@ -1,11 +1,11 @@
 # configs/tools/party_ai/party_education.yaml
 tool_id: "party_education"
-name: "党员教育学习材料"
-description: "创作党员教育学习心得、宣讲提纲、学习笔记等材料"
-category: "智能文稿生成"
+name: "组织生活会"
+description: ""
+category: "智能助手"
 system_prompt_file: "prompts/party_education.md"
 welcome_message: |
-  # 党员教育学习材料生成
+  # 组织生活会
 
   请提供以下信息：
 

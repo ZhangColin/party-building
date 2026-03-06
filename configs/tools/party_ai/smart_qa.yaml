@@ -1,7 +1,7 @@
 # configs/tools/party_ai/smart_qa.yaml
 tool_id: "smart_qa"
 name: "党规党纪智能问答"
-description: "基于党内法规和纪律条令的智能问答系统，提供权威准确的党规党纪咨询"
+description: ""
 category: "智能问答"
 system_prompt_file: "prompts/smart_qa.md"
 welcome_message: |

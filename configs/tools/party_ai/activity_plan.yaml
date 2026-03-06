@@ -1,10 +1,10 @@
 tool_id: "activity_plan"
-name: "党日活动策划方案"
-description: "创作完整的主题党日活动方案，包括活动流程、主持词、宣传文案等"
-category: "智能文稿生成"
+name: "活动策划方案"
+description: ""
+category: "智能助手"
 system_prompt_file: "prompts/activity_plan.md"
 welcome_message: |
-  # 党日活动策划方案生成
+  # 活动策划方案生成
 
   请提供以下信息：
 

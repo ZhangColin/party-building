@@ -2,7 +2,7 @@
 # 党建AI工具分类
 
 categories:
-  - name: "智能文稿"
+  - name: "智能助手"
     description: "智能创作各类党务文稿"
     order: 1
     icon: "document-text"

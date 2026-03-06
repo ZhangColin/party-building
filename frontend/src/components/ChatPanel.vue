@@ -1,6 +1,12 @@
 <template>
   <div class="chat-panel" data-testid="chat-panel">
+    <!-- 欢迎消息（仅在没有消息时显示） -->
+    <div v-if="messages.length === 0" class="welcome-message-wrapper">
+      <WelcomeMessage :welcome-message="welcomeMessage" />
+    </div>
+
     <MessageList
+      v-show="messages.length > 0"
       ref="messageListRef"
       :messages="messages"
       :streaming-content="streamingContent"
@@ -41,6 +47,7 @@
 import { ref, watch } from 'vue';
 import MessageList from './chat/MessageList.vue';
 import ChatInput from './chat/ChatInput.vue';
+import WelcomeMessage from './WelcomeMessage.vue';
 import { useSessionStore } from '../stores/sessionStore';
 import type { Message } from '@/types';
 import type { AttachmentReference } from '@/types';
@@ -143,6 +150,14 @@ defineExpose({
   flex-direction: column;
   height: 100%;
   background-color: #f5f5f5;
+}
+
+.welcome-message-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
 }
 
 .error-message {

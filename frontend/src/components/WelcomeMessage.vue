@@ -22,7 +22,7 @@ const md = new MarkdownIt({
 })
 
 // 如果没有传入欢迎语，使用默认值
-const welcomeTitle = '欢迎使用海创元 AI 教育智研云平台'
+const welcomeTitle = '欢迎使用海创元党建 AI 智能平台'
 const defaultMessage = '我是你的AI助手，可以帮助你处理各种任务。请告诉我你需要什么帮助？'
 
 // 渲染 Markdown 格式的欢迎词
