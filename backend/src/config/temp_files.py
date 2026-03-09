@@ -12,7 +12,7 @@ class TempFileConfig:
     # 临时文件目录
     TEMP_DIR = _TEMP_DIR
     # 最大文件大小（字节）
-    MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+    MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
     # 清理间隔（小时）
     CLEANUP_INTERVAL_HOURS = 1
     # 文件最大存活时间（小时）

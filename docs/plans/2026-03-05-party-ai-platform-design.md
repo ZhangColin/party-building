@@ -397,7 +397,7 @@ categories:
 tool_id: "three_meetings"
 name: "三会一课一键生成"
 description: "输入会议基本信息，AI自动生成符合规范的党务会议文档"
-category: "智能文稿生成"
+category: "智能助手"
 system_prompt_file: "prompts/three_meetings.md"
 welcome_message: "欢迎使用三会一课一键生成工具！请输入会议类型和主题，我将为您生成会议讲话稿、会议记录等材料。"
 icon: "calendar"

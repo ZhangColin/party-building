@@ -5,7 +5,7 @@ description: ""
 category: "智能问答"
 system_prompt_file: "prompts/compliance_check.md"
 welcome_message: |
-  # 文稿合规性检查
+  # 文稿合规性智能检查
 
   欢迎使用文稿合规性检查系统！我可以帮您检查党务文稿的合规性问题。
 

@@ -229,7 +229,7 @@ git commit -m "feat: 创建党建AI工具集目录和分类"
 tool_id: "three_meetings"
 name: "三会一课一键生成"
 description: "输入会议基本信息，AI自动生成符合规范的党务会议文档，包括支部书记讲话稿、会议记录摘要等"
-category: "智能文稿生成"
+category: "智能助手"
 system_prompt_file: "prompts/three_meetings.md"
 welcome_message: |
   # 三会一课一键生成
@@ -338,7 +338,7 @@ git commit -m "feat: 添加三会一课一键生成工具配置"
 tool_id: "party_education"
 name: "党员教育学习材料生成"
 description: "根据学习主题或政策文件，生成学习心得、主题宣讲提纲、学习笔记、研讨发言稿等学习教育材料"
-category: "智能文稿生成"
+category: "智能助手"
 system_prompt_file: "prompts/party_education.md"
 welcome_message: |
   # 党员教育学习材料生成
@@ -434,7 +434,7 @@ git commit -m "feat: 添加党员教育学习材料生成工具"
 tool_id: "work_summary"
 name: "工作总结与汇报材料生成"
 description: "根据工作内容，生成符合党建规范的工作总结、专项汇报、述职报告等材料"
-category: "智能文稿生成"
+category: "智能助手"
 system_prompt_file: "prompts/work_summary.md"
 welcome_message: |
   # 工作总结与汇报材料生成
@@ -528,7 +528,7 @@ git commit -m "feat: 添加工作总结与汇报材料生成工具"
 tool_id: "activity_plan"
 name: "党日活动策划方案生成"
 description: "根据活动主题和约束条件，生成完整的主题党日活动方案，包括活动流程、人员分工、预算明细、安全预案等"
-category: "智能文稿生成"
+category: "智能助手"
 system_prompt_file: "prompts/activity_plan.md"
 welcome_message: |
   # 党日活动策划方案生成

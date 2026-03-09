@@ -4,7 +4,7 @@ description: ""
 category: "智能助手"
 system_prompt_file: "prompts/activity_plan.md"
 welcome_message: |
-  # 活动策划方案生成
+  # 活动策划方案
 
   请提供以下信息：
 
