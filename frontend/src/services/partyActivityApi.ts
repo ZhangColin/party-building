@@ -155,3 +155,10 @@ export async function downloadDocument(documentId: string): Promise<Blob> {
 export function getDownloadUrl(documentId: string): string {
   return `${BASE_PATH}/documents/${documentId}/download`
 }
+
+/**
+ * 获取原文件 URL（用于预览或下载）
+ */
+export function getOriginalFileUrl(documentId: string): string {
+  return `${BASE_PATH}/documents/${documentId}/original`
+}

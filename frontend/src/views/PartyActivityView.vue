@@ -13,6 +13,7 @@
         @category-click="handleCategoryClick"
         @file-click="handleFileClick"
         @file-open="handleOpenFile"
+        @file-view-original="handleViewOriginalFile"
         @file-edit="handleEditFile"
         @file-download="handleDownloadFile"
         @file-rename="handleRenameFile"
@@ -31,6 +32,13 @@
         @search-query-change="store.setSearchQuery"
       />
   </StandaloneLayout>
+
+  <!-- 文件预览弹窗 -->
+  <FilePreviewDialog
+    v-model="previewDialogVisible"
+    :document="previewDocument"
+    :original-file-url="previewFileUrl"
+  />
 </template>
 
 <script setup lang="ts">
@@ -39,7 +47,9 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import StandaloneLayout from '@/layouts/StandaloneLayout.vue'
 import FileManagementLayout from '@/layouts/FileManagementLayout.vue'
+import FilePreviewDialog from '@/components/file-manager/FilePreviewDialog.vue'
 import { usePartyActivityStore } from '@/stores/partyActivityStore'
+import { getOriginalFileUrl } from '@/services/partyActivityApi'
 import type { Category, Document } from '@/types/file-manager'
 
 const router = useRouter()
@@ -47,6 +57,14 @@ const store = usePartyActivityStore()
 
 const uploadingFiles = ref<Map<string, number>>(new Map())
 const fileManagementRef = ref<InstanceType<typeof FileManagementLayout> | null>(null)
+
+// 文件预览弹窗状态
+const previewDialogVisible = ref(false)
+const previewDocument = ref<Document | null>(null)
+const previewFileUrl = computed(() => {
+  if (!previewDocument.value) return ''
+  return getOriginalFileUrl(previewDocument.value.id)
+})
 
 // 选中的文件 ID（Set 类型用于组件）
 const selectedIdsSet = computed(() => new Set(store.selectedDocuments))
@@ -128,6 +146,14 @@ const handleDeleteCategory = async (category: Category) => {
 const handleFileClick = (document: Document) => {
   // 单击文件时的处理（可以预览或选中）
   console.log('File clicked:', document)
+}
+
+const handleViewOriginalFile = (document: Document) => {
+  console.log('查看原文件:', document)
+  const url = getOriginalFileUrl(document.id)
+  console.log('原文件 URL:', url)
+  previewDocument.value = document
+  previewDialogVisible.value = true
 }
 
 const handleOpenFile = async (document: Document) => {

@@ -92,6 +92,7 @@
             @click="handleFileClick"
             @toggle-select="handleToggleSelect"
             @open="handleOpenFile"
+            @view-original="handleViewOriginalFile"
             @edit="handleEditFile"
             @download="handleDownloadFile"
             @rename="handleRenameFile"
@@ -117,6 +118,7 @@
           @select-all="handleSelectAll"
           @clear-selection="handleClearSelection"
           @open="handleOpenFile"
+          @view-original="handleViewOriginalFile"
           @edit="handleEditFile"
           @download="handleDownloadFile"
           @rename="handleRenameFile"
@@ -188,6 +190,7 @@ interface Emits {
   (e: 'categoryClick', category: Category | null): void
   (e: 'fileClick', document: Document): void
   (e: 'fileOpen', document: Document): void
+  (e: 'fileViewOriginal', document: Document): void
   (e: 'fileEdit', document: Document): void
   (e: 'fileDownload', document: Document): void
   (e: 'fileRename', document: Document): void
@@ -275,6 +278,8 @@ const handleSelectAll = () => emit('selectAllFiles')
 const handleClearSelection = () => emit('clearSelection')
 
 const handleOpenFile = (document: Document) => emit('fileOpen', document)
+
+const handleViewOriginalFile = (document: Document) => emit('fileViewOriginal', document)
 
 const handleEditFile = (document: Document) => emit('fileEdit', document)
 

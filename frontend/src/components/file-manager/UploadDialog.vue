@@ -10,11 +10,14 @@
     <el-form :model="form" label-width="80px">
       <el-form-item label="目标目录">
         <el-cascader
+          ref="cascaderRef"
           v-model="form.categoryId"
           :options="categoryOptions"
           :props="cascaderProps"
           placeholder="选择目录"
           clearable
+          filterable
+          @change="handleCascaderChange"
           class="w-full"
         />
       </el-form-item>
@@ -81,6 +84,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 
 const uploadRef = ref()
+const cascaderRef = ref()
 const uploading = ref(false)
 
 const form = ref<{
@@ -114,6 +118,11 @@ const cascaderProps = {
   children: 'children',
   checkStrictly: true,
   emitPath: false
+}
+
+const handleCascaderChange = () => {
+  // 选择后关闭面板
+  cascaderRef.value?.blur()
 }
 
 const handleFileChange = (file: UploadFile) => {

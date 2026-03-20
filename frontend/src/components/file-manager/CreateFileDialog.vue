@@ -10,11 +10,14 @@
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="目标目录" prop="categoryId">
         <el-cascader
+          ref="cascaderRef"
           v-model="form.categoryId"
           :options="categoryOptions"
           :props="cascaderProps"
           placeholder="选择目录"
           clearable
+          filterable
+          @change="handleCascaderChange"
           class="w-full"
         />
       </el-form-item>
@@ -103,6 +106,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 
 const formRef = ref<FormInstance>()
+const cascaderRef = ref()
 
 const form = reactive<{
   categoryId: string | null
@@ -176,6 +180,11 @@ const cascaderProps = {
   children: 'children',
   checkStrictly: true,
   emitPath: false
+}
+
+const handleCascaderChange = () => {
+  // 选择后关闭面板
+  cascaderRef.value?.blur()
 }
 
 /** 监听 props 变化，更新表单 */

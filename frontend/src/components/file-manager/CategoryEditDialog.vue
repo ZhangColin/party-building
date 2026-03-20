@@ -20,11 +20,14 @@
 
       <el-form-item v-if="!category" label="父目录">
         <el-cascader
+          ref="cascaderRef"
           v-model="form.parentId"
           :options="categoryOptions"
           :props="cascaderProps"
           placeholder="选择父目录（可选）"
           clearable
+          filterable
+          @change="handleCascaderChange"
           class="w-full"
         />
       </el-form-item>
@@ -67,6 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 
 const formRef = ref<FormInstance>()
+const cascaderRef = ref()
 
 const form = reactive<{
   name: string
@@ -125,6 +129,11 @@ const cascaderProps = {
   children: 'children',
   checkStrictly: true,
   emitPath: false
+}
+
+const handleCascaderChange = () => {
+  // 选择后关闭面板
+  cascaderRef.value?.blur()
 }
 
 // 监听 category 变化，更新表单

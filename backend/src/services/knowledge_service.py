@@ -187,13 +187,42 @@ class KnowledgeService:
         if not file_type:
             raise ValueError(f"不支持的文件类型: {filename}")
 
-        # 保存原文件
+        # 图片文件：只保存原文件，不转换
+        if file_type == "image":
+            self.original_dir.mkdir(parents=True, exist_ok=True)
+            original_filename = f"{uuid.uuid4()}{Path(filename).suffix}"
+            original_path = self.original_dir / original_filename
+            original_path.write_bytes(file_content)
+
+            document = KnowledgeDocumentModel(
+                id=str(uuid.uuid4()),
+                category_id=category_id,
+                filename=original_filename,
+                original_filename=filename,
+                original_path=str(original_path),
+                markdown_path=None,  # 图片不需要 markdown
+                file_type=file_type,
+                file_size=len(file_content),
+                uploaded_by=uploaded_by,
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            )
+
+            self.db.add(document)
+            await self.db.commit()
+            await self.db.refresh(document)
+
+            return self._document_to_dict(document)
+
+        # 其他文件类型：保存原文件并转换
+        self.original_dir.mkdir(parents=True, exist_ok=True)
+        self.markdown_dir.mkdir(parents=True, exist_ok=True)
+
         original_filename = f"{uuid.uuid4()}{Path(filename).suffix}"
         original_path = self.original_dir / original_filename
-        original_path.parent.mkdir(parents=True, exist_ok=True)
         original_path.write_bytes(file_content)
 
-        # 转换
+        # 转换为 Markdown
         try:
             markdown_content = await self.conversion_service.convert_to_markdown(
                 str(original_path), file_type
@@ -205,7 +234,6 @@ class KnowledgeService:
         # 保存 Markdown
         markdown_filename = f"{uuid.uuid4()}.md"
         markdown_path = self.markdown_dir / markdown_filename
-        markdown_path.parent.mkdir(parents=True, exist_ok=True)
         markdown_path.write_text(markdown_content, encoding="utf-8")
 
         document = KnowledgeDocumentModel(
@@ -253,6 +281,23 @@ class KnowledgeService:
             doc_dict["content"] = Path(document.markdown_path).read_text(encoding="utf-8")
 
         return doc_dict
+
+    async def get_document_with_paths(self, document_id: str) -> dict:
+        """获取文件详情（包含文件路径）"""
+        stmt = select(KnowledgeDocumentModel).where(KnowledgeDocumentModel.id == document_id)
+        result = await self.db.execute(stmt)
+        document = result.scalar_one_or_none()
+
+        if not document:
+            raise ValueError(f"文件不存在: {document_id}")
+
+        return {
+            "id": document.id,
+            "original_filename": document.original_filename,
+            "file_type": document.file_type,
+            "original_path": document.original_path,
+            "markdown_path": document.markdown_path
+        }
 
     async def update_document(self, document_id: str, content: str) -> dict:
         """更新文件内容"""

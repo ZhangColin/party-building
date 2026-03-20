@@ -54,6 +54,10 @@
                   <EyeIcon class="w-4 h-4" />
                   <span>打开</span>
                 </el-dropdown-item>
+                <el-dropdown-item command="view-original">
+                  <DocumentIcon class="w-4 h-4" />
+                  <span>查看原文件</span>
+                </el-dropdown-item>
                 <el-dropdown-item command="edit">
                   <PencilIcon class="w-4 h-4" />
                   <span>编辑</span>
@@ -114,6 +118,7 @@ interface Emits {
   (e: 'selectAll'): void
   (e: 'clearSelection'): void
   (e: 'open', document: Document): void
+  (e: 'viewOriginal', document: Document): void
   (e: 'edit', document: Document): void
   (e: 'download', document: Document): void
   (e: 'rename', document: Document): void
@@ -191,6 +196,9 @@ const handleAction = (command: string, document: Document) => {
   switch (command) {
     case 'open':
       emit('open', document)
+      break
+    case 'view-original':
+      emit('viewOriginal', document)
       break
     case 'edit':
       emit('edit', document)

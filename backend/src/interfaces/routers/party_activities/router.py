@@ -208,3 +208,57 @@ async def batch_get_documents(
     except Exception as e:
         logger.error(f"批量获取党建活动文档失败: {e}")
         raise HTTPException(status_code=500, detail="获取文档内容失败")
+
+
+@router.get("/documents/{document_id}/original")
+async def get_original_file(
+    document_id: str,
+    current_user: Annotated[UserInfo, Depends(get_current_user)],
+    service: PartyActivityService = Depends(get_party_activity_service)
+):
+    """获取原文件（用于预览或下载）"""
+    try:
+        from pathlib import Path
+        document = await service.get_document_with_paths(document_id)
+
+        original_path = document.get("original_path")
+        if not original_path or not Path(original_path).exists():
+            raise HTTPException(status_code=404, detail="原文件不存在")
+
+        # 根据文件扩展名确定媒体类型（用于浏览器预览）
+        def get_media_type(filename: str, file_type: str) -> str:
+            if file_type == "pdf":
+                return "application/pdf"
+            elif file_type == "image":
+                # 根据扩展名返回正确的图片类型
+                ext = Path(filename).suffix.lower()
+                mime_types = {
+                    ".png": "image/png",
+                    ".jpg": "image/jpeg",
+                    ".jpeg": "image/jpeg",
+                    ".gif": "image/gif",
+                    ".webp": "image/webp",
+                    ".svg": "image/svg+xml"
+                }
+                return mime_types.get(ext, "image/jpeg")
+            elif file_type == "word":
+                return "application/msword"
+            elif file_type == "excel":
+                return "application/vnd.ms-excel"
+            elif file_type == "text":
+                return "text/plain"
+            return "application/octet-stream"
+
+        media_type = get_media_type(document["original_filename"], document.get("file_type", ""))
+
+        # 使用 inline 让浏览器尝试预览而不是下载
+        return FileResponse(
+            path=Path(original_path),
+            filename=document["original_filename"],
+            media_type=media_type,
+            headers={"Content-Disposition": f"inline; filename=\"{document['original_filename']}\""}
+        )
+    except ValueError:
+        raise HTTPException(status_code=404, detail="文件不存在")
+    except HTTPException:
+        raise
